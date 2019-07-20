@@ -12,4 +12,10 @@ class SGCOMController extends Controller
     {
         return view('site.home.index');
     }
+
+    public function home()
+    {
+        return view('site.auth.index');
+      //return 'Tela pois login';
+    }
 }

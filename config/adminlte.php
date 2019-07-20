@@ -138,7 +138,7 @@ return [
 
                 [
                     'text' => 'Ocorrências',
-                    'url'  => 'admin/ocorrencia',
+                    'url'  => 'servico/ocorrencia',
                     'icon' => 'pencil-square-o',
                 ],  
 
