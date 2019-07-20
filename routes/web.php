@@ -11,10 +11,14 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
     
     $this->get('/', 'AdminController@index')->name('admin.home');
 
-    $this->get('ocorrencia', 'OcorrenciaController@index')->name('admin.ocorrencia');
+});
 
+$this->group(['middleware' => ['auth'], 'namespace' => 'ServicoOperacional', 'prefix' => 'servico'], function(){
+    $this->get('ocorrencia','OcorrenciaController@index')->name('servico.ocorrencia');
+});
 
-
+$this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home'], function(){
+    $this->get('/','SGCOMController@home')->name('auth.home');
 });
 
     $this->get('/', 'Site\SGCOMController@index')->name('home');

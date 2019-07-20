@@ -34,7 +34,7 @@
                   <th>#</th></th>
                   <th>OPM</th>
                   <th>Descrição</th>
-                  <th></th>
+                  <th>CPR</th>
                   <th></th>
                 </tr>
                 </thead>
@@ -44,6 +44,7 @@
                   <td>{{$opm->id}}</td>
                   <td>{{$opm->opm_sigla}}</td>
                   <td>{{$opm->descricao}}</td>
+                  <td>{{$opm->cpr->sigla}}</td>
                 </tr>
                 @empty
                 @endforelse 

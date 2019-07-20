@@ -9,6 +9,6 @@ class Cpr extends Model
     protected $table = 'cpr';
 
     public function opms(){
-        return $this->hasMany(OPM::class, 'opm_superior_id');
+        return $this->hasMany(OPM::class);
     }
 }
