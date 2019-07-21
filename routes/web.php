@@ -21,6 +21,10 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home
     $this->get('/','SGCOMController@home')->name('auth.home');
 });
 
+$this->group(['middleware' => ['auth'], 'namespace' => 'RecursosHumanos', 'prefix' => 'rh'], function(){
+    $this->get('efetivo','EfetivoController@index')->name('rh.listar');
+});
+
     $this->get('/', 'Site\SGCOMController@index')->name('home');
 
 Auth::routes();
