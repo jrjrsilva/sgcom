@@ -35,6 +35,9 @@
               <div class="col-xs-4"> 
                 <select class="form-control" id="opm">
                   <option>Selecione a OPM</option>
+                  @foreach( $opms as $opm )
+                  <option value="{{ $opm->id }}" ><p> {{ $opm->opm_sigla }} </p></option>
+                  @endforeach
                 </select>
               </div> 
 
