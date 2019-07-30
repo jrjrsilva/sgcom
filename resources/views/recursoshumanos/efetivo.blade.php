@@ -14,11 +14,19 @@
     <p>Gestão de Efetivo</p>
     <div class="box">
             <div class="box-header">
-            <form action="{{route('opm.search')}}" method="POST" class="form form-inline">
+            <form action="{{route('rh.searchMatricula')}}" method="POST" class="form form-inline">
               {!! csrf_field() !!}    
-              <input  type="text" name="opm_sigla"  id="opm_sigla" class="form-control"
-               placeholder="Informe a OPM para buscar"/>
+              <input  type="text" name="matricula"  id="matricula" class="form-control"
+               placeholder="Informe a Matrícula para buscar"/>
 
+               
+                <select class="form form-control" id="opm" name="opm">
+                  <option>Selecione a OPM</option>
+                  @foreach( $opms as $opm )
+                  <option value="{{ $opm->id }}" ><p> {{ $opm->opm_sigla }} </p></option>
+                  @endforeach
+                </select>
+              
                   <button  type="submit" class="btn btn-primary">Pesquisar</button>
               </form>
             </div>
@@ -31,11 +39,11 @@
                 <thead>
                 <tr>
                   <th>#</th></th>
-                  <th>Grau Herarquico</th>
+                  <th>Grau Hierarquico</th>
                   <th>Nome</th>
                   <th>Matrícula</th>
                   <th>OPM</th>
-                  <th>CPF</th>
+                  <th>Data Nascimento</th>
                   <th>Sexo</th>
                 </tr>
                 </thead>
@@ -47,7 +55,7 @@
                   <td>{{$efetivo->nome}}</td>
                   <td>{{$efetivo->matricula}}</td>
                   <td>{{$efetivo->opm->opm_sigla}}</td>
-                  <td>{{$efetivo->cpf}}</td>
+                  <td>{{ \Carbon\Carbon::parse($efetivo->datanascimento)->format('d/m/Y')}}</td>
                   <td>{{$efetivo->sexo}}</td>
                 </tr>
                 @empty
@@ -56,17 +64,24 @@
                 <tfoot>
                 <tr>
                   <th>#</th></th>
-                  <th>Grau Herarquico</th>
+                  <th>Grau Hierarquico</th>
                   <th>Nome</th>
                   <th>Matrícula</th>
                   <th>OPM</th>
-                  <th>CPF</th>
+                  <th>Data Nascimento</th>
                   <th>Sexo</th>
                 </tr>
                 </tfoot>
               </table>
               <div >
-            {!! $efetivos->links()!!}
+                @if (isset($dataForm)){
+                  {!! $efetivos->appends($dataForm)->links()!!}
+                }@else
+                  {!! $efetivos->links()!!}
+                
+                
+                @endif
+            
             </div>
               
             </div>

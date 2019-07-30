@@ -15,6 +15,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'ServicoOperacional', 'prefix' => 'servico'], function(){
     $this->get('ocorrencia','OcorrenciaController@index')->name('servico.ocorrencia');
+    $this->post('ocorrencia-salvar','OcorrenciaController@salvar')->name('servico.ocorrencia.salvar');
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home'], function(){
@@ -23,6 +24,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'RecursosHumanos', 'prefix' => 'rh'], function(){
     $this->get('efetivo','EfetivoController@index')->name('rh.listar');
+    $this->any('efetivo-search', 'EfetivoController@searchMatricula')->name('rh.searchMatricula');
 });
 
     $this->get('/', 'Site\SGCOMController@index')->name('home');

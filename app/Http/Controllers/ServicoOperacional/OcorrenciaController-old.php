@@ -46,6 +46,25 @@ class OcorrenciaController extends Controller
     
     public function salvar(Request $request)
     {
+      $envolvidos = $request->envolvidos;
+     // dd($request->all());
+     foreach (['envolvidos'] as $envolvido) 
+    { 
+    //  dd($envolvidos['tipo_envolv_t']);
+      $params = array(
+       // 'nome' => $envolvido['nome'],
+       // 'sexo' => $envolvido['sexo_t'] ,
+        'tipo_envol' =>  $envolvido['tipo_envol_t'],
+        'idade' =>  $envolvidos['idade']
+      );
+      $envolvido = Envolvido::create($params);
+         $envolvido->save();
+    }
+     
+
+     
+
+      /*
       $ocorrencia = new ocorrencia();
       $ocorrencia->opm_id               = $request->opm;
       $ocorrencia->data                 = $request->data_ocorre;
@@ -58,7 +77,7 @@ class OcorrenciaController extends Controller
       //$ocorrencia->$request->"idade" => null
       $ocorrencia->ocorrencia_relatorio = $request->input('desc_ocorrencia');
       $ocorrencia->delegacia_id         = $request->delegacia;
-      $ocorrencia->end_delegacia        = $request->end_delegacia;
+      //$ocorrencia->$request->"end_delegacia" => null
       $ocorrencia->aisp_id              = $request->aisp;
       $ocorrencia->nome_delegado        = $request->delegado;
       $ocorrencia->num_inquerito        = $request->inq_policial;
@@ -80,6 +99,9 @@ class OcorrenciaController extends Controller
 
       $envolvidos = $ocorrencia->envolvidos;
 
-      return view('servicooperacional.ocorrencia.index', compact('envolvidos'));
+      return view('servicooperacional.ocorrencia.index', 'envolvidos');
+      */
     }
+
+
 }

@@ -13,9 +13,9 @@ class EfetivoController extends Controller
 
     public function __construct() {
       //$opms = Opm::orderBy('opm_sigla', 'asc')->get();
-     // $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
+      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
       
-      //view()->share(compact('opms'));
+      view()->share(compact('opms'));
     }
  
  
@@ -27,5 +27,15 @@ class EfetivoController extends Controller
       $efetivos = Efetivo::paginate($this->totalPage);
 
         return view('recursoshumanos.efetivo',compact('efetivos'));
+    }
+
+    public function searchMatricula(Request $request, Efetivo $efetivo)
+    {
+      // dd($request->all());
+      $dataForm = $request->except('_token');
+ 
+      $efetivos =  $efetivo->searchUnique($dataForm, $this->totalPage);
+ 
+      return view('recursoshumanos.efetivo',compact('efetivos','dataForm'));
     }
 }

@@ -12,7 +12,7 @@ class OpmController extends Controller
 
     public function index()
     {
-      $opms = Opm::paginate($this->totalPage);
+      $opms = Opm::where('cpr_id','=',12)->paginate($this->totalPage);
 
       return view('admin.opm.index', compact('opms'));
 
