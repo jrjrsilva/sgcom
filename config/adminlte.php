@@ -158,7 +158,7 @@ return [
 
         [
             'text'        => 'Recursos Humanos',
-            'url'         => 'rh/efetivo',
+            'url'         => '#',
             'icon'        => 'users',
             'label_color' => 'success',    
         ],   

@@ -36,8 +36,8 @@
                 <select class="form-control" id="opm" name="opm">
                   <option>Selecione a OPM</option>
                   @foreach( $opms as $opm )
-                  <option value="{{ $opm->id }}" 
-                    @isset($ocorrencia->id)
+                  <option value="{{ $opm->id or ''}}" 
+                    @isset($ocorrencia->opm->id)
                       @if($ocorrencia->opm->id == $opm->id)
                         selected 
                       @endif 
@@ -77,8 +77,8 @@
                     <select class="form-control" id="tipo_ocorr" name="tipo_ocorr">
                     <option>Selecione o tipo da ocorrência</option>
                     @foreach( $tiposocorrencias as $tipoocorrencia )
-                    <option value="{{ $tipoocorrencia->id }}" 
-                        @isset($ocorrencia->id)
+                    <option value="{{ $tipoocorrencia->id or '' }}" 
+                        @isset($ocorrencia->tipoocorrencia->id)
                         @if($ocorrencia->tipoocorrencia->id == $tipoocorrencia->id)
                         selected 
                       @endif 
@@ -254,8 +254,8 @@
                 <select class="form-control" id="delegacia" name="delegacia" >
                   <option>Selecione a Delegacia</option>
                   @foreach( $delegacias as $delegacia )
-                    <option value="{{ $delegacia->id }}" 
-                        @isset($ocorrencia->id)
+                    <option value="{{ $delegacia->id or '' }}" 
+                        @isset($ocorrencia->delegacia->id)
                         @if($ocorrencia->delegacia->id == $delegacia->id)
                         selected 
                       @endif 
@@ -275,8 +275,8 @@
               <select class="form-control" id="aisp" name="aisp">
                   <option>Selecione a AISP</option>
                   @foreach( $aisps as $aisp )
-                  <option value="{{ $aisp->id }}" 
-                      @isset($ocorrencia->id)
+                  <option value="{{ $aisp->id or '' }}" 
+                      @isset($ocorrencia->aisp->id)
                       @if($ocorrencia->aisp->id == $aisp->id)
                       selected 
                     @endif 
