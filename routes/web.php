@@ -14,6 +14,8 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'ServicoOperacional', 'prefix' => 'servico'], function(){
+    $this->get('dashboard','OcorrenciaController@dashboard')->name('servico.dashboard');
+    $this->get('ocorrencia/{id?}/edit','OcorrenciaController@edit')->name('servico.ocorrencia.edit');
     $this->get('ocorrencia','OcorrenciaController@index')->name('servico.ocorrencia');
     $this->post('ocorrencia-salvar','OcorrenciaController@salvar')->name('servico.ocorrencia.salvar');
 });

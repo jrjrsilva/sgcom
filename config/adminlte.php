@@ -140,7 +140,13 @@ return [
                     'text' => 'Ocorrências',
                     'url'  => 'servico/ocorrencia',
                     'icon' => 'pencil-square-o',
-                ],  
+                ],
+                [
+                    'text' => 'Dashboard Ocorrências',
+                    'url'  => 'servico/dashboard',
+                    'icon' => 'dashboard',
+                ]
+                ,  
 
                 [
                     'text' => 'Produtividade',

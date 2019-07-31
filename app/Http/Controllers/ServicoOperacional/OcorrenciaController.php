@@ -30,7 +30,13 @@ class OcorrenciaController extends Controller
     public function index(Ocorrencia $ocorrencia)
     {
       $envolvidos = $ocorrencia->envolvidos;
-      return view('servicooperacional.ocorrencia.index',compact('envolvidos'));
+      return view('servicooperacional.ocorrencia.index',compact('envolvidos','ocorrencia'));
+    }
+
+    public function dashboard()
+    {
+      $ocorrencias = Ocorrencia::orderBy('data', 'desc')->get();
+      return view('servicooperacional.ocorrencia.dashboard',compact('ocorrencias'));
     }
 
    /* public function addEnvolvido(Request $request, Ocorrencia $ocorrencia)
@@ -47,6 +53,10 @@ class OcorrenciaController extends Controller
     public function salvar(Request $request)
     {
       $ocorrencia = new ocorrencia();
+
+      if($request->id != null)
+        $ocorrencia = Ocorrencia::find($request->id);
+     
       $ocorrencia->opm_id               = $request->opm;
       $ocorrencia->data                 = $request->data_ocorre;
       $ocorrencia->hora                 = $request->hora_ocorre;
@@ -76,10 +86,31 @@ class OcorrenciaController extends Controller
       if(Auth::check()){
         $ocorrencia->user_id              = Auth::user()->id;
       }
+
       $ocorrencia->save();
 
       $envolvidos = $ocorrencia->envolvidos;
 
-      return view('servicooperacional.ocorrencia.index', compact('envolvidos'));
+      return view('servicooperacional.ocorrencia.index', compact('envolvidos','ocorrencia'));
+    }
+
+    public function edit($id)
+    {
+      $ocorrencia = Ocorrencia::find($id);
+      if(!$ocorrencia){
+        abort(404);
+      }
+      $envolvidos = $ocorrencia->envolvidos;
+
+      return view('servicooperacional.ocorrencia.index', compact('ocorrencia','envolvidos'));
+     
+    }
+
+    public function alterar($ocorrencia, $request)
+    {
+        $params = $request->all();
+        $ocorrencia = new Ocorrencia($params);
+        $ocorrencia->save();
+        return dashboard();
     }
 }
