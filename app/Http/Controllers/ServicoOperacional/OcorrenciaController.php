@@ -17,6 +17,8 @@ class OcorrenciaController extends Controller
 {
     private $totalPage = 15;
 
+    private $ocorrencia;
+
     public function __construct() {
       $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
       $aisps = Aisp::orderBy('descricao', 'asc')->get();
@@ -29,8 +31,9 @@ class OcorrenciaController extends Controller
  
     public function index(Ocorrencia $ocorrencia)
     {
-      $envolvidos = $ocorrencia->envolvidos;
-      return view('servicooperacional.ocorrencia.index',compact('envolvidos','ocorrencia'));
+      $this->ocorrencia = $ocorrencia;
+      $envolvidos = $this->ocorrencia->envolvidos;
+      return  view('servicooperacional.ocorrencia.index',compact('envolvidos','ocorrencia'));
     }
 
     public function dashboard()
@@ -91,7 +94,7 @@ class OcorrenciaController extends Controller
 
       $envolvidos = $ocorrencia->envolvidos;
 
-      return view('servicooperacional.ocorrencia.index', compact('envolvidos','ocorrencia'));
+      return $this->dashboard();//view('servicooperacional.ocorrencia.index', compact('envolvidos','ocorrencia'));
     }
 
     public function edit($id)
