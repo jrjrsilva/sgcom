@@ -58,62 +58,8 @@ class OcorrenciaController extends Controller
     public function salvar(Request $request)
     {
     //  dd($request->all());
-      $envolvido  = $request->envolvido;
-      $idade      = $request->idade;
-      $tipo       = $request->tipo_envolvimento;
-      $sexo       = $request->sexo;
-      $rg         = $request->rg;
-
-      
-      if(is_array($tipo)){
-        $keys = array_keys($tipo);
-
-        $size = count($tipo);
-       
-        for ($i = 0; $i < $size; $i++) {
-            $key   = $keys[$i];
-
-            $objEnv = new Envolvido();
-            $objEnv->nome           = $envolvido[$key];
-            $objEnv->idade          = $idade[$key];
-            $objEnv->tipo_envol     = $tipo[$key];
-            $objEnv->sexo           = $sexo[$key];
-            $objEnv->rg             = $rg[$key];
-            $objEnv->ocorrencia_id  = $request->id;
-            $objEnv->save(); 
-        }
-
-      } 
-
-      $tipo_droga   = $request->tipo_droga;
-      $desc_droga   = $request->desc_outras_drogas;
-      $qtd_droga    = $request->qtd_drogas;
-      
-      if(is_array($tipo_droga)){
-        $keys = array_keys($tipo_droga);
-
-        $size = count($tipo_droga);
-       
-        for ($i = 0; $i < $size; $i++) {
-            $key   = $keys[$i];
-
-            $objDroga = new Droga();
-            $objDroga->tipo_droga                 = $tipo_droga[$key];
-            $objDroga->descricao_droga            = $desc_droga[$key];
-            $objDroga->quantidade_droga           = $qtd_droga[$key];
-            
-            $objDroga->ocorrencia_id              = $request->id;
-            $objDroga->save(); 
-        }
-
-      }
-      else {
-        dd($request->all());
-      }
-            
-     
-   /*
-      $ocorrencia = new ocorrencia();
+   
+      $ocorrencia = new Ocorrencia();
 
       if($request->id != null)
         $ocorrencia = Ocorrencia::find($request->id);
@@ -137,17 +83,64 @@ class OcorrenciaController extends Controller
       $ocorrencia->flagrantes           = $request->prod_flagrantes;
       $ocorrencia->tco                  = $request->prod_tcos;
       $ocorrencia->menores_apreendidos  = $request->prod_menores_apreend;
-     // $ocorrencia->$request->"tipo_droga" => "Selecione o tipo de droga"
-      //$ocorrencia->$request->"desc_outra_droga" => null
-      //$ocorrencia->$request->"qtd_droga" => null
+    
       if(Auth::check()){
         $ocorrencia->user_id              = Auth::user()->id;
       }
 
       $ocorrencia->save();
 
-      $envolvidos = $ocorrencia->envolvidos;
-*/
+
+      $envolvido  = $request->envolvido;
+      $idade      = $request->idade;
+      $tipo       = $request->tipo_envolvimento;
+      $sexo       = $request->sexo;
+      $rg         = $request->rg;
+
+
+      if(is_array($tipo)){
+          $keys = array_keys($tipo);
+
+          $size = count($tipo);
+ 
+      for ($i = 0; $i < $size; $i++) {
+          $key   = $keys[$i];
+
+          $objEnv = new Envolvido();
+          $objEnv->nome           = $envolvido[$key];
+          $objEnv->idade          = $idade[$key];
+          $objEnv->tipo_envol     = $tipo[$key];
+          $objEnv->sexo           = $sexo[$key];
+          $objEnv->rg             = $rg[$key];
+          $objEnv->ocorrencia_id  = $ocorrencia->id;
+          $objEnv->save(); 
+        } 
+
+} 
+
+          $tipo_droga   = $request->tipo_droga;
+          $desc_droga   = $request->desc_outras_drogas;
+          $qtd_droga    = $request->qtd_drogas;
+
+          if(is_array($tipo_droga)){
+            $keys = array_keys($tipo_droga);
+
+            $size = count($tipo_droga);
+ 
+            for ($i = 0; $i < $size; $i++) {
+              $key   = $keys[$i];
+
+              $objDroga = new Droga();
+              $objDroga->tipo_droga                 = $tipo_droga[$key];
+              $objDroga->descricao_droga            = $desc_droga[$key];
+              $objDroga->quantidade_droga           = $qtd_droga[$key];
+      
+              $objDroga->ocorrencia_id              = $ocorrencia->id;
+              $objDroga->save(); 
+            }     
+
+        }
+
       return $this->dashboard();//view('servicooperacional.ocorrencia.index', compact('envolvidos','ocorrencia'));
 
     }
