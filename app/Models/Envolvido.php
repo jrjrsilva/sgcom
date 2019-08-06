@@ -8,6 +8,6 @@ class Envolvido extends Model
 {
     protected $table = 'envolvido';
     
-    protected $fillable = ['name','sexo','idade','ocorrencia_id','tipo_envol'];
+    protected $fillable = ['nome','sexo','idade','ocorrencia_id','tipo_envol','rg'];
 
 }

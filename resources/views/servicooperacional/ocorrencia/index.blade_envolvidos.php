@@ -236,6 +236,83 @@
 <!-- FIM ENVOLVIDO FORM -->
 
 
+
+<!-- ENVOLVIDOS -->
+
+        <div class="box box-solid box-default">
+          <div class="box-header with-border">
+            <h3 class="box-title">Envolvidos na Ocorrência</h3>
+          </div><br>
+  <div id="repeater1">
+        <div class="row">
+          <div class="col-xs-2">
+              <select class="form-control" id="tipo_envol" name="tipo_envol">
+                <option value="Autor">Autor</option>
+                <option value="Testemunha">Testemunha</option>
+                <option value="Vítima">Vítima</option>
+                </option>
+              </select>
+          </div>
+
+          <div class="col-xs-6">
+            <input type="text" class="form-control" placeholder="Nome" id="envolvido" name="envolvido">
+          </div>
+
+          <div class="col-xs-2">
+            <select class="form-control" id="sexo" name="sexo">
+              <option value="">informe o sexo</option>
+              <option value="M">Masculino</option>
+              <option value="F">Feminino</option>
+              <option value="O">Outro</option>
+            </select>
+          </div>
+
+          <div class="col-xs-2">
+              <input type="text" class="form-control" placeholder="idade" id="idade" name="idade">
+          </div>
+        </div>
+       </div>
+              <div class="box-footer">
+                <div class="btn-toolbar">
+                  <button type="button" class="btn btn-info pull-right" onclick="adicionaEnvolvido();">Adicionar</button>
+                </div>
+              </div>
+              <table class="table m-0" id="envolvido-table" name="envolvido-table">
+                <thead>
+                    <tr>
+                        <th>Envolvimento</th>
+                        <th>Nome</th>
+                        <th>RG</th>
+                        <th>Sexo</th>
+                        <th>Idade</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($envolvidos as $envolvido)
+                    <tr>
+                      <td>
+                        {{$envolvido -> tipo_envol}}
+                      </td>
+                       <td>
+                        {{$envolvido -> nome}}
+                      </td>
+                      <td>
+                        {{$envolvido -> rg}}
+                      </td>
+                      <td>
+                          {{$envolvido -> sexo}}
+                        </td>
+                        <td>
+                            {{$envolvido -> idade}}
+                          </td>
+                    </tr>
+                    @empty
+                    @endforelse               
+                   </tbody>
+            </table>
+       </div>
+
 <!-- DIV DESCRIÇÃO DA OCORRÊNCIA -->
 
         <div class="box box-warning">

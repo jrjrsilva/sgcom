@@ -3,6 +3,7 @@
 namespace sgcom\Http\Controllers\ServicoOperacional;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use sgcom\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use sgcom\Models\Opm;
@@ -55,6 +56,36 @@ class OcorrenciaController extends Controller
     
     public function salvar(Request $request)
     {
+      $envolvido  = $request->envolvido;
+      $idade      = $request->idade;
+      $tipo       = $request->tipo_envolvimento;
+      $sexo       = $request->sexo;
+      $rg         = $request->rg;
+
+      if(is_array($envolvido)){
+        $keys = array_keys($envolvido);
+
+        $size = count($envolvido);
+       
+        for ($i = 0; $i < $size; $i++) {
+            $key   = $keys[$i];
+
+            $objEnv = new Envolvido();
+            $objEnv->nome           = $envolvido[$key];
+            $objEnv->idade          = $idade[$key];
+            $objEnv->tipo_envol     = $tipo[$key];
+            $objEnv->sexo           = $sexo[$key];
+            $objEnv->rg             = $rg[$key];
+            $objEnv->ocorrencia_id  = $request->id;
+            $objEnv->save(); 
+        }
+
+      } else {
+        dd($request->all());
+      }
+            
+     
+   /*
       $ocorrencia = new ocorrencia();
 
       if($request->id != null)
@@ -65,10 +96,6 @@ class OcorrenciaController extends Controller
       $ocorrencia->hora                 = $request->hora_ocorre;
       $ocorrencia->tipoocorrencia_id    = $request->tipo_ocorr;
       $ocorrencia->ocorrencia_local     = $request->local_ocorre;
-      //$ocorrencia->$request->"tipo_envol" => null
-      //$ocorrencia->$request->"envolvido" => null
-      //$ocorrencia->$request->"sexo" => null
-      //$ocorrencia->$request->"idade" => null
       $ocorrencia->ocorrencia_relatorio = $request->input('desc_ocorrencia');
       $ocorrencia->delegacia_id         = $request->delegacia;
       $ocorrencia->end_delegacia        = $request->end_delegacia;
@@ -93,8 +120,9 @@ class OcorrenciaController extends Controller
       $ocorrencia->save();
 
       $envolvidos = $ocorrencia->envolvidos;
-
+*/
       return $this->dashboard();//view('servicooperacional.ocorrencia.index', compact('envolvidos','ocorrencia'));
+
     }
 
     public function edit($id)
