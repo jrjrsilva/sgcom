@@ -33,5 +33,9 @@ class Ocorrencia extends Model
     function delegacia() {
         return $this->belongsTo(Delegacia::class);
     }
+
+    function drogas(){
+        return $this->hasMany(Droga::class);
+    }
    
 }

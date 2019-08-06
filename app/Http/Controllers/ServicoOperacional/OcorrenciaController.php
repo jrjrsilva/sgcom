@@ -12,7 +12,7 @@ use sgcom\Models\Delegacia;
 use sgcom\Models\TipoOcorrencia;
 use sgcom\Models\Ocorrencia;
 use sgcom\Models\Envolvido;
-
+use sgcom\Models\Droga;
 
 class OcorrenciaController extends Controller
 {
@@ -33,8 +33,9 @@ class OcorrenciaController extends Controller
     public function index(Ocorrencia $ocorrencia)
     {
       $this->ocorrencia = $ocorrencia;
-      $envolvidos = $this->ocorrencia->envolvidos;
-      return  view('servicooperacional.ocorrencia.index',compact('envolvidos','ocorrencia'));
+      $envolvidos       = $this->ocorrencia->envolvidos;
+      $drogas           = $this->ocorrencia->drogas;
+      return  view('servicooperacional.ocorrencia.index',compact('envolvidos','ocorrencia','drogas'));
     }
 
     public function dashboard()
@@ -56,16 +57,18 @@ class OcorrenciaController extends Controller
     
     public function salvar(Request $request)
     {
+    //  dd($request->all());
       $envolvido  = $request->envolvido;
       $idade      = $request->idade;
       $tipo       = $request->tipo_envolvimento;
       $sexo       = $request->sexo;
       $rg         = $request->rg;
 
-      if(is_array($envolvido)){
-        $keys = array_keys($envolvido);
+      
+      if(is_array($tipo)){
+        $keys = array_keys($tipo);
 
-        $size = count($envolvido);
+        $size = count($tipo);
        
         for ($i = 0; $i < $size; $i++) {
             $key   = $keys[$i];
@@ -80,7 +83,31 @@ class OcorrenciaController extends Controller
             $objEnv->save(); 
         }
 
-      } else {
+      } 
+
+      $tipo_droga   = $request->tipo_droga;
+      $desc_droga   = $request->desc_outras_drogas;
+      $qtd_droga    = $request->qtd_drogas;
+      
+      if(is_array($tipo_droga)){
+        $keys = array_keys($tipo_droga);
+
+        $size = count($tipo_droga);
+       
+        for ($i = 0; $i < $size; $i++) {
+            $key   = $keys[$i];
+
+            $objDroga = new Droga();
+            $objDroga->tipo_droga                 = $tipo_droga[$key];
+            $objDroga->descricao_droga            = $desc_droga[$key];
+            $objDroga->quantidade_droga           = $qtd_droga[$key];
+            
+            $objDroga->ocorrencia_id              = $request->id;
+            $objDroga->save(); 
+        }
+
+      }
+      else {
         dd($request->all());
       }
             
@@ -132,8 +159,8 @@ class OcorrenciaController extends Controller
         abort(404);
       }
       $envolvidos = $ocorrencia->envolvidos;
-
-      return view('servicooperacional.ocorrencia.index', compact('ocorrencia','envolvidos'));
+      $drogas = $ocorrencia->drogas;
+      return view('servicooperacional.ocorrencia.index', compact('ocorrencia','envolvidos','drogas'));
      
     }
 

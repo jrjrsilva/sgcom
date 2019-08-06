@@ -159,7 +159,7 @@
                     <div class="row">                           
                       <div class="col-xs-2">
                           <label></label>
-                          <select class="form-control" data-skip-name="true" data-name="tipo_envolvimento[]" required>
+                          <select class="form-control" data-skip-name="true" data-name="tipo_envolvimento[]" >
                             <option value="">Selecione</option>
                             <option value="Autor">Autor</option>
                             <option value="Testemunha">Testemunha</option>
@@ -169,7 +169,7 @@
                       <div class="col-xs-4"> 
                           <label></label>
                           <input type="text" data-skip-name="true" data-name="envolvido[]" 
-                          id="name" class="form-control" required  placeholder="Nome"/>
+                          id="name" class="form-control"   placeholder="Nome"/>
                       </div>
                       <div class="col-xs-2">
                           <label></label>
@@ -223,9 +223,8 @@
                 {{$envolvido -> idade}}
               </td>
               <td>
-                  {{$envolvido -> sexo}}
-                </td>
-                
+                {{$envolvido -> sexo}}
+              </td>
             </tr>
             @empty
             @endforelse               
@@ -240,7 +239,7 @@
 
         <div class="box box-warning">
                   
-                  <div class="box-header with-border">
+                <div class="box-header with-border">
                     <h3 class="box-title">Descrição da Ocorrência</h3>
                 </div><br>
 
@@ -379,40 +378,78 @@
 
           </div> <br>
 
-          <div class="box box-solid box-info">
-          
-              <div class="box-header with-border">
-                <h3 class="box-title">Drogas Apreendidas</h3>
-            </div><br>
 
-          <div class="row">
-
-            <div class="col-xs-4">
-              <select class="form-control" id="tipo_droga"  name="tipo_droga">
-                <option>Selecione o tipo de droga</option>
-                <option value="2">Maconha</option>
-                <option value="3">Cocaína</option>
-                <option value="4">Crack</option>
-                <option value="1">Outra</option>
-              </select>
-            </div>
-
-            <div class="col-xs-2">
-              <input type="text" class="form-control" placeholder="Descrição de outra droga" id="desc_outra_droga" name="desc_outra_droga">
-            </div>
-
-            <div class="col-xs-2">
-              <input type="text" class="form-control" placeholder="Quantidade de droga" id="qtd_droga" name="qtd_droga">
-            </div>  
-       </div>
-              <div class="box-footer">
-                <div class="btn-toolbar">
-                  <button type="button" class="btn btn-info pull-right">Adicionar</button>
-                  <button type="button" class="btn btn-danger pull-right">Excluir</button>
-                 </div>
+      <!-- INICIO DROGA FORM -->
+<div class="box box-solid box-default">
+    <div class="box-header with-border">          
+          <div class="box-title">Drogas Apreendidas</div>
+            <span id="success_result"></span>                      
+                <div id="repeaterDrogas">
+                      <div class="repeater-heading">
+                          <button type="button" class="btn btn-primary repeaterDrogas-add-btn">Adicionar Droga</button>
+                      </div>
+                <div class="clearfix"></div>
+                <div class="items" >
+                  <div class="item-content">
+                     <div class="form-group">
+                      <div class="row">                           
+                        <div class="col-xs-2">
+                            <label></label>
+                            <select class="form-control" data-skip-name="true" data-name="tipo_droga[]"  id="tipo_droga" >
+                              <option value="">Selecione</option>
+                              <option value="Maconha">Maconha</option>
+                              <option value="Cocaína">Cocaína</option>
+                              <option value="Crack">Crack</option>
+                              <option value="Outras">Outras</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-2">
+                            <label></label>
+                            <input type="text" data-skip-name="true" data-name="qtd_drogas[]" id="qtd_drogas" class="form-control"  />
+                        </div> 
+                        <div class="col-xs-4"> 
+                            <label></label>
+                            <input type="text" data-skip-name="true" data-name="desc_outras_drogas[]" 
+                              id="desc_outras_drogas" class="form-control"/>
+                        </div> 
+                       <div class="col-md-1"> 
+                           <button id="remove-btn" class="btn btn-danger" onclick="$(this).parents('.items').remove()">-</button>
+                        </div>
+                        </div>
+                  </div>
               </div>
-       </div>
+             
+          </div>
+          <table class="table m-0" id="drogas-table" name="drogas-table">
+            <thead>
+                <tr>
+                    <th>Tipo de Droga</th>
+                    <th>Quatidade</th>
+                    <th>Descrição</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+              @forelse($drogas as $droga)
+              <tr>
+                <td>
+                  {{$droga -> tipo_droga}}
+                </td>
+                 <td>
+                  {{$droga -> quantidade_droga}}
+                </td>
+                <td>
+                  {{$droga -> descricao_droga}}
+                </td>
+              </tr>
+              @empty
+              @endforelse               
+             </tbody>
+          </table>
       </div>
+   </div>
+</div>
+  <!-- FIM DROGA FORM -->
     
 
 
@@ -440,6 +477,14 @@
 
 @section('js')
 <script>
+  $(document).ready(function(){
+
+$("#repeater").createRepeater();
+
+$("#repeaterDrogas").createRepeaterDrogas();
+
+});
+
   jQuery.fn.extend({
     createRepeater: function () {
         var addItem = function (items, key) {
@@ -496,6 +541,59 @@
     }
 });
 
+jQuery.fn.extend({
+    createRepeaterDrogas: function () {
+        var addItem = function (items, key) {
+            var itemContent = items;
+            var group = itemContent.data("group");
+            var item = itemContent;
+            var input = item.find('input,select');
+            input.each(function (index, el) {
+                var attrTipoDroga = $(el).data('tipo_droga');
+                var attrDescOutraDroga = $(el).data('desc_outras_droga');
+                var attrQtdDroga = $(el).data('qtd_droga');               
+                var attrName = $(el).data('name');  
+                var skipName = $(el).data('skip-name');
+                if (skipName != true) {
+                    $(el).attr("name", group + "[" + key + "]" + attrName);
+                } else {
+                    if (attrName != 'undefined') {
+                        $(el).attr("name", attrName);
+                    }
+                }
+            })
+            var itemClone = items;
+
+            /* Handling remove btn */
+            var removeButton = itemClone.find('.remove-btn');
+
+            if (key == 0) {
+                removeButton.attr('disabled', true);
+            } else {
+                removeButton.attr('disabled', false);
+            }
+
+            $("<div class='items'>" + itemClone.html() + "<div/>").appendTo(repeater);
+        };
+        /* find elements */
+        var repeater = this;
+        var items = repeater.find(".items");
+        var key = 0;
+        var addButton = repeater.find('.repeaterDrogas-add-btn');
+        var newItem = items;
+
+        if (key == 0) {
+            items.remove();
+            addItem(newItem, key);
+        }
+
+        /* handle click and add items */
+        addButton.on("click", function () {
+            key++;
+            addItem(newItem, key);
+        });
+    }
+});
 
   RemoveTableRow = function(handler) {
       var tr = $(handler).closest('tr');
@@ -505,95 +603,7 @@
       return false;
   };
   
-  
 
-  AddTable = function() {
-  $(document).ready(function() {  
-
-      var idade_i = $('#idade').val();
-     var envolvimento_i = $('#tipo_envol').val();
-     var nome_i = $('#envolvido').val();
-     var sexo_i = $('#sexo').val();
-    
-     
-     var envolvidos = [];
-      envolvidos.push(sexo_i);
-      envolvidos.push(nome_i);
-      envolvidos.push(envolvimento_i);
-      alert(envolvidos)
-
-     var valores = '<?=$envolvidos ?>';
-      alert(valores);
-    });
-  };
-
-  function adicionaEnvolvido(){
-    if($("tipo_envolv").val() != '' && $("#envolvido").val() != '' && $("sexo").val() != ''){
-      envolvidoAdd();
-
-      formClear();
-
-      $("tipo_envolv").focus();
-    }
-  }
-  
-  function envolvidoAdd(){
-    if($("#envolvido-table tbody").length == 0){
-      $("#envolvido-table tbody").append("<tbody></tbody>");
-    }
-    
-    $("#envolvido-table tbody").append(
-      "<tr>"+
-      "<td><input type='text' readonly='readonly' name='envolvidos[]' value='"+ $('#tipo_envol').val() +"'/></td>" +
-      "<td><input type='text' readonly='readonly' name='envolvidos[]' value='"+ $('#envolvido').val() +"'/></td>" +
-      "<td><input type='text' readonly='readonly' name='envolvidos[]' value='"+ $('#sexo').val() +"'/></td>" +
-      "<td><input type='text' readonly='readonly' name='envolvidos[]' value='"+ $('#idade').val() +"'/></td>" +
-      "<td>"+
-      "<button type='button' "+
-        "onclick='deleteLinha(this);'"+
-        "class='btn btn-default' >"+
-        "<span class='glyphicon glyphicon-remove'></span>"+
-      "</button>"+
-      "</td>"+
-      "</tr>"
-      ); 
-  }
-
-  function formClear(){
-    $('#idade').val("");
-    $('#tipo_envol').val("");
-    $('#envolvido').val("");
-    $('#sexo').val("");
-  }
-
-  function deleteLinha(button_delete){
-    $(button_delete).parents("tr").remove();
-  }
-
-
-$(document).ready(function(){
-
-$("#repeater").createRepeater();
-
-$('#repeater_form').on('submit', function(event){
-    event.preventDefault();
-    $.ajax({
-        url:"insert.php",
-        method:"POST",
-        data:$(this).serialize(),
-        success:function(data)
-        {
-            $('#repeater_form')[0].reset();
-            $("#repeater").createRepeater();
-            $('#success_result').html(data);
-            /*setInterval(function(){
-                location.reload();
-            }, 3000);*/
-        }
-    });
-});
-
-});
 
   </script>
 @stop
