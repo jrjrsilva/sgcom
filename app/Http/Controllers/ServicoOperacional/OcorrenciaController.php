@@ -70,6 +70,7 @@ class OcorrenciaController extends Controller
       $ocorrencia->tipoocorrencia_id    = $request->tipo_ocorr;
       $ocorrencia->ocorrencia_local     = $request->local_ocorre;
       $ocorrencia->ocorrencia_relatorio = $request->input('desc_ocorrencia');
+
       $ocorrencia->delegacia_id         = $request->delegacia;
       $ocorrencia->end_delegacia        = $request->end_delegacia;
       $ocorrencia->aisp_id              = $request->aisp;
@@ -93,7 +94,7 @@ class OcorrenciaController extends Controller
 
       $envolvido  = $request->envolvido;
       $idade      = $request->idade;
-      $tipo       = $request->tipo_envolvimento;
+      $tipo       = $request->tio_envolvimento;
       $sexo       = $request->sexo;
       $rg         = $request->rg;
 
@@ -113,7 +114,8 @@ class OcorrenciaController extends Controller
           $objEnv->sexo           = $sexo[$key];
           $objEnv->rg             = $rg[$key];
           $objEnv->ocorrencia_id  = $ocorrencia->id;
-          $objEnv->save(); 
+          if($tipo[$key] != null)
+            $objEnv->save();
         } 
 
 } 
@@ -134,9 +136,9 @@ class OcorrenciaController extends Controller
               $objDroga->tipo_droga                 = $tipo_droga[$key];
               $objDroga->descricao_droga            = $desc_droga[$key];
               $objDroga->quantidade_droga           = $qtd_droga[$key];
-      
               $objDroga->ocorrencia_id              = $ocorrencia->id;
-              $objDroga->save(); 
+              if($tipo_droga[$key] != null)
+                $objDroga->save(); 
             }     
 
         }
@@ -155,6 +157,18 @@ class OcorrenciaController extends Controller
       $drogas = $ocorrencia->drogas;
       return view('servicooperacional.ocorrencia.index', compact('ocorrencia','envolvidos','drogas'));
      
+    }
+
+    public function detalhe($id)
+    {
+      $ocorrencia = Ocorrencia::find($id);
+      if(!$ocorrencia){
+        abort(404);
+      }
+      $envolvidos = $ocorrencia->envolvidos;
+      $drogas = $ocorrencia->drogas;
+      return view('servicooperacional.ocorrencia.detalhe', compact('ocorrencia','envolvidos','drogas'));
+   
     }
 
     public function alterar($ocorrencia, $request)

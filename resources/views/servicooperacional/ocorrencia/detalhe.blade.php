@@ -6,13 +6,13 @@
     <h1>Serviço Operacional</h1>
     <ol class="breadcrumb">
         <li><a href="">Serviço Operacional</a></li>
-        <li><a href="">Ocorrência</a></li>
+        <li><a href="">Ocorrência Detalhe</a></li>
     </ol>
 @stop
 
 @section('content')
 
-    <h2>Ocorrência</h2>
+    <h2>Ocorrência Detalhe</h2>
     <div class="box">
 
     <section class="content">
@@ -20,7 +20,7 @@
 
  <!--FORMULÁRIO -->                            
 
-    <form role="form" method="POST" action="{{ route('servico.ocorrencia.salvar')}}" >
+    <form role="form" >
     {!! csrf_field() !!}
     <input type="hidden" name="id" id="id" value="{{ $ocorrencia->id or '' }}">
  <!--DADOS DA OCORRÊNCIA-->   
@@ -31,18 +31,8 @@
         </div><br>
         <div class="row">
               <div class="col-xs-4"> 
-                <select class="form-control" id="opm" name="opm" required >
-                  <option value="">Selecione a OPM</option>
-                  @foreach( $opms as $opm )
-                  <option value="{{ $opm->id or ''}}" 
-                    @isset($ocorrencia->opm->id)
-                      @if($ocorrencia->opm->id == $opm->id)
-                        selected 
-                      @endif 
-                    @endisset ><p> {{ $opm->opm_sigla }} </p></option>
-                  @endforeach
-                </select>
-              </div> 
+                <p>OPM:  {{ $ocorrencia->opm->opm_sigla }} </p>
+                </div> 
 
               <div class="col-xs-4"> 
                 <input type="text" class="form-control" placeholder="Coordenador Regional" id="coord_cprca">
@@ -135,9 +125,8 @@
    </div>
           <div class="box-footer">
             <div class="btn-toolbar">
-              <button type="button" class="btn btn-info pull-right">Adicionar</button>
-              <button type="button" class="btn btn-danger pull-right">Excluir</button>
-             </div>
+            
+            </div>
           </div>
    </div>
 
@@ -147,52 +136,9 @@
         <div class="box-title">Envolvidos</div>
     </div>
           <span id="success_result"></span>                      
-              <div id="repeater">
-                    <div class="repeater-heading">
-                        <br><button type="button" class="btn btn-info repeater-add-btn">Adicionar Envolvido</button><br><br>
-                    </div>
+              
               <div class="clearfix"></div>
-              <div class="items" >
-                <div class="item-content">
-                   <div class="form-group">
-                    <div class="row">                           
-                      <div class="col-xs-2">
-                          <label></label>
-                          <select class="form-control" data-skip-name="true" data-name="tipo_envolvimento[]" >
-                            <option value="">Tipo de Envolvimento</option>
-                            <option value="Autor">Autor</option>
-                            <option value="Testemunha">Testemunha</option>
-                            <option value="Vítima">Vítima</option>
-                          </select>
-                      </div>
-                      <div class="col-xs-6"> 
-                          <label></label>
-                          <input type="text" data-skip-name="true" data-name="envolvido[]" 
-                          id="name" class="form-control"   placeholder="Nome"/>
-                      </div>
-                      <div class="col-xs-2">
-                          <label></label>
-                          <input type="text" data-skip-name="true" data-name="rg[]" id="rg" class="form-control"  placeholder="RG" />
-                      </div>  
-                      <div class="col-xs-1"> 
-                      <label></label>
-                          <input type="text" data-skip-name="true" data-name="idade[]" id="idade" class="form-control" placeholder="Idade"  />
-                      </div>
-                      <div class="col-xs-1">   
-                          <label></label>
-                              <select data-skip-name="true" class="form-control" id="sexo" data-name="sexo[]">
-                                <option value="">Sexo</option>
-                                <option value="M">M</option>
-                                <option value="F">F</option>
-                                </select>
-                      </div>
-                      </div>
-                       <div class="box-footer">
-                           <button id="remove-btn" class="btn btn-danger pull-right" onclick="$(this).parents('.items').remove()"> excluir </button>
-                       </div>
-                </div>
-            </div>
-        </div>
+              
         <table class="table m-0" id="envolvido-table" name="envolvido-table">
           <thead>
               <tr>
@@ -383,46 +329,6 @@
     <div class="box-header with-border">          
           <div class="box-title">Drogas Apreendidas</div>
     </div>
-            <span id="success_result"></span>                      
-                <div id="repeaterDrogas">
-                      <div class="repeater-heading">
-                          <br>
-                          <button type="button" class="btn btn-primary repeaterDrogas-add-btn">Adicionar Droga</button>
-                          <br><br>
-                      </div>
-                <div class="clearfix"></div>
-                <div class="items" >
-                  <div class="item-content">
-                     <div class="form-group">
-                      <div class="row">                           
-                        <div class="col-xs-2">
-                            <label></label>
-                            <select class="form-control" data-skip-name="true" data-name="tipo_droga[]"  id="tipo_droga" >
-                              <option value="">Tipo de Droga</option>
-                              <option value="Maconha">Maconha</option>
-                              <option value="Cocaína">Cocaína</option>
-                              <option value="Crack">Crack</option>
-                              <option value="Outras">Outras</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-2">
-                            <label></label>
-                            <input type="text" data-skip-name="true" data-name="qtd_drogas[]" id="qtd_drogas" class="form-control" placeholder="Quantidade"  />
-                        </div> 
-                        <div class="col-xs-4"> 
-                            <label></label>
-                            <input type="text" data-skip-name="true" data-name="desc_outras_drogas[]" 
-                              id="desc_outras_drogas" class="form-control" placeholder="Descrição"/>
-                        </div> 
-                       </div>
-                         <div class="box-footer"> 
-                           <button id="remove-btn" class="btn btn-danger pull-right" onclick="$(this).parents('.items').remove()">Remover Droga</button>
-                           
-                        </div>
-                  </div>
-              </div>
-             
-          </div>
           <table class="table m-0" id="drogas-table" name="drogas-table">
             <thead>
                 <tr>
@@ -462,12 +368,7 @@
 
       
     </div>
-              <div class="box-footer">
-                <div class="btn-toolbar pull-right">
-                  <button type="button" class="btn btn-danger btn-lg">Limpar</button>
-                  <button type="submit" class="btn btn-success btn-lg">Adicionar</button>
-                 </div>
-              </div>
+              
     </form>
     <div class="clearfix"></div>
                     

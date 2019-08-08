@@ -35,7 +35,7 @@
                     <td>{{$ocorrencia->opm->cpr->sigla}}</td>
                     <td>
                       <a href="{{route('servico.ocorrencia.edit',$ocorrencia->id)}}" class="btn btn-adn">Editar</a>
-                      <a href="#" class="btn btn-primary">Detalhe</a>
+                      <a href="{{route('servico.ocorrencia.detalhe',$ocorrencia->id)}}" class="btn btn-primary">Detalhe</a>
                     </td>
                   </tr>
                   @empty
