@@ -57,7 +57,7 @@ class OcorrenciaController extends Controller
     
     public function salvar(Request $request)
     {
-    //  dd($request->all());
+     //dd($request->all());
    
       $ocorrencia = new Ocorrencia();
 
@@ -94,7 +94,7 @@ class OcorrenciaController extends Controller
 
       $envolvido  = $request->envolvido;
       $idade      = $request->idade;
-      $tipo       = $request->tio_envolvimento;
+      $tipo       = $request->tipo_envolvimento;
       $sexo       = $request->sexo;
       $rg         = $request->rg;
 
@@ -114,11 +114,12 @@ class OcorrenciaController extends Controller
           $objEnv->sexo           = $sexo[$key];
           $objEnv->rg             = $rg[$key];
           $objEnv->ocorrencia_id  = $ocorrencia->id;
-          if($tipo[$key] != null)
+          if($tipo[$key] != null){
             $objEnv->save();
-        } 
-
-} 
+          }
+           
+        }
+      } 
 
           $tipo_droga   = $request->tipo_droga;
           $desc_droga   = $request->desc_outras_drogas;
@@ -159,6 +160,34 @@ class OcorrenciaController extends Controller
      
     }
 
+    public function excluirenv($id)
+    {
+      $envolvido = Envolvido::find($id);
+      if(!$envolvido){
+        abort(404);
+      }
+      $envolvido->delete();
+      $ocorrencia = Ocorrencia::find($envolvido->ocorrencia_id);
+      $envolvidos = $ocorrencia->envolvidos;
+      $drogas = $ocorrencia->drogas;
+      return view('servicooperacional.ocorrencia.index', compact('ocorrencia','envolvidos','drogas'));
+     
+    }
+
+    public function excluirdroga($id)
+    {
+      $droga = Droga::find($id);
+      if(!$droga){
+        abort(404);
+      }
+      $droga->delete();
+      $ocorrencia = Ocorrencia::find($droga->ocorrencia_id);
+      $envolvidos = $ocorrencia->envolvidos;
+      $drogas = $ocorrencia->drogas;
+      return view('servicooperacional.ocorrencia.index', compact('ocorrencia','envolvidos','drogas'));
+     
+    }
+
     public function detalhe($id)
     {
       $ocorrencia = Ocorrencia::find($id);
@@ -171,11 +200,4 @@ class OcorrenciaController extends Controller
    
     }
 
-    public function alterar($ocorrencia, $request)
-    {
-        $params = $request->all();
-        $ocorrencia = new Ocorrencia($params);
-        $ocorrencia->save();
-        return dashboard();
-    }
 }

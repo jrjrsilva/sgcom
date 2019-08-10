@@ -167,10 +167,7 @@
               <td>
                 {{$envolvido -> sexo}}
               </td>
-              <td>
-                  {{$envolvido -> id}}
-                </td>
-            </tr>
+             </tr>
             @empty
             @endforelse               
            </tbody>
@@ -339,7 +336,6 @@
                 </tr>
             </thead>
             <tbody>
-              @if(is_array($drogas))
               @forelse($drogas as $droga)
               <tr>
                 <td>
@@ -353,8 +349,7 @@
                 </td>
               </tr>
               @empty
-              @endforelse 
-              @endif              
+              @endforelse           
              </tbody>
           </table>
       </div>

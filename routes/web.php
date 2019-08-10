@@ -16,6 +16,8 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 $this->group(['middleware' => ['auth'], 'namespace' => 'Servicooperacional', 'prefix' => 'servico'], function(){
     $this->get('dashboard','OcorrenciaController@dashboard')->name('servico.dashboard');
     $this->get('ocorrencia/{id?}/edit','OcorrenciaController@edit')->name('servico.ocorrencia.edit');
+    $this->get('ocorrencia/{id?}/excluirenv','OcorrenciaController@excluirenv')->name('servico.ocorrencia.excluirenv');
+    $this->get('ocorrencia/{id?}/excluiredroga','OcorrenciaController@excluirdroga')->name('servico.ocorrencia.excluirdroga');
     $this->get('ocorrencia/{id?}/detalhe','OcorrenciaController@detalhe')->name('servico.ocorrencia.detalhe');
     $this->get('ocorrencia','OcorrenciaController@index')->name('servico.ocorrencia');
     $this->post('ocorrencia-salvar','OcorrenciaController@salvar')->name('servico.ocorrencia.salvar');

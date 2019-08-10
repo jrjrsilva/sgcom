@@ -224,6 +224,9 @@
               <td>
                   {{$envolvido -> id}}
                 </td>
+                <td>
+                  <a href="{{route('servico.ocorrencia.excluirenv',$envolvido->id)}}" class="btn btn-primary">Excluir</a>
+                </td>
             </tr>
             @empty
             @endforelse               
@@ -427,13 +430,13 @@
             <thead>
                 <tr>
                     <th>Tipo de Droga</th>
-                    <th>Quatidade</th>
+                    <th>Quantidade</th>
                     <th>Descrição</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-              @if(is_array($drogas))
+              
               @forelse($drogas as $droga)
               <tr>
                 <td>
@@ -445,10 +448,13 @@
                 <td>
                   {{$droga -> descricao_droga}}
                 </td>
+                <td>
+                  <a href="{{route('servico.ocorrencia.excluirdroga',$droga->id)}}" class="btn btn-primary">Excluir</a>
+                </td>
               </tr>
               @empty
               @endforelse 
-              @endif              
+                           
              </tbody>
           </table>
       </div>
@@ -482,7 +488,12 @@
 
 @section('js')
 <script>
-  $(document).ready(function(){
+ $(document).ready(function(){
+  $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+});
 
 $("#repeater").createRepeater();
 
