@@ -2,7 +2,7 @@
 
 namespace sgcom\Http\Controllers\ServicoOperacional;
 
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
 use sgcom\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +13,8 @@ use sgcom\Models\TipoOcorrencia;
 use sgcom\Models\Ocorrencia;
 use sgcom\Models\Envolvido;
 use sgcom\Models\Droga;
+use sgcom\Models\File;
+use sgcom\Http\Requests\OcorrenciaValidateRequest;
 
 class OcorrenciaController extends Controller
 {
@@ -32,10 +34,11 @@ class OcorrenciaController extends Controller
  
     public function index(Ocorrencia $ocorrencia)
     {
+      $files = File::all();
       $this->ocorrencia = $ocorrencia;
       $envolvidos       = $this->ocorrencia->envolvidos;
       $drogas           = $this->ocorrencia->drogas;
-      return  view('servicooperacional.ocorrencia.index',compact('envolvidos','ocorrencia','drogas'));
+      return  view('servicooperacional.ocorrencia.index',compact('envolvidos','ocorrencia','drogas','files'));
     }
 
     public function dashboard()
@@ -55,9 +58,9 @@ class OcorrenciaController extends Controller
     }
     */
     
-    public function salvar(Request $request)
+    public function salvar(OcorrenciaValidateRequest $request)
     {
-     //dd($request->all());
+     dd($request->all());
    
       $ocorrencia = new Ocorrencia();
 
@@ -89,7 +92,7 @@ class OcorrenciaController extends Controller
         $ocorrencia->user_id              = Auth::user()->id;
       }
 
-      $ocorrencia->save();
+      $response = $ocorrencia->save();
 
 
       $envolvido  = $request->envolvido;
@@ -144,7 +147,8 @@ class OcorrenciaController extends Controller
 
         }
 
-      return $this->dashboard();//view('servicooperacional.ocorrencia.index', compact('envolvidos','ocorrencia'));
+    //    if($response['success'])
+              return $this->dashboard();//view('servicooperacional.ocorrencia.index', compact('envolvidos','ocorrencia'));
 
     }
 
@@ -198,6 +202,38 @@ class OcorrenciaController extends Controller
       $drogas = $ocorrencia->drogas;
       return view('servicooperacional.ocorrencia.detalhe', compact('ocorrencia','envolvidos','drogas'));
    
+    }
+
+
+    public function store(OcorrenciaValidateRequest $request)
+    {
+        // Define o valor default para a variável que contém o nome da imagem 
+        $nameFile = null;
+     
+        // Verifica se informou o arquivo e se é válido
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+             
+            // Define um nome aleatório para o arquivo baseado no timestamps atual
+            $name = uniqid(date('HisYmd'));
+     
+            // Recupera a extensão do arquivo
+            $extension = $request->image->extension();
+     
+            // Define finalmente o nome
+            $nameFile = "{$name}.{$extension}";
+     
+            // Faz o upload:
+            $upload = $request->image->storeAs('arquivos', $nameFile);
+            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/categories/nomedinamicoarquivo.extensao
+     
+            // Verifica se NÃO deu certo o upload (Redireciona de volta)
+            if ( !$upload )
+                return redirect()
+                            ->back()
+                            ->with('error', 'Falha ao fazer upload')
+                            ->withInput();
+     
+        }
     }
 
 }

@@ -21,7 +21,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Servicooperacional', 'pr
     $this->get('ocorrencia/{id?}/detalhe','OcorrenciaController@detalhe')->name('servico.ocorrencia.detalhe');
     $this->get('ocorrencia','OcorrenciaController@index')->name('servico.ocorrencia');
     $this->post('ocorrencia-salvar','OcorrenciaController@salvar')->name('servico.ocorrencia.salvar');
-});
+   });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home'], function(){
     $this->get('/','SGCOMController@home')->name('auth.home');
@@ -32,7 +32,10 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'RecursosHumanos', 'prefi
     $this->any('efetivo-search', 'EfetivoController@searchMatricula')->name('rh.searchMatricula');
 });
 
-    $this->get('/', 'Site\SGCOMController@index')->name('home');
+$this->get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middleware('auth');
+$this->post('update-perfil', 'Admin\UserController@update')->name('profile.update')->middleware('auth');
+
+$this->get('/', 'Site\SGCOMController@index')->name('home');
 
 Auth::routes();
 
