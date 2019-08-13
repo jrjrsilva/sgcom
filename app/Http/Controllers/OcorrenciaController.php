@@ -2,7 +2,7 @@
 
 namespace sgcom\Http\Controllers\ServicoOperacional;
 
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use sgcom\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -13,9 +13,6 @@ use sgcom\Models\TipoOcorrencia;
 use sgcom\Models\Ocorrencia;
 use sgcom\Models\Envolvido;
 use sgcom\Models\Droga;
-use sgcom\Models\File;
-//use sgcom\Http\Requests\OcorrenciaValidateRequest;
-use Illuminate\Http\Request;
 
 class OcorrenciaController extends Controller
 {
@@ -35,22 +32,32 @@ class OcorrenciaController extends Controller
  
     public function index(Ocorrencia $ocorrencia)
     {
-      $files = File::all();
       $this->ocorrencia = $ocorrencia;
       $envolvidos       = $this->ocorrencia->envolvidos;
       $drogas           = $this->ocorrencia->drogas;
-      return  view('servicooperacional.ocorrencia.index',compact('envolvidos','ocorrencia','drogas','files'));
+      return  view('servicooperacional.ocorrencia.index',compact('envolvidos','ocorrencia','drogas'));
     }
 
-    public function listar()
+    public function dashboard()
     {
       $ocorrencias = Ocorrencia::orderBy('data', 'desc')->get();
-      return view('servicooperacional.ocorrencia.listarocorrencias',compact('ocorrencias'));
+      return view('servicooperacional.ocorrencia.dashboard',compact('ocorrencias'));
     }
 
+   /* public function addEnvolvido(Request $request, Ocorrencia $ocorrencia)
+    {
+      // dd($request->all());
+      $dataForm = $request->except('_token');
+      $envolvidos = $ocorrencia->envolvidos;
+      $envolvidos.push($dataForm);
+ 
+      return view('recursoshumanos.efetivo',compact('efetivos','dataForm'));
+    }
+    */
+    
     public function salvar(Request $request)
     {
-    // dd($request->all());
+     //dd($request->all());
    
       $ocorrencia = new Ocorrencia();
 
@@ -61,7 +68,7 @@ class OcorrenciaController extends Controller
       $ocorrencia->data                 = $request->data_ocorre;
       $ocorrencia->hora                 = $request->hora_ocorre;
       $ocorrencia->tipoocorrencia_id    = $request->tipo_ocorr;
-      $ocorrencia->ocorrencia_local     = $request->local_ocorrencia;
+      $ocorrencia->ocorrencia_local     = $request->local_ocorre;
       $ocorrencia->ocorrencia_relatorio = $request->input('desc_ocorrencia');
 
       $ocorrencia->delegacia_id         = $request->delegacia;
@@ -82,7 +89,7 @@ class OcorrenciaController extends Controller
         $ocorrencia->user_id              = Auth::user()->id;
       }
 
-      $response = $ocorrencia->save();
+      $ocorrencia->save();
 
 
       $envolvido  = $request->envolvido;
@@ -137,8 +144,7 @@ class OcorrenciaController extends Controller
 
         }
 
-    //    if($response['success'])
-              return $this->listar();//view('servicooperacional.ocorrencia.index', compact('envolvidos','ocorrencia'));
+      return $this->dashboard();//view('servicooperacional.ocorrencia.index', compact('envolvidos','ocorrencia'));
 
     }
 
@@ -182,18 +188,6 @@ class OcorrenciaController extends Controller
      
     }
 
-    public function excluir($id)
-    {
-      $ocorrencia = Ocorrencia::find($id);
-      if(!$ocorrencia){
-        abort(404);
-      }
-      $envolvido = Envolvido::where('ocorrencia_id', '=', $id)->delete();
-      $droga = Droga::where('ocorrencia_id', '=', $id)->delete();
-      $ocorrencia->delete();
-      return $this->listar();
-    }
-
     public function detalhe($id)
     {
       $ocorrencia = Ocorrencia::find($id);
@@ -204,38 +198,6 @@ class OcorrenciaController extends Controller
       $drogas = $ocorrencia->drogas;
       return view('servicooperacional.ocorrencia.detalhe', compact('ocorrencia','envolvidos','drogas'));
    
-    }
-
-
-    public function store(OcorrenciaValidateRequest $request)
-    {
-        // Define o valor default para a variável que contém o nome da imagem 
-        $nameFile = null;
-     
-        // Verifica se informou o arquivo e se é válido
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-             
-            // Define um nome aleatório para o arquivo baseado no timestamps atual
-            $name = uniqid(date('HisYmd'));
-     
-            // Recupera a extensão do arquivo
-            $extension = $request->image->extension();
-     
-            // Define finalmente o nome
-            $nameFile = "{$name}.{$extension}";
-     
-            // Faz o upload:
-            $upload = $request->image->storeAs('arquivos', $nameFile);
-            // Se tiver funcionado o arquivo foi armazenado em storage/app/public/categories/nomedinamicoarquivo.extensao
-     
-            // Verifica se NÃO deu certo o upload (Redireciona de volta)
-            if ( !$upload )
-                return redirect()
-                            ->back()
-                            ->with('error', 'Falha ao fazer upload')
-                            ->withInput();
-     
-        }
     }
 
 }

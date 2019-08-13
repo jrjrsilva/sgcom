@@ -33,10 +33,12 @@ class UserController extends Controller
       // $data['image'] = $user->image;
 
        if($request->hasfile('image') && $request->file('image')->isvalid()){
-           // if($user->image)
+           
                 $name = $user->efetivo->matricula;
-            // else
-                  // $name = $user->id.kebab_case($user->name);
+                // Define um aleatório para o arquivo baseado no timestamps atual
+                //para usar na ocorrencia
+                //$name = uniqid(date('HisYmd'));
+
 
                    $extenstion = $request->image->extension();
                    $nameFile = "{$name}.{$extenstion}";

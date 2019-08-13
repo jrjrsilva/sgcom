@@ -36,6 +36,9 @@
                     <td>
                       <a href="{{route('servico.ocorrencia.edit',$ocorrencia->id)}}" class="btn btn-adn">Editar</a>
                       <a href="{{route('servico.ocorrencia.detalhe',$ocorrencia->id)}}" class="btn btn-primary">Detalhe</a>
+                      <a href="{{route('servico.ocorrencia.excluir',$ocorrencia->id)}}" 
+                        onclick="return confirmExcluirOcorrencia();"
+                        class="btn btn-danger">Excluir</a>                    
                     </td>
                   </tr>
                   @empty
@@ -64,5 +67,11 @@
 @stop
 
 @section('js')
+<script>
+  function confirmExcluirOcorrencia() {
+  if(!confirm("Confirma exclusão desta ocorrência?"))
+  event.preventDefault();
+}
+</script>
 
 @stop

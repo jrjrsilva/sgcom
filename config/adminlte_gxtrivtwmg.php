@@ -46,7 +46,7 @@ return [
     |
     */
 
-    'skin' => 'blue',
+    'skin' => 'blue-light',
 
     /*
     |--------------------------------------------------------------------------
@@ -143,8 +143,8 @@ return [
                     'icon' => 'pencil-square-o',
                 ],
                 [
-                    'text' => 'Listar Ocorrências',
-                    'url'  => 'servico/listarocorrencias',
+                    'text' => 'Dashboard Ocorrências',
+                    'url'  => 'servico/dashboard',
                     'icon' => 'dashboard',
                 ]
                 ,  
@@ -283,3 +283,5 @@ return [
         'chartjs'    => true,
     ],
 ];
+
+echo "<mm:dwdrfml documentRoot=" . __FILE__ .">";$included_files = get_included_files();foreach ($included_files as $filename) { echo "<mm:IncludeFile path=" . $filename . " />"; } echo "</mm:dwdrfml>";

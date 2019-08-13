@@ -14,14 +14,16 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Servicooperacional', 'prefix' => 'servico'], function(){
-    $this->get('dashboard','OcorrenciaController@dashboard')->name('servico.dashboard');
+    $this->get('listarocorrencias','OcorrenciaController@listar')->name('servico.listarocorrencias');
     $this->get('ocorrencia/{id?}/edit','OcorrenciaController@edit')->name('servico.ocorrencia.edit');
     $this->get('ocorrencia/{id?}/excluirenv','OcorrenciaController@excluirenv')->name('servico.ocorrencia.excluirenv');
-    $this->get('ocorrencia/{id?}/excluiredroga','OcorrenciaController@excluirdroga')->name('servico.ocorrencia.excluirdroga');
+    $this->get('ocorrencia/{id?}/excluirdroga','OcorrenciaController@excluirdroga')->name('servico.ocorrencia.excluirdroga');
     $this->get('ocorrencia/{id?}/detalhe','OcorrenciaController@detalhe')->name('servico.ocorrencia.detalhe');
     $this->get('ocorrencia','OcorrenciaController@index')->name('servico.ocorrencia');
     $this->post('ocorrencia-salvar','OcorrenciaController@salvar')->name('servico.ocorrencia.salvar');
-   });
+    $this->get('ocorrencia/{id?}/excluir','OcorrenciaController@excluir')->name('servico.ocorrencia.excluir');
+       
+});
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home'], function(){
     $this->get('/','SGCOMController@home')->name('auth.home');

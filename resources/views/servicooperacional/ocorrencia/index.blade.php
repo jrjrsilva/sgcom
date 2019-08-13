@@ -26,19 +26,12 @@
  <!--DADOS DA OCORRÊNCIA-->   
 
       <div class="box box-primary">
-          <div class="box-header with-border">
+        <div class="box-header with-border">
           <h3 class="box-title">Dados da Ocorrência</h3>
-          @if($errors->any())
-          <div class="alert alert-warning">
-            @foreach ($errors->all() as $error)
-                <p>{{ $error }}</p>
-            @endforeach
-          </div>
-          @endif
         </div><br>
         <div class="row">
               <div class="col-xs-4"> 
-                <select class="form-control" id="opm" name="opm" >
+                <select class="form-control" id="opm" name="opm" required >
                   <option value="">Selecione a OPM</option>
                   @foreach( $opms as $opm )
                   <option value="{{ $opm->id or ''}}" 
@@ -65,7 +58,7 @@
               <div class="col-xs-4">
                 <div class="input-group">
                       <input type="date" class="form-control timepicker" placeholder="Selecione a Data"
-                       id="data_ocorre" name="data_ocorre" value="{{$ocorrencia->data or '' }}" >
+                       id="data_ocorre" name="data_ocorre" value="{{$ocorrencia->data or '' }}" required>
                       <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                 </div>  
 
@@ -74,12 +67,12 @@
               <div class="col-xs-4">
                   <div class="input-group">
                       <input type="time" class="form-control timepicker" placeholder="Selecione a hora" 
-                      value="{{  $ocorrencia->hora or '' }}" id="hora_ocorre" name="hora_ocorre" >
+                      value="{{  $ocorrencia->hora or '' }}" id="hora_ocorre" name="hora_ocorre" required>
                       <div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
                   </div>
               </div> 
                 <div class="col-xs-4">
-                    <select class="form-control" id="tipo_ocorr" name="tipo_ocorr" >
+                    <select class="form-control" id="tipo_ocorr" name="tipo_ocorr" required>
                     <option value="">Selecione o tipo da ocorrência</option>
                     @foreach( $tiposocorrencias as $tipoocorrencia )
                     <option value="{{ $tipoocorrencia->id or '' }}" 
@@ -97,8 +90,8 @@
 
         <div class="form-row">
               <div class="col">
-              <input type="text" class="form-control" placeholder="Informe o local da ocorrência" 
-              value="{{  $ocorrencia->ocorrencia_local or '' }}" id="local_ocorre" name="local_ocorre"> 
+              <input type="text" class="form-control" placeholder="Informe o local da ocorrência" required
+              value="{{  $ocorrencia->ocorrencia_local or '' }}" id="local_ocorrencia" name="local_ocorrencia"> 
               </div>
         </div> <br>
 
@@ -229,10 +222,9 @@
                 {{$envolvido -> sexo}}
               </td>
               <td>
-                  {{$envolvido -> id}}
-                </td>
-                <td>
-                  <a href="{{route('servico.ocorrencia.excluirenv',$envolvido->id)}}" class="btn btn-primary">Excluir</a>
+                  <a href="{{route('servico.ocorrencia.excluirenv',$envolvido->id)}}" 
+                    onclick="return confirmExcluirEnvolvido();"
+                    class="btn btn-primary">Excluir</a>
                 </td>
             </tr>
             @empty
@@ -259,10 +251,11 @@
                 </div><br>
                 <div class="form-row">
                   <label for="arquivoOcorrencia">Anexar</label>
-                  <input type="file" id="arquivoOcorrencia" name="arquivoOcorrencia">
+                  <input type="file" id="arquivoOcorrencia">
                   <p class="help-block">Anexar arquivos ou fotos à ocorrência</p>
-              </div>
-              
+                
+                </div>
+        </div>
         
 <!-- Boletim de Ocorrência -->
 
@@ -455,7 +448,9 @@
                   {{$droga -> descricao_droga}}
                 </td>
                 <td>
-                  <a href="{{route('servico.ocorrencia.excluirdroga',$droga->id)}}" class="btn btn-primary">Excluir</a>
+                  <a href="{{route('servico.ocorrencia.excluirdroga',$droga->id)}}" 
+                    onclick="return confirmExcluirDroga();"
+                    class="btn btn-primary">Excluir</a>
                 </td>
               </tr>
               @empty
@@ -495,13 +490,19 @@
 @section('js')
 <script>
  $(document).ready(function(){
+  $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+});
+
 $("#repeater").createRepeater();
 
 $("#repeaterDrogas").createRepeaterDrogas();
 
 });
 
- jQuery.fn.extend({
+  jQuery.fn.extend({
     createRepeater: function () {
         var addItem = function (items, key) {
             var itemContent = items;
@@ -611,6 +612,23 @@ jQuery.fn.extend({
     }
 });
 
+  RemoveTableRow = function(handler) {
+      var tr = $(handler).closest('tr');
+      tr.fadeOut(400, function() {
+          tr.remove();
+      });
+      return false;
+  };
+
+  function confirmExcluirDroga() {
+  if(!confirm("Confirma exclusão desta droga?"))
+  event.preventDefault();
+}
+
+  function confirmExcluirEnvolvido() {
+  if(!confirm("Confirma exclusão deste envolvido?"))
+  event.preventDefault();
+}
 
   </script>
 @stop
