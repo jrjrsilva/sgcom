@@ -22,7 +22,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Servicooperacional', 'pr
     $this->get('ocorrencia','OcorrenciaController@index')->name('servico.ocorrencia');
     $this->post('ocorrencia-salvar','OcorrenciaController@salvar')->name('servico.ocorrencia.salvar');
     $this->get('ocorrencia/{id?}/excluir','OcorrenciaController@excluir')->name('servico.ocorrencia.excluir');
-       
+    $this->post('ocorrencia-pesquisar', 'OcorrenciaController@search')->name('servico.ocorrencia.search');  
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home'], function(){

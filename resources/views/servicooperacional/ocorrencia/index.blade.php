@@ -58,7 +58,9 @@
               <div class="col-xs-4">
                 <div class="input-group">
                       <input type="date" class="form-control timepicker" placeholder="Selecione a Data"
-                       id="data_ocorre" name="data_ocorre" value="{{$ocorrencia->data or '' }}" required>
+                       id="data_ocorre" name="data_ocorre" value="{{$ocorrencia->data or '' }}"
+                       
+                       required>
                       <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                 </div>  
 
@@ -67,7 +69,9 @@
               <div class="col-xs-4">
                   <div class="input-group">
                       <input type="time" class="form-control timepicker" placeholder="Selecione a hora" 
-                      value="{{  $ocorrencia->hora or '' }}" id="hora_ocorre" name="hora_ocorre" required>
+                      value="{{  $ocorrencia->hora or '' }}"  id="hora_ocorre" name="hora_ocorre" 
+                      
+                      required>
                       <div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
                   </div>
               </div> 

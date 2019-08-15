@@ -221,7 +221,7 @@ return [
 
         [
             'text' => 'Profile',
-            'url'  => 'admin/settings',
+            'url'  => 'meu-perfil',
             'icon' => 'user',
         ],
      

@@ -37,5 +37,29 @@ class Ocorrencia extends Model
     function drogas(){
         return $this->hasMany(Droga::class);
     }
+
+    public function search(Array $dataForm, $totalPage)
+    {
+    //$retorno =
+     return 
+     $this->where(function($query) use ($dataForm){
+        if(isset($dataForm['opm'])){
+            $query->where('opm_id',$dataForm['opm']);
+        }    
+        if(isset($dataForm['tipo_ocorr'])){
+            $query->where('tipoocorrencia_id',$dataForm['tipo_ocorr']);
+        } 
+        if(isset($dataForm['data_inicio'])){
+            $query->where('data','>=',$dataForm['data_inicio']);
+        } 
+        if(isset($dataForm['data_fim'])){
+            $query->where('data','<=',$dataForm['data_fim']);
+        } 
+    })
+    ->paginate($totalPage);
+   // ->toSql();
+    //dd($retorno);
+    
+    }
    
 }

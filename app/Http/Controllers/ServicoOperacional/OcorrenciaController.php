@@ -44,8 +44,8 @@ class OcorrenciaController extends Controller
 
     public function listar()
     {
-      $ocorrencias = Ocorrencia::orderBy('data', 'desc')->get();
-      return view('servicooperacional.ocorrencia.listarocorrencias',compact('ocorrencias'));
+      $ocorrencias = Ocorrencia::orderBy('data', 'desc')->paginate($this->totalPage);
+      return view('servicooperacional.ocorrencia.listarocorrencias',compact('ocorrencias','opms','tiposocorrencias'));
     }
 
     public function salvar(Request $request)
@@ -238,4 +238,13 @@ class OcorrenciaController extends Controller
         }
     }
 
+    public function search(Request $request, Ocorrencia $ocorrencia)
+    { 
+      // dd($request->all());
+      $dataForm = $request->all();
+ 
+      $ocorrencias =  $ocorrencia->search($dataForm, $this->totalPage);
+     // dd($ocorrencias);
+      return view('servicooperacional.ocorrencia.listarocorrencias', compact('ocorrencias'));
+    }
 }
