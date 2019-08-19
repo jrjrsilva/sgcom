@@ -40,11 +40,7 @@
     <img src="{{ url('storage/users/'.auth()->user()->image)}}" alt="{{ auth()->user()->name}}" style="max-width: 50px;">
         @endif
             <label for="image">Foto:</label>
-            <input type="file" name="image[]" id="image" class="form-group">
-            <input type="file" name="image[]" id="image" class="form-group">
-            <input type="file" name="image[]" id="image" class="form-group">
-            <input type="file" name="image[]" id="image" class="form-group">
-            <input type="file" name="image[]" id="image" class="form-group">
+            <input type="file" name="image" id="image" class="form-group">
         </div>
     <div class="col-xs-12">
         <button type="submit" class="btn btn-info">Atualizar perfil</button>

@@ -30,40 +30,44 @@
                   <button  type="submit" class="btn btn-primary">Pesquisar</button>
               </form>
             </div>
-            <div class="box-header">
-              <button  type="submit" class="btn btn-primary">Novo</button>
-            </div>
+            
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>#</th></th>
+                  
                   <th>Grau Hierarquico</th>
                   <th>Nome</th>
                   <th>Matrícula</th>
                   <th>OPM</th>
-                  <th>Data Nascimento</th>
+                  <th>Data de Nascimento</th>
                   <th>Sexo</th>
+                  <th>Data de Admissão</th>
+                  <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse($efetivos as $efetivo)
                 <tr>
-                  <td>{{$efetivo->id}}</td>
                   <td>{{$efetivo->grauhierarquico->sigla}}</td>
                   <td>{{$efetivo->nome}}</td>
                   <td>{{$efetivo->matricula}}</td>
                   <td>{{$efetivo->opm->opm_sigla}}</td>
                   <td>{{ \Carbon\Carbon::parse($efetivo->datanascimento)->format('d/m/Y')}}</td>
                   <td>{{$efetivo->sexo}}</td>
+                  <td>{{ \Carbon\Carbon::parse($efetivo->dataadmissao)->format('d/m/Y')}}</td>
+                  <td>
+                    <a href="{{route('rh.edit',$efetivo->id)}}" class="btn btn-adn">Editar</a>
+                    <a href="{{route('rh.detalhe',$efetivo->id)}}" class="btn btn-primary">Detalhe</a>
+                    
+                  </td>
                 </tr>
                 @empty
                 @endforelse 
                </tbody>
                 <tfoot>
                 <tr>
-                  <th>#</th></th>
                   <th>Grau Hierarquico</th>
                   <th>Nome</th>
                   <th>Matrícula</th>

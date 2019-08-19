@@ -29,9 +29,12 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home
     $this->get('/','SGCOMController@home')->name('auth.home');
 });
 
-$this->group(['middleware' => ['auth'], 'namespace' => 'RecursosHumanos', 'prefix' => 'rh'], function(){
-    $this->get('efetivo','EfetivoController@index')->name('rh.listar');
-    $this->any('efetivo-search', 'EfetivoController@searchMatricula')->name('rh.searchMatricula');
+$this->group(['middleware' => ['auth'], 'namespace' => 'recursoshumanos', 'prefix' => 'rh'], function(){
+    $this->get('listageral','EfetivoController@index')->name('rh.listar');
+    $this->any('listageral-search', 'EfetivoController@searchMatricula')->name('rh.searchMatricula');
+    $this->get('listageral/{id?}/edit','EfetivoController@edit')->name('rh.edit');
+    $this->get('listageral/{id?}/detalhe','EfetivoController@detalhe')->name('rh.detalhe');
+ 
 });
 
 $this->get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middleware('auth');

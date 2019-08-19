@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Efetivo extends Model
 {
     //
-    protected $table = 'efetivo';
+    protected $table = 'pmgeral';
 
     public function grauhierarquico(){
         return $this->belongsTo(GrauHierarquico::class);

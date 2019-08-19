@@ -25,8 +25,8 @@ class EfetivoController extends Controller
 
       // dd(BD::Opm::class)
       $efetivos = Efetivo::paginate($this->totalPage);
-
-        return view('recursoshumanos.efetivo',compact('efetivos'));
+      
+        return view('recursoshumanos.listageral',compact('efetivos'));
     }
 
     public function searchMatricula(Request $request, Efetivo $efetivo)
@@ -36,6 +36,26 @@ class EfetivoController extends Controller
  
       $efetivos =  $efetivo->searchUnique($dataForm, $this->totalPage);
  
-      return view('recursoshumanos.efetivo',compact('efetivos','dataForm'));
+      return view('recursoshumanos.listageral',compact('efetivos','dataForm'));
+    }
+
+    public function edit($id)
+    {
+      $efetivo = Efetivo::find($id);
+      if(!$efetivo){
+        abort(404);
+      }
+     
+      return view('recursoshumanos.form', compact('efetivo'));
+    
+    }
+
+    public function detalhe($id)
+    {
+      $efetivo = Efetivo::find($id);
+      if(!$efetivo){
+        abort(404);
+      }
+      return view('recursoshumanos.detalhe', compact('efetivo'));
     }
 }

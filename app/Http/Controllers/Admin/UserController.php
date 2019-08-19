@@ -15,12 +15,6 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        
-       //dd($request->image);
-       /*@foreach($request->image as $imagens)
-            echo $imagens->
-       @endforeach*/
-
         $user = auth()->user();
 
         $data = $request->all();
@@ -57,6 +51,6 @@ class UserController extends Controller
        if($update)
             return redirect()->route('profile')->with('success','Perfil atualizado');
 
-            return redirect()->back()->with('error', 'Falha ao atualizar o perfil ...');
+            return redirect()->back()->with('error', 'Falha ao atualizar o perfil!');
     }
 }

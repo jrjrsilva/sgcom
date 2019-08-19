@@ -158,10 +158,17 @@ return [
         ],   
 
         [
-            'text'        => 'Recursos Humanos',
+            'text'        => 'Gestão de Pessoas',
             'url'         => '#',
             'icon'        => 'users',
-            'label_color' => 'success',    
+            'label_color' => 'success', 
+            'submenu' => [ 
+                [
+                    'text' => 'Efetivo Geral',
+                    'url'  => 'rh/listageral',
+                    'icon' => 'user',
+                ],  
+            ]  
         ],   
 
         [
