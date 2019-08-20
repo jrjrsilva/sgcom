@@ -34,7 +34,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'recursoshumanos', 'prefi
     $this->any('listageral-search', 'EfetivoController@searchMatricula')->name('rh.searchMatricula');
     $this->get('listageral/{id?}/edit','EfetivoController@edit')->name('rh.edit');
     $this->get('listageral/{id?}/detalhe','EfetivoController@detalhe')->name('rh.detalhe');
- 
+    $this->post('salvar','EfetivoController@salvar')->name('rh.salvar');
 });
 
 $this->get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middleware('auth');

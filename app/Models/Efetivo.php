@@ -9,6 +9,8 @@ class Efetivo extends Model
     //
     protected $table = 'pmgeral';
 
+    protected $guarded = ['id','created_at','updated_at'];
+
     public function grauhierarquico(){
         return $this->belongsTo(GrauHierarquico::class);
     }
@@ -37,17 +39,20 @@ class Efetivo extends Model
      return 
      //$retorno =
      $this->where(function($query) use ($dataForm){
-        if(isset($dataForm['matricula'])){
-            $query->where('matricula','=',$dataForm['matricula']);
-        } 
-        
-        if(isset($dataForm['opm'])){
-            $query->where('opm_id','=',$dataForm['opm']);
+        if(isset($dataForm['pnome'])){
+            $query->where('nome','LIKE','%' .$dataForm['pnome'].'%');
+        }
+        if(isset($dataForm['pmatricula'])){
+            $query->where('matricula','=',$dataForm['pmatricula']);
         }  
-    })->orderBy('grauhierarquico_id', 'ASC')
+        if(isset($dataForm['popm'])){
+            $query->where('opm_id','=',$dataForm['popm']);
+        }  
+    })->orderBy('grauhierarquico_id', 'DESC')
     ->paginate($totalPage);
     //->toSql();
-    //dd($retorno);
+   // dd($retorno);
     
     }
+
 }

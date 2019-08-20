@@ -158,7 +158,7 @@ return [
         ],   
 
         [
-            'text'        => 'Gestão de Pessoas',
+            'text'        => 'Recursos Humanos',
             'url'         => '#',
             'icon'        => 'users',
             'label_color' => 'success', 

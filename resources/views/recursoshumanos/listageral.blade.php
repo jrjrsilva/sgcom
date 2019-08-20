@@ -15,13 +15,16 @@
     <div class="box">
             <div class="box-header">
             <form action="{{route('rh.searchMatricula')}}" method="POST" class="form form-inline">
-              {!! csrf_field() !!}    
-              <input  type="text" name="matricula"  id="matricula" class="form-control"
-               placeholder="Informe a Matrícula para buscar"/>
-
-               
-                <select class="form form-control" id="opm" name="opm">
-                  <option>Selecione a OPM</option>
+              {!! csrf_field() !!}
+              <label for="pnome">Nome:</label>    
+              <input  type="text" name="pnome"  id="pnome" class="form-control"
+               placeholder="Informe o nome"/>
+               <label for="pmatricula">Matrícula:</label>    
+              <input  type="number" pattern="[0-9]" maxlength=9 name="pmatricula"  id="pmatricula" class="form-control"
+               placeholder="Informe a Matrícula"/>
+                <label for="popm">OPM:</label>
+                <select class="form form-control" id="opm" name="popm">
+                  <option value="">Selecione a OPM</option>
                   @foreach( $opms as $opm )
                   <option value="{{ $opm->id }}" ><p> {{ $opm->opm_sigla }} </p></option>
                   @endforeach
@@ -59,8 +62,7 @@
                   <td>{{ \Carbon\Carbon::parse($efetivo->dataadmissao)->format('d/m/Y')}}</td>
                   <td>
                     <a href="{{route('rh.edit',$efetivo->id)}}" class="btn btn-adn">Editar</a>
-                    <a href="{{route('rh.detalhe',$efetivo->id)}}" class="btn btn-primary">Detalhe</a>
-                    
+                   
                   </td>
                 </tr>
                 @empty
@@ -74,6 +76,8 @@
                   <th>OPM</th>
                   <th>Data Nascimento</th>
                   <th>Sexo</th>
+                  <th>Data de Admissão</th>
+                <th></th>
                 </tr>
                 </tfoot>
               </table>
