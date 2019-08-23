@@ -31,6 +31,7 @@
         </div><br>
         <div class="row">
               <div class="col-xs-4"> 
+                <label>OPM</label>  
                 <select class="form-control" id="opm" name="opm" required >
                   <option value="">Selecione a OPM</option>
                   @foreach( $opms as $opm )
@@ -45,10 +46,12 @@
               </div> 
 
               <div class="col-xs-4"> 
+                <label>Coordenador Regional</label>
                 <input type="text" class="form-control" placeholder="Coordenador Regional" id="coord_cprca">
               </div> 
 
-              <div class="col-xs-4"> 
+              <div class="col-xs-4">
+                <label>Supervisor Regional</label>
                 <input type="text" class="form-control" placeholder="Supervisor Regional" id="superv_cprca">
               </div>
         </div> <br>
@@ -57,10 +60,9 @@
 
               <div class="col-xs-4">
                 <div class="input-group">
+                    <label>Data da Ocorrência</label>
                       <input type="date" class="form-control timepicker" placeholder="Selecione a Data"
-                       id="data_ocorre" name="data_ocorre" value="{{$ocorrencia->data or '' }}"
-                       
-                       required>
+                       id="data_ocorre" name="data_ocorre" value="{{$ocorrencia->data or '' }}" required>
                       <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                 </div>  
 
@@ -68,14 +70,14 @@
 
               <div class="col-xs-4">
                   <div class="input-group">
+                      <label>Horário da Ocorrência</label>
                       <input type="time" class="form-control timepicker" placeholder="Selecione a hora" 
-                      value="{{  $ocorrencia->hora or '' }}"  id="hora_ocorre" name="hora_ocorre" 
-                      
-                      required>
+                      value="{{  $ocorrencia->hora or '' }}" id="hora_ocorre" name="hora_ocorre" required>
                       <div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
                   </div>
               </div> 
                 <div class="col-xs-4">
+                    <label>Tipo de Ocorrência</label>
                     <select class="form-control" id="tipo_ocorr" name="tipo_ocorr" required>
                     <option value="">Selecione o tipo da ocorrência</option>
                     @foreach( $tiposocorrencias as $tipoocorrencia )
@@ -94,6 +96,7 @@
 
         <div class="form-row">
               <div class="col">
+                <label>Local da Ocorrência</label>
               <input type="text" class="form-control" placeholder="Informe o local da ocorrência" required
               value="{{  $ocorrencia->ocorrencia_local or '' }}" id="local_ocorrencia" name="local_ocorrencia"> 
               </div>
@@ -110,12 +113,14 @@
         <div class="row">
 
         <div class="col-xs-5">
+          <label>Policial Militar</label>
           <select class="form-control" id="policial">
             <option value="">Selecione o policial</option>
           </select>
       </div>
 
       <div class="col-xs-3">
+        <label>Função</label>  
         <select class="form-control" id="funcao">
             <option value="">Selecione a função</option>
             <option>Comandante</option>
@@ -125,12 +130,14 @@
       </div>
 
       <div class="col-xs-2">
+        <label>Armamento</label>  
         <select class="form-control" id="arma">
           <option value="">Selecione o armamento</option>
         </select>
       </div>
 
       <div class="col-xs-2">
+        <label>Viatura</label>  
       <select class="form-control" id="vtr">
           <option value="">Selecione a viatura</option>
         </select>
@@ -161,7 +168,7 @@
                    <div class="form-group">
                     <div class="row">                           
                       <div class="col-xs-2">
-                          <label></label>
+                          <label>Envolvimento</label>
                           <select class="form-control" data-skip-name="true" data-name="tipo_envolvimento[]" >
                             <option value="">Tipo de Envolvimento</option>
                             <option value="Autor">Autor</option>
@@ -170,20 +177,20 @@
                           </select>
                       </div>
                       <div class="col-xs-6"> 
-                          <label></label>
+                          <label>Envolvido</label>
                           <input type="text" data-skip-name="true" data-name="envolvido[]" 
                           id="name" class="form-control"   placeholder="Nome"/>
                       </div>
                       <div class="col-xs-2">
-                          <label></label>
+                          <label>RG</label>
                           <input type="text" data-skip-name="true" data-name="rg[]" id="rg" class="form-control"  placeholder="RG" />
                       </div>  
                       <div class="col-xs-1"> 
-                      <label></label>
+                      <label>Idade</label>
                           <input type="text" data-skip-name="true" data-name="idade[]" id="idade" class="form-control" placeholder="Idade"  />
                       </div>
                       <div class="col-xs-1">   
-                          <label></label>
+                          <label>Sexo</label>
                               <select data-skip-name="true" class="form-control" id="sexo" data-name="sexo[]">
                                 <option value="">Sexo</option>
                                 <option value="M">M</option>
@@ -197,13 +204,13 @@
                 </div>
             </div>
         </div>
-        <table class="table m-0" id="envolvido-table" name="envolvido-table">
+        <table class="table table-bordered table-hover" id="envolvido-table" name="envolvido-table">
           <thead>
               <tr>
-                  <th style="width: 17%">Tipo de Envolvimento</th>
-                  <th style="width: 50%">Nome</th>
-                  <th style="width: 13%">RG</th>
-                  <th style="width: 10%">Idade</th>
+                  <th>Tipo de Envolvimento</th>
+                  <th>Nome</th>
+                  <th>RG</th>
+                  <th>Idade</th>
                   <th style="width: 10%">Sexo</th>                  
               </tr>
           </thead>
@@ -270,7 +277,8 @@
 
                 
         <div class="row">
-              <div class="col-xs-4"> 
+              <div class="col-xs-4">
+                   <label>Delegacia</label>
                 <select class="form-control" id="delegacia" name="delegacia" >
                   <option value="">Selecione a Delegacia</option>
                   @foreach( $delegacias as $delegacia )
@@ -286,12 +294,14 @@
                 </select>
               </div> 
 
-              <div class="col-xs-6"> 
+              <div class="col-xs-6">
+                   <label>Endereço</label>
                 <input type="text" class="form-control" placeholder="Endereço" 
                 value="{{  $ocorrencia->end_delegacia or '' }}" id="end_delegacia" name="end_delegacia">
               </div> 
 
-              <div class="col-xs-2"> 
+              <div class="col-xs-2">
+                   <label>AISP</label>
               <select class="form-control" id="aisp" name="aisp">
                   <option value="">Selecione a AISP</option>
                   @foreach( $aisps as $aisp )
@@ -310,17 +320,20 @@
         <div class="row">
 
               <div class="col-xs-6">
+                   <label>Delegado</label>
                     <input type="text" class="form-control" placeholder="Informe o nome do delegado" 
                     value="{{  $ocorrencia->nome_delegado or ''  }}" id="delegado" name="delegado">                        
                 </div>
 
                 <div class="col-xs-3">
+                     <label>Nº do Inquérito</label>
                     <input type="text" class="form-control" placeholder="Informe o nº inquérito" 
                     value="{{  $ocorrencia->num_inquerito or '' }}"id="inq_policial" name="inq_policial">
                     
                 </div>
                 
                 <div class="col-xs-3">
+                     <label>Nº do BO</label>
                    <input type="text" class="form-control" placeholder="Informe o nº do BO" 
                    value="{{  $ocorrencia->num_boletim or ''}}" id="bo" name="bo">
               </div>

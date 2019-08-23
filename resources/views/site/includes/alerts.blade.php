@@ -17,5 +17,3 @@
         {{session('error')}}
     </div>
 @endif
-
-

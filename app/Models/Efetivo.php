@@ -38,7 +38,8 @@ class Efetivo extends Model
     {
      return 
      //$retorno =
-     $this->where(function($query) use ($dataForm){
+     $this->
+     where(function($query) use ($dataForm){
         if(isset($dataForm['pnome'])){
             $query->where('nome','LIKE','%' .$dataForm['pnome'].'%');
         }

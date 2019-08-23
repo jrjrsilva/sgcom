@@ -38,7 +38,8 @@ class EfetivoController extends Controller
       $dataForm = $request->except('_token');
  
       $efetivos =  $efetivo->searchUnique($dataForm, $this->totalPage);
- 
+     // dd($efetivos);
+
       return view('recursoshumanos.listageral',compact('efetivos','dataForm'));
     }
 

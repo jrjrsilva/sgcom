@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <p>Pos login</p>
+    <p>HOME - SITE</p>
 @stop
 
 @section('js')

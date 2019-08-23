@@ -42,6 +42,16 @@ class OcorrenciaController extends Controller
       return  view('servicooperacional.ocorrencia.index',compact('envolvidos','ocorrencia','drogas','files'));
     }
 
+    public function escala()
+    {
+      return  view('servicooperacional.escala.index');
+    }
+
+    public function produtividade()
+    {
+      return  view('servicooperacional.produtividade.index');
+    }
+
     public function listar()
     {
       $ocorrencias = Ocorrencia::orderBy('data', 'desc')->paginate($this->totalPage);

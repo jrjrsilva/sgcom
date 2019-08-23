@@ -112,14 +112,14 @@ return [
         
         [
             'text'        => 'Home',
-            'url'         => '#',
+            'url'         => 'home',
             'icon'        => 'home',
             'label_color' => 'success',
         ],
 
         [
             'text'        => 'Painel de Gestão',
-            'url'         => '#',
+            'url'         => 'painel/index',
             'icon'        => 'bar-chart-o',
             'label_color' => 'success',    
         ],   
@@ -133,7 +133,7 @@ return [
             'submenu' => [ 
                 [
                     'text' => 'Escala Operacional',
-                    'url'  => 'admin/aisp',
+                    'url'  => 'servico/escala',
                     'icon' => 'tasks',
                 ],  
 
@@ -151,57 +151,50 @@ return [
 
                 [
                     'text' => 'Produtividade',
-                    'url'  => 'admin/aisp',
+                    'url'  => 'servico/produtividade',
                     'icon' => 'sticky-note',
                 ],  
             ]
         ],   
 
         [
-            'text'        => 'Recursos Humanos',
-            'url'         => '#',
+            'text'        => 'Recursos Humanoss',
+            'url'         => 'rh/listageral',
             'icon'        => 'users',
-            'label_color' => 'success', 
-            'submenu' => [ 
-                [
-                    'text' => 'Efetivo Geral',
-                    'url'  => 'rh/listageral',
-                    'icon' => 'user',
-                ],  
-            ]  
+            'label_color' => 'success',    
         ],   
 
         [
             'text'        => 'Gestão de Frotas',
-            'url'         => '#',
+            'url'         => 'frota/lista',
             'icon'        => 'truck',
             'label_color' => 'success',    
         ],   
 
         [
             'text'        => 'Armamento',
-            'url'         => '#',
+            'url'         => 'armas/lista',
             'icon'        => 'bullseye',
             'label_color' => 'success',    
         ],   
 
         [
             'text'        => 'Inteligência Policial',
-            'url'         => '#',
+            'url'         => 'inteligencia/index',
             'icon'        => 'desktop',
             'label_color' => 'success',    
         ],   
 
         [
             'text'        => 'CVLI',
-            'url'         => '#',
+            'url'         => 'cvli/index',
             'icon'        => 'odnoklassniki',
             'label_color' => 'danger',    
         ],   
         
         [
             'text'        => 'CVP',
-            'url'         => '#',
+            'url'         => 'cvp/index',
             'icon'        => 'exclamation-circle',
             'label_color' => 'success',    
         ],   
@@ -228,7 +221,7 @@ return [
 
         [
             'text' => 'Profile',
-            'url'  => 'meu-perfil',
+            'url'  => 'admin/settings',
             'icon' => 'user',
         ],
      

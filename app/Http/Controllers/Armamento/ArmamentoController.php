@@ -7,5 +7,8 @@ use sgcom\Http\Controllers\Controller;
 
 class ArmamentoController extends Controller
 {
-    //
+    public function lista()
+    {
+      return view('armas.lista');
+    }
 }

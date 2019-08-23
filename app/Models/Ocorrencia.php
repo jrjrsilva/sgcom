@@ -38,6 +38,16 @@ class Ocorrencia extends Model
         return $this->hasMany(Droga::class);
     }
 
+    function totalCvli()
+    {
+    $retorno =  $this->withCount([
+        'Total CVLI' => function ($query) {
+                    $query->select(DB::raw("SUM(tipoocorrencia_id) as paidsum"))
+                    ->where('tipoocorrencia_id', 1);
+                }
+        ]);
+    }
+
     public function search(Array $dataForm, $totalPage)
     {
     //$retorno =
