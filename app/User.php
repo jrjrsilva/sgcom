@@ -2,6 +2,7 @@
 
 namespace sgcom;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use sgcom\Models\Efetivo;
@@ -26,5 +27,7 @@ class User extends Authenticatable
     public function efetivo(){
         return $this->belongsTo(Efetivo::class);
     }
+
+ 
     
 }

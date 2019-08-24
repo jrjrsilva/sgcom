@@ -8,7 +8,9 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
     
     $this->post('opm', 'OpmController@searchOpm')->name('opm.search');
     $this->get('opm', 'OpmController@index')->name('admin.opm');
-    
+
+    $this->get('usuarios', 'UserController@index')->name('admin.usuarios');
+    $this->post('usuarios', 'UserController@search')->name('admin.usuarios.search');
     $this->get('/', 'AdminController@index')->name('admin.home');
 
 });
@@ -63,6 +65,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
     $this->get('listageral/{id?}/detalhe','EfetivoController@detalhe')->name('rh.detalhe');
     $this->post('salvar','EfetivoController@salvar')->name('rh.salvar');
 });
+
 
 $this->get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middleware('auth');
 $this->post('update-perfil', 'Admin\UserController@update')->name('profile.update')->middleware('auth');

@@ -123,7 +123,6 @@ class OcorrenciaController extends Controller
 
       $response = $ocorrencia->save();
 
-
       $envolvido  = $request->envolvido;
       $idade      = $request->idade;
       $tipo       = $request->tipo_envolvimento;
