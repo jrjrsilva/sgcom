@@ -28,6 +28,7 @@ class OcorrenciaController extends Controller
       $aisps = Aisp::orderBy('descricao', 'asc')->get();
       $delegacias = Delegacia::orderBy('descricao', 'asc')->get();
       $tiposocorrencias = TipoOcorrencia::orderBy('descricao', 'asc')->get();
+     
       
       view()->share(compact('opms','aisps','delegacias','tiposocorrencias'));
     }
@@ -39,6 +40,7 @@ class OcorrenciaController extends Controller
       $this->ocorrencia = $ocorrencia;
       $envolvidos       = $this->ocorrencia->envolvidos;
       $drogas           = $this->ocorrencia->drogas;
+     
       return  view('servicooperacional.ocorrencia.index',compact('envolvidos','ocorrencia','drogas','files'));
     }
 
@@ -55,8 +57,35 @@ class OcorrenciaController extends Controller
     public function listar()
     {
       $ocorrencias = Ocorrencia::orderBy('data', 'desc')->paginate($this->totalPage);
-      return view('servicooperacional.ocorrencia.listarocorrencias',compact('ocorrencias','opms','tiposocorrencias'));
+      $cvli = DB::table('ocorrencia')
+              ->join('tipo_ocorrencia','ocorrencia.tipoocorrencia_id','tipo_ocorrencia.id')
+              ->where('tipo_ocorrencia.indice_id', 1)
+              ->count();
+      if($cvli > 0)
+        $pcvli = ($cvli * 100)/257;
+        else $pcvli = 0;
+
+      $cvp = DB::table('ocorrencia')
+              ->join('tipo_ocorrencia','ocorrencia.tipoocorrencia_id','tipo_ocorrencia.id')
+              ->where('tipo_ocorrencia.indice_id', 2)
+              ->count();
+      if($cvp > 0)
+        $pcvp = ($cvp * 100)/2074;
+        else $pcvp = 0;
+
+      $homicidio = DB::table('ocorrencia')
+            ->where('tipoocorrencia_id', 1)
+            ->count();
+      if($homicidio > 0)
+      $phomicidio = ($homicidio * 100)/2074;
+          else 
+      $phomicidio = 0;
+
+      return view('servicooperacional.ocorrencia.listarocorrencias',
+      compact('ocorrencias','opms','tiposocorrencias','cvli','cvp','pcvli','pcvp','phomicidio','homicidio'));
     }
+
+
 
     public function salvar(Request $request)
     {
@@ -254,7 +283,31 @@ class OcorrenciaController extends Controller
       $dataForm = $request->all();
  
       $ocorrencias =  $ocorrencia->search($dataForm, $this->totalPage);
-     // dd($ocorrencias);
-      return view('servicooperacional.ocorrencia.listarocorrencias', compact('ocorrencias'));
+    
+      $cvli = DB::table('ocorrencia')
+              ->join('tipo_ocorrencia','ocorrencia.tipoocorrencia_id','tipo_ocorrencia.id')
+              ->where('tipo_ocorrencia.indice_id', 1)
+              ->count();
+      if($cvli > 0)
+        $pcvli = ($cvli * 100)/257;
+        else $pcvli = 0;
+        
+      $cvp = DB::table('ocorrencia')
+              ->join('tipo_ocorrencia','ocorrencia.tipoocorrencia_id','tipo_ocorrencia.id')
+              ->where('tipo_ocorrencia.indice_id', 2)
+              ->count();
+      if($cvp > 0)
+        $pcvp = ($cvp * 100)/2074;
+        else $pcvp = 0;
+
+      $homicidio = DB::table('ocorrencia')
+            ->where('tipoocorrencia_id', 1)
+            ->count();
+      if($homicidio > 0)
+      $phomicidio = ($homicidio * 100)/2074;
+          else 
+      $phomicidio = 0;
+
+      return view('servicooperacional.ocorrencia.listarocorrencias', compact('ocorrencias','cvli','cvp','pcvli','pcvp','phomicidio','homicidio'));
     }
 }

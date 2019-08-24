@@ -20,7 +20,7 @@
                 <span class="info-box-number">0{{ $ocorrencias->total() }}</span>
             <!-- The progress section is optional -->
             <div class="progress">
-              <div class="progress-bar" style="width: 20%"></div>
+              <div class="progress-bar" style="width: {{ $ocorrencias->total() }}%"></div>
             </div>
             <span class="progress-description">
               20% das ocorrências de 2018
@@ -35,13 +35,13 @@
             <span class="info-box-icon"><i class="fa fa-meh-o"></i></span>
                 <div class="info-box-content">
                 <span class="info-box-text">CVLI</span>
-                <span class="info-box-number">0{{ $ocorrencias->total() }}</span>
+                <span class="info-box-number">0{{ $cvli }}</span>
             <!-- The progress section is optional -->
             <div class="progress">
-              <div class="progress-bar" style="width: 25%"></div>
+              <div class="progress-bar" style="width: {{$pcvli}}%"></div>
             </div>
             <span class="progress-description">
-              25% de 257 em 2018
+            {{number_format($pcvli,2)}}% de 257 em 2018
             </span>
             </div>
           <!-- /.info-box-content -->
@@ -53,13 +53,13 @@
             <span class="info-box-icon"><i class="fa fa-automobile"></i></span>
                 <div class="info-box-content">
                 <span class="info-box-text">CVP</span>
-                <span class="info-box-number">00 Ocorrências</span>
+                <span class="info-box-number">0{{ $cvp }}</span>
             <!-- The progress section is optional -->
             <div class="progress">
               <div class="progress-bar" style="width: 00%"></div>
             </div>
             <span class="progress-description">
-              00% de 2074 em 2018
+              {{number_format($pcvp,2)}}% de 2074 em 2018
             </span>
             </div>
           <!-- /.info-box-content -->
@@ -71,13 +71,13 @@
             <span class="info-box-icon"><i class="fa fa-comments-o"></i></span>
                 <div class="info-box-content">
                 <span class="info-box-text">Homicídios</span>
-                <span class="info-box-number">05</span>
+                <span class="info-box-number">0{{ $homicidio }}</span>
             <!-- The progress section is optional -->
             <div class="progress">
-              <div class="progress-bar" style="width: 33%"></div>
+            <div class="progress-bar" style="width: {{$phomicidio}}%"></div>
             </div>
             <span class="progress-description">
-              33% dos homicidios de 2018
+            {{number_format($phomicidio,2)}}% dos homicidios de 2018
             </span>
             </div>
           <!-- /.info-box-content -->
