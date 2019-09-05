@@ -11,8 +11,9 @@
 @stop
 
 @section('content')
-    <p>Gestão de Efetivo</p>
-    <div class="box">
+    <p>Gestão de Efetivo </p>
+     {{$data1}}
+      <div class="box">
             <div class="box-header">
             <form action="{{route('rh.searchMatricula')}}" method="POST" class="form form-inline">
               {!! csrf_field() !!}

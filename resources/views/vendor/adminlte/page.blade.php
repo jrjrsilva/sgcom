@@ -48,6 +48,7 @@
 
             <!-- Header Navbar -->
             <nav class="navbar navbar-static-top" role="navigation">
+                <span class="hidden-xs">{{ Auth::user()->efetivo->grauhierarquico->sigla }} - {{ Auth::user()->efetivo->nome }}</span>
                 <!-- Sidebar toggle button-->
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">{{ trans('adminlte::adminlte.toggle_navigation') }}</span>
@@ -63,10 +64,11 @@
                                     <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
                                 </a>
                             @else
+                         
                                 <a href="#"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                 >
-                                    <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
+                                    <i class="fa fa-fw fa-power-off"> </i> {{ trans('adminlte::adminlte.log_out') }}
                                 </a>
                                 <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
                                     @if(config('adminlte.logout_method'))

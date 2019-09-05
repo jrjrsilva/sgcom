@@ -4,6 +4,8 @@ namespace sgcom\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use sgcom\Models\Efetivo;
+use sgcom\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('rh-edit',function($user, $efetivo){
+            return $user->efetivo->opm->cpr->id == $efetivo->opm->id;
+            });
     }
 }

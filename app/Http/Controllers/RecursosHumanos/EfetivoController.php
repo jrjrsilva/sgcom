@@ -2,6 +2,8 @@
 
 namespace sgcom\Http\Controllers\RecursosHumanos;
 
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use sgcom\Http\Controllers\Controller;
 use sgcom\Models\Opm;
@@ -16,8 +18,9 @@ class EfetivoController extends Controller
       $opms = Opm::orderBy('opm_sigla', 'asc')->get();
       //$opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
       $ghs = GrauHierarquico::orderBy('precedencia','asc')->get();
-      
-      view()->share(compact('opms','ghs'));
+      $data1 = Carbon::now();
+       
+      view()->share(compact('opms','ghs','data1'));
     }
  
  
@@ -49,7 +52,7 @@ class EfetivoController extends Controller
       if(!$efetivo){
         abort(404);
       }
-     
+      $this->authorize('edit-efetivo',$efetivo);
       return view('recursoshumanos.form', compact('efetivo'));
     
     }
@@ -60,6 +63,7 @@ class EfetivoController extends Controller
       if(!$efetivo){
         abort(404);
       }
+
       return view('recursoshumanos.detalhe', compact('efetivo'));
     }
 

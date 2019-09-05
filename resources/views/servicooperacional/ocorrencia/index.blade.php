@@ -78,7 +78,8 @@
               </div> 
                 <div class="col-xs-4">
                     <label>Tipo de Ocorrência</label>
-                    <select class="form-control" id="tipo_ocorr" name="tipo_ocorr" required>
+                    <select class="form-control" id="tipo_ocorr" name="tipo_ocorr" 
+                    required onchange="mostrarItemsRouboOnibus()">
                     <option value="">Selecione o tipo da ocorrência</option>
                     @foreach( $tiposocorrencias as $tipoocorrencia )
                     <option value="{{ $tipoocorrencia->id or '' }}" 
@@ -93,6 +94,38 @@
               </div>
 
         </div> <br>
+
+        
+        <div class="row" id="itemsRouboOnibus" name="itemsRouboOnibus" style="display: none;">
+
+            <div class="col-xs-4">
+                    <label>Entrada no ônibus</label>
+                      <input type="text" class="form-control timepicker" placeholder="Entrada no ônibus"
+                       id="entradaOnibus" name="entradaOnibus" value="{{$ocorrencia->entrada_onibus or '' }}" />
+            </div>
+
+          <div class="col-xs-4">
+           
+                <label>Anúncio do assalto</label>
+                  <input type="text" class="form-control " placeholder="Anúncio do assalto"
+                   id="anuncioAssaltoOnibus" name="anuncioAssaltoOnibus" value="{{$ocorrencia->anuncio_assalto_onibus or '' }}" />
+      
+
+          </div>
+
+          <div class="col-xs-4">
+                  <label>Saída do ônibus</label>
+                  <input type="text" class="form-control " placeholder="Saída do ônibus pós assalto" 
+                  value="{{  $ocorrencia->saida_onibus or '' }}" id="saidaOnibus" name="saidaOnibus" />
+          </div> 
+          <div class="col-xs-4">
+                <label>SIGIP</label>
+                <input type="text" class="form-control " placeholder="" 
+                  value="{{  $ocorrencia->sigip_onibus or '' }}" id="sigipOnibus" name="sigipOnibus" />
+             
+          </div>
+
+    </div> <br>
 
         <div class="form-row">
               <div class="col">
@@ -511,11 +544,15 @@
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-});
+    });
 
 $("#repeater").createRepeater();
 
 $("#repeaterDrogas").createRepeaterDrogas();
+
+$(function(){
+  mostrarItemsRouboOnibus();
+})
 
 });
 
@@ -647,5 +684,16 @@ jQuery.fn.extend({
   event.preventDefault();
 }
 
+function mostrarItemsRouboOnibus(){
+  var e = document.getElementById("tipo_ocorr");
+  var itemSelecionado = e.options[e.selectedIndex].value;
+  if (itemSelecionado == 5){
+    $('#itemsRouboOnibus').css('display', 'block');
+  }else{
+    $('#itemsRouboOnibus').css('display', 'none');
+
+  }
+  
+}
   </script>
 @stop

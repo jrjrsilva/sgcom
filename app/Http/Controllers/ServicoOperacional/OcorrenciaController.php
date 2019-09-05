@@ -116,6 +116,11 @@ class OcorrenciaController extends Controller
       $ocorrencia->flagrantes           = $request->prod_flagrantes;
       $ocorrencia->tco                  = $request->prod_tcos;
       $ocorrencia->menores_apreendidos  = $request->prod_menores_apreend;
+
+      $ocorrencia->entrada_onibus         =$request->entradaOnibus;
+      $ocorrencia->saida_onibus           =$request->saidaOnibus;
+      $ocorrencia->anuncio_assalto_onibus =$request->anuncioAssaltoOnibus;
+      $ocorrencia->sigip_onibus           =$request->sigipOnibus;
     
       if(Auth::check()){
         $ocorrencia->user_id              = Auth::user()->id;
