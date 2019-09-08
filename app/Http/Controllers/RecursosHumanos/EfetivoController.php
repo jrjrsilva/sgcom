@@ -12,18 +12,19 @@ use sgcom\Models\GrauHierarquico;
 
 class EfetivoController extends Controller
 {
+  
     private $totalPage = 100;
 
     public function __construct() {
       $opms = Opm::orderBy('opm_sigla', 'asc')->get();
       //$opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
       $ghs = GrauHierarquico::orderBy('precedencia','asc')->get();
-      $data1 = Carbon::now();
-       
-      view()->share(compact('opms','ghs','data1'));
+
+      view()->share(compact('opms','ghs'));
     }
  
- 
+
+
     public function index()
     {
       //  dd( auth()->user());
@@ -52,7 +53,7 @@ class EfetivoController extends Controller
       if(!$efetivo){
         abort(404);
       }
-      $this->authorize('edit-efetivo',$efetivo);
+      
       return view('recursoshumanos.form', compact('efetivo'));
     
     }

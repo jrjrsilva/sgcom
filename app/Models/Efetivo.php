@@ -2,6 +2,8 @@
 
 namespace sgcom\Models;
 
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 class Efetivo extends Model
@@ -56,4 +58,11 @@ class Efetivo extends Model
     
     }
 
+    
+    public function tempoDecorrido($data){
+        list($ano, $mes, $dia) = explode('-',$data);
+        $hoje = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+        $dataAlvo = mktime( 0, 0, 0, $mes, $dia, $ano);
+        return  floor((((($hoje - $dataAlvo) / 60) / 60) / 24) / 365.25);
+      }
 }

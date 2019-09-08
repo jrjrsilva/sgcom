@@ -12,7 +12,9 @@
 
 @section('content')
     <p>Gestão de Efetivo </p>
-     {{$data1}}
+     <div>
+      <canvas id="grafico"></canvas>
+     </div>
       <div class="box">
             <div class="box-header">
             <form action="{{route('rh.searchMatricula')}}" method="POST" class="form form-inline">
@@ -45,7 +47,7 @@
                   <th>Nome</th>
                   <th>Matrícula</th>
                   <th>OPM</th>
-                  <th>Data de Nascimento</th>
+                  <th>Tempo de Serviço</th>
                   <th>Sexo</th>
                   <th>Data de Admissão</th>
                   <th></th>
@@ -58,7 +60,7 @@
                   <td>{{$efetivo->nome}}</td>
                   <td>{{$efetivo->matricula}}</td>
                   <td>{{$efetivo->opm->opm_sigla}}</td>
-                  <td>{{ \Carbon\Carbon::parse($efetivo->datanascimento)->format('d/m/Y')}}</td>
+                  <td>{{$efetivo->tempoDecorrido($efetivo->dataadmissao)}}</td>
                   <td>{{$efetivo->sexo}}</td>
                   <td>{{ \Carbon\Carbon::parse($efetivo->dataadmissao)->format('d/m/Y')}}</td>
                   <td>
@@ -75,7 +77,7 @@
                   <th>Nome</th>
                   <th>Matrícula</th>
                   <th>OPM</th>
-                  <th>Data Nascimento</th>
+                  <th>Tempo de Serviço</th>
                   <th>Sexo</th>
                   <th>Data de Admissão</th>
                 <th></th>
@@ -101,6 +103,31 @@
 @stop
 
 @section('js')
-    
+ <script>
+       let grafico = document.getElementById('grafico').getContext('2d');
+       let chart = new Chart(grafico, {
+        type: 'bar',
+        data: {
+        labels: ['CEL', 'TEN CEL', 'MAJ', 'CAP', 'TEN', 'SUB TEN','SGT','CB','SD'],
+                    
+        datasets: [{
+                label: 'Previsto',
+                data: [0, 1, 1, 3, 11, 11, 30,25,100],
+                backgroundColor: "rgba(255, 0, 0, 0.9)",
+                borderColor: "#0000ff"
+            },
+            {
+                label: 'Disponível',
+                data: [0, 0, 1, 3, 9, 8, 15, 5, 85],
+                backgroundColor: "rgba(0, 255, 0, 0.3)",
+                borderColor: "#002200"
+            }
+        ]
+    }
+       });
+
+
+       
+ </script>   
 
 @stop
