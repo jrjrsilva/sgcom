@@ -10,6 +10,8 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
     $this->get('opm', 'OpmController@index')->name('admin.opm');
 
     $this->get('usuarios', 'UserController@index')->name('admin.usuarios');
+    $this->get('usuarios/{id}', 'UserController@status')->name('admin.usuarios.status');
+    $this->get('usuarios/{id}/edit', 'UserController@edit')->name('admin.usuarios.edit');
     $this->post('usuarios', 'UserController@search')->name('admin.usuarios.search');
     $this->get('/', 'AdminController@index')->name('admin.home');
 

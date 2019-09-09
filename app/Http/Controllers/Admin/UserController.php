@@ -4,11 +4,13 @@ namespace sgcom\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use sgcom\Models\Opm;
-use sgcom\Models\Efetivo;
+
 use sgcom\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use sgcom\User;
+use sgcom\Models\Opm;
+use sgcom\Models\Efetivo;
+use sgcom\Models\GrauHierarquico;
 
 class UserController extends Controller
 {
@@ -19,7 +21,9 @@ class UserController extends Controller
 
         $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
                
-        view()->share(compact('opms'));
+        $ghs = GrauHierarquico::orderBy('precedencia','asc')->get();
+
+      view()->share(compact('opms','ghs'));
       }
 
     public function index()
@@ -28,6 +32,7 @@ class UserController extends Controller
         ->join('pmgeral', 'users.efetivo_id','=','pmgeral.id')
         ->join('grauhierarquico', 'pmgeral.grauhierarquico_id','=','grauhierarquico.id')
         ->join('opm', 'pmgeral.opm_id','=','opm.id')
+        ->select('users.id','opm_sigla','matricula','nome','grauhierarquico.sigla','status','image')
         ->orderBy('pmgeral.grauhierarquico_id', 'DESC')
         
         ->paginate($this->totalPage);
@@ -107,14 +112,50 @@ class UserController extends Controller
     ->when($dataForm['pmatricula'],function($queryMatricula) use ($dataForm){
          return $queryMatricula->where('pmgeral.matricula',$dataForm['pmatricula']);
         })
+    ->when($dataForm['pstatus'],function($queryStatus) use ($dataForm){
+            return $queryStatus->where('status','=',$dataForm['pstatus']);
+           })
     ->when($dataForm['popm'],function($queryOpm) use ($dataForm){
           return $queryOpm->where('pmgeral.opm_id',$dataForm['popm']);
         })->orderBy('pmgeral.grauhierarquico_id', 'DESC')
-    
+    ->select('users.id','opm_sigla','matricula','nome','grauhierarquico.sigla','status','image')
     ->paginate($this->totalPage);
     //->toSql();
     //dd($users);
     
     return view('admin.usuarios.index',compact('users','dataForm'));
+    }
+
+    public function status($id)
+    {
+        $user = User::find($id);
+        if(!$user){
+            abort(404);
+          }
+
+        if($user->status == 'Ativo'){
+            $user->status = 'Inativo';
+        }else{
+            $user->status = 'Ativo';
+        }
+            
+        
+        $update = $user->save();
+
+        if($update)
+            return redirect()->route('admin.usuarios')->with('success','Perfil atualizado');
+
+            return redirect()->back()->with('error', 'Falha ao atualizar o perfil!');
+
+    }
+
+    public function edit($id)
+    {
+        $user = User::find($id);
+        if(!$user){
+            abort(404);
+          }
+
+          return view('admin.usuarios.form',compact('user'));
     }
 }

@@ -41,7 +41,7 @@
         @endif
             <label for="image">Foto:</label>
             <input type="file" name="image" id="image" class="form-group">
-        </div>
+    </div>
     <div class="col-xs-12">
         <button type="submit" class="btn btn-info">Atualizar perfil</button>
     </div>

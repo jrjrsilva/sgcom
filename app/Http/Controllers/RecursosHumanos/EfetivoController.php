@@ -68,6 +68,10 @@ class EfetivoController extends Controller
       return view('recursoshumanos.detalhe', compact('efetivo'));
     }
 
+    public function voltar(){
+      return redirect()->back();
+    }
+
     public function salvar(Request $request)
     {
 //dd($request->all());

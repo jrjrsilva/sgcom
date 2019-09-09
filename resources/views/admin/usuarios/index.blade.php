@@ -29,11 +29,17 @@
                   <option value="{{ $opm->id }}" ><p> {{ $opm->opm_sigla }} </p></option>
                   @endforeach
                 </select>
+                <label for="pstatus">Status:</label>
+                <select class="form form-control" id="pstatus" name="pstatus">
+                  <option value="">Selecione o Status</option>
+                         <option value="Ativo" ><p>Ativo</p></option>
+                         <option value="Inativo" ><p>Inativo</p></option>
+                </select>
                   <button  type="submit" class="btn btn-primary">Pesquisar</button>
               </form>
             </div>
             <div class="box-header">
-              <button  type="submit" class="btn btn-primary">Nova OPM</button>
+              <button  type="submit" class="btn btn-primary">Novo Usuário</button>
              
             </div>
             <!-- /.box-header -->
@@ -45,16 +51,23 @@
                   <th>Nome</th>
                   <th>GH</th>
                   <th>OPM</th>
+                  <th>Status</th>
                   <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse($users as $user)
                 <tr>
-                  <td>{{$user->matricula}}</td>
+                  <td>
+                      <a href="{{route('admin.usuarios.edit',$user->id)}}">{{$user->matricula}}</a>
+                    </td>
                   <td>{{$user->nome}}</td>
                   <td>{{$user->sigla}}</td>
                   <td>{{$user->opm_sigla}}</td>
+                   <td>{{$user->status}}</td>
+                   <td>
+                      <a href="{{route('admin.usuarios.status',$user->id)}}" class="btn btn-adn">Mudar Status</a>
+                   </td>
                 </tr>
                 @empty
                 @endforelse 
@@ -65,7 +78,7 @@
                   <th>Nome</th>
                   <th>GH</th>
                   <th>OPM</th>
-                  <th></th>
+                  <th>Status</th>
                 </tr>
                 </tfoot>
               </table>
