@@ -15,6 +15,9 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
     $this->post('usuarios', 'UserController@search')->name('admin.usuarios.search');
     $this->get('/', 'AdminController@index')->name('admin.home');
 
+    $this->get('/veiculo/modelos/{id}', 'VeiculoController@getModelosVeiculo')->name('admin.modelosveiculo');
+
+
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Servicooperacional', 'prefix' => 'servico'], function(){
@@ -30,6 +33,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Servicooperacional', 'pr
 
     $this->get('escala','OcorrenciaController@escala')->name('servico.escala.index');
     $this->get('produtividade','OcorrenciaController@produtividade')->name('servico.produtividade.index');
+
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home'], function(){
@@ -71,6 +75,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
 
 $this->get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middleware('auth');
 $this->post('update-perfil', 'Admin\UserController@update')->name('profile.update')->middleware('auth');
+Route::get('picture', 'Admin\UserController@getPicture')->middleware('auth');
 
 $this->get('/', 'Site\SGCOMController@index')->name('home');
 

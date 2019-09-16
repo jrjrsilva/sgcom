@@ -107,7 +107,7 @@
                 <div class="input-group">
                 <label for="image">Foto:</label>
                 @if(auth()->user()->image != null)
-                     <img src="{{ url('storage/users/'.auth()->user()->image)}}" alt="{{ auth()->user()->name}}" style="max-width: 100px;">
+                     <img src="{{ $url }}" alt="{{ auth()->user()->name}}" style="max-width: 100px;">
                 @endif
                 </div>   
             </div>

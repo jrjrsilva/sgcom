@@ -14,6 +14,8 @@ use sgcom\Models\Ocorrencia;
 use sgcom\Models\Envolvido;
 use sgcom\Models\Droga;
 use sgcom\Models\File;
+use sgcom\Models\MarcaVeiculo;
+use sgcom\Models\ModeloVeiculo;
 //use sgcom\Http\Requests\OcorrenciaValidateRequest;
 use Illuminate\Http\Request;
 
@@ -28,12 +30,13 @@ class OcorrenciaController extends Controller
       $aisps = Aisp::orderBy('descricao', 'asc')->get();
       $delegacias = Delegacia::orderBy('descricao', 'asc')->get();
       $tiposocorrencias = TipoOcorrencia::orderBy('descricao', 'asc')->get();
-     
+      $marcaveiculos = MarcaVeiculo::orderBy('descricao', 'asc')->get();
+      $modeloveiculos = ModeloVeiculo::orderBy('descricao', 'asc')->get();
       
-      view()->share(compact('opms','aisps','delegacias','tiposocorrencias'));
+      view()->share(compact('opms','aisps','delegacias','tiposocorrencias','marcaveiculos','modeloveiculos'));
     }
  
- 
+   
     public function index(Ocorrencia $ocorrencia)
     {
       $files = File::all();
@@ -121,7 +124,14 @@ class OcorrenciaController extends Controller
       $ocorrencia->saida_onibus           =$request->saidaOnibus;
       $ocorrencia->anuncio_assalto_onibus =$request->anuncioAssaltoOnibus;
       $ocorrencia->sigip_onibus           =$request->sigipOnibus;
-    
+
+      $ocorrencia->marca_veiculo_id          =$request->marcaveiculo;
+      $ocorrencia->modelo_veiculo_id         =$request->modeloveiculo;
+      $ocorrencia->tipo_veiculo           =$request->tipoveiculo;
+      $ocorrencia->placa_veiculo          =$request->placaveiculo;
+
+
+
       if(Auth::check()){
         $ocorrencia->user_id              = Auth::user()->id;
       }

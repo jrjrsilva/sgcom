@@ -4,13 +4,14 @@ namespace sgcom\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Storage;
 use sgcom\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use sgcom\User;
 use sgcom\Models\Opm;
 use sgcom\Models\Efetivo;
 use sgcom\Models\GrauHierarquico;
+
 
 class UserController extends Controller
 {
@@ -23,7 +24,9 @@ class UserController extends Controller
                
         $ghs = GrauHierarquico::orderBy('precedencia','asc')->get();
 
-      view()->share(compact('opms','ghs'));
+        $url = Storage::url('302213212.png');
+
+      view()->share(compact('opms','ghs','url'));
       }
 
     public function index()
@@ -156,6 +159,12 @@ class UserController extends Controller
             abort(404);
           }
 
-          return view('admin.usuarios.form',compact('user'));
+          $url = Storage::url($user->image);
+
+          return view('admin.usuarios.form',compact('user','url'));
+    }
+
+    public function getPicture() {
+        return \Image::make(file_get_contents(storage_path('/users/' . Auth::user()->image)))->response();
     }
 }

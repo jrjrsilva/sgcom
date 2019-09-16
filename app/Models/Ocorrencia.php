@@ -10,8 +10,16 @@ class Ocorrencia extends Model
 
     protected $guarded = ['id','created_at','updated_at'];
 
-    function User() {
+    function user() {
         return $this->belongsTo(User::class);
+    }
+
+    function marcaveiculo() {
+        return $this->belongsTo(MarcaVeiculo::class,'marca_veiculo_id');
+    }
+
+    function modeloveiculo() {
+        return $this->belongsTo(ModeloVeiculo::class,'modelo_veiculo_id');
     }
 
     function envolvidos() {

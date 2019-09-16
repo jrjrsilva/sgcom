@@ -79,7 +79,7 @@
                 <div class="col-xs-4">
                     <label>Tipo de Ocorrência</label>
                     <select class="form-control" id="tipo_ocorr" name="tipo_ocorr" 
-                    required onchange="mostrarItemsRouboOnibus()">
+                    required onchange="mostrarItens()">
                     <option value="">Selecione o tipo da ocorrência</option>
                     @foreach( $tiposocorrencias as $tipoocorrencia )
                     <option value="{{ $tipoocorrencia->id or '' }}" 
@@ -127,6 +127,56 @@
 
     </div> <br>
 
+    <div class="row" id="itemsRouboVeiculos" name="itemsRouboVeiculos" style="display: none;">
+
+      <div class="col-xs-4">
+              <label>Marca:</label>
+                 <select class="form-control" id="marcaveiculo" name="marcaveiculo" class="marcaveiculo">
+                    <option value="">Selecione a Marca do Veículo</option>
+                    @foreach( $marcaveiculos as $marcaveiculo )
+                    <option value="{{$marcaveiculo->id or '' }}" 
+                        @isset($ocorrencia->marcaveiculo->id)
+                          @if($ocorrencia->marcaveiculo->id == $marcaveiculo->id)
+                            selected 
+                           @endif 
+                     @endisset
+                      ><p> {{ $marcaveiculo->descricao }} </p></option>
+                    @endforeach
+                    </select>
+      </div>
+     
+    <div class="col-xs-4">
+     
+          <label>Modelo:</label>
+          <select class="form-control" id="modeloveiculo" name="modeloveiculo">
+            <option value="">Selecione o Modelo do Veículo</option>
+            @foreach( $modeloveiculos as $modeloveiculo )
+            <option value="{{$modeloveiculo->id or '' }}" 
+                @isset($ocorrencia->modeloveiculo->id)
+                @if($ocorrencia->modeloveiculo->id == $modeloveiculo->id)
+                selected 
+              @endif 
+            @endisset
+              ><p> {{ $modeloveiculo->descricao }} </p></option>
+            @endforeach
+            </select>
+
+
+    </div>
+
+    <div class="col-xs-4">
+            <label>Placa:</label>
+            <input type="text" class="form-control " placeholder="placa do veículo" maxlength=8
+            value="{{  $ocorrencia->placa_veiculo or '' }}" id="placaveiculo" name="placaveiculo" />
+    </div> 
+    <div class="col-xs-4">
+          <label>Tipo:</label>
+          <input type="text" class="form-control " placeholder="tipo" maxlength=15 
+            value="{{  $ocorrencia->tipo_veiculo or '' }}" id="tipoveiculo" name="tipoveiculo" />
+       
+    </div>
+
+</div> <br>
         <div class="form-row">
               <div class="col">
                 <label>Local da Ocorrência</label>
@@ -551,7 +601,7 @@ $("#repeater").createRepeater();
 $("#repeaterDrogas").createRepeaterDrogas();
 
 $(function(){
-  mostrarItemsRouboOnibus();
+  mostrarItens();
 })
 
 });
@@ -684,16 +734,30 @@ jQuery.fn.extend({
   event.preventDefault();
 }
 
-function mostrarItemsRouboOnibus(){
+function mostrarItens(){
   var e = document.getElementById("tipo_ocorr");
   var itemSelecionado = e.options[e.selectedIndex].value;
   if (itemSelecionado == 5){
     $('#itemsRouboOnibus').css('display', 'block');
   }else{
     $('#itemsRouboOnibus').css('display', 'none');
-
   }
-  
+  if (itemSelecionado == 6){
+    $('#itemsRouboVeiculos').css('display', 'block');
+  }else{
+    $('#itemsRouboVeiculos').css('display', 'none');
+  }
 }
-  </script>
+
+
+$('#marcaveiculo').change(function () {
+        var id_veiculo = $(this).val();
+        $.get('/admin/veiculo/modelos/'+id_veiculo, function (modelos) {
+            $('select[name=modeloveiculo]').empty();
+            $.each(modelos, function (key, value) {
+                $('select[name=modeloveiculo]').append('<option value=' + value.id + '>' + value.descricao + '</option>');
+            });
+        });
+    });
+</script>
 @stop
