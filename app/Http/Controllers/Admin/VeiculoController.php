@@ -19,5 +19,5 @@ class VeiculoController extends Controller
         return response()->json($modelosveiculo);
 
     }
- 
+
 }

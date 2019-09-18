@@ -171,9 +171,12 @@
     </div> 
     <div class="col-xs-4">
           <label>Tipo:</label>
-          <input type="text" class="form-control " placeholder="tipo" maxlength=15 
-            value="{{  $ocorrencia->tipo_veiculo or '' }}" id="tipoveiculo" name="tipoveiculo" />
-       
+             <select data-skip-name="true" class="form-control" id="tipoveiculo" data-name="tipoveiculo">
+              <option value="Carro">Carro</option>
+              <option value="Caminhão">Caminhão</option>
+              <option value="Moto">Moto</option>
+              <option value="Não Informado">Não Informado</option>
+            </select>
     </div>
 
 </div> <br>
