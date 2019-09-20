@@ -5,14 +5,15 @@
 @section('content_header')
     <h1>Gestão de Frota</h1>
     <ol class="breadcrumb">
-        <li><a href="">Gestão de frota</a></li>
+        <li><a href="{{route('frota.lista')}}">Gestão de frota</a></li>
         <li><a href="">Cadastro</a></li>
     </ol>
 @stop
 
 @section('content')
 
-    <h2>Frota</h2>
+    <h2>Cadastro</h2>
+    @include('site.includes.alerts')
     <div class="box">
 
     <section class="content">
@@ -27,8 +28,8 @@
 
       <div class="box box-primary">
         <div class="box-header with-border">
-          <h3 class="box-title">Cadastro</h3>
-        </div><br>
+          <h3 class="box-title"></h3>
+        </div>
         <div class="row">
               <div class="col-xs-4"> 
                 <label>OPM</label>  
@@ -48,13 +49,13 @@
               <div class="col-xs-4"> 
                 <label>Placa</label>
                 <input type="text" class="form-control" placeholder="Placa da VTR" 
-                  id="placa" name="placa" required maxlength="8"
+                  id="placa" name="placa" required maxlength="8" value="{{$viatura->placa or ''}}"
                 style="text-transform: uppercase;">
               </div> 
 
               <div class="col-xs-4">
                 <label>Prefixo</label>
-                <input type="text" class="form-control" placeholder="Prefixo da VTR" 
+                <input type="text" class="form-control" placeholder="Prefixo da VTR" value="{{$viatura->prefixo or ''}}"
                   id="prefixo" name="prefixo" maxlength="6" data-mask="0.0000" data-mask-selectonfocus="true">
               </div>
         </div> <br>
@@ -115,10 +116,10 @@
     </div>
 
     <div class="col-xs-4">
-        <label>Renavan:</label>
+        <label>Renavam:</label>
         <input type="text"  class="form-control " 
-        required placeholder="renavan do veículo" maxlength="10"
-        value="{{  $viatura->renavan or '' }}" id="renavan" name="renavan" />
+        required placeholder="renavam do veículo" maxlength="10"
+        value="{{  $viatura->renavam or '' }}" id="renavam" name="renavam" />
 </div> 
 <div class="col-xs-4">
       <label>Patrimônio:</label>
@@ -131,12 +132,17 @@
 <div class="col-xs-3">
     <label>Combustível</label>  
     <select class="form-control" id="combustivel" 
-    required name="combustivel">
-        <option value="">Selecione</option>
-        <option>Alcool</option>
-        <option>Diesel</option>
-        <option>Gasolina</option>
-        <option>Flex</option>
+        required name="combustivel">
+        <option value="">Selecione o Combustível</option>
+        @foreach( $combustiveis as $combustivel )
+        <option value="{{$combustivel->id or '' }}" 
+            @isset($viatura->combustivel->id)
+            @if($viatura->combustivel->id == $combustivel->id)
+            selected 
+          @endif 
+        @endisset
+          ><p> {{ $combustivel->descricao }} </p></option>
+        @endforeach
       </select>
   </div>
 
@@ -145,28 +151,42 @@
     <label>Situação</label>  
     <select class="form-control" id="situacao" required name="situacao">
         <option value="">Selecione a Situação</option>
-        <option value="Disponivel">Disponível</option>
+        @foreach( $situacaoviaturas as $situacaoviatura )
+        <option value="{{$situacaoviatura->id or '' }}" 
+            @isset($viatura->situacaoviatura->id)
+            @if($viatura->situacaoviatura->id == $situacaoviatura->id)
+            selected 
+          @endif 
+        @endisset
+          ><p> {{ $situacaoviatura->descricao }} </p></option>
+        @endforeach
       </select>
   </div>
    <div class="col-xs-3">
-                     <label>Ano Modelo</label>
-                    <input type="text" class="form-control" 
-                    maxlength="4" minlength="4" placeholder="Informe o ano do modelo" 
-                    value="{{  $viatura->ano_modelo or '' }}"id="anomodelo" name="anomodelo">
-                    
-                </div>
-                
-                <div class="col-xs-3">
-                     <label>Ano Fabricação</label>
-                   <input type="text" class="form-control" 
-                   maxlength="4" minlength="4" placeholder="Informe o ano de fabricação" 
-                   value="{{  $viatura->ano_fabricacao or ''}}" id="anofabricacao" name="anofabricacao">
-              </div>
-              <div class="col-xs-3">
+        <label>Ano Modelo</label>
+        <input type="text" class="form-control" required
+         maxlength="4" minlength="4" placeholder="Informe o ano do modelo" 
+         value="{{$viatura->ano_modelo or '' }}"id="anomodelo" name="anomodelo">
+    </div>
+    <div class="col-xs-3">
+     <label>Ano Fabricação</label>
+       <input type="text" class="form-control" required
+        maxlength="4" minlength="4" placeholder="Informe o ano de fabricação" 
+        value="{{$viatura->ano_fabricacao or ''}}" id="anofabricacao" name="anofabricacao">
+      </div>
+      <div class="col-xs-3">
                 <label>Codigo dos Pneus</label>  
-                <select class="form-control" id="codpneus" name="codpneus">
-                    <option value="">Selecione a função</option>
-                    <option value="1">265/65R17</option>
+                <select class="form-control" id="tipopneu" name="tipopneu" required>
+                    <option value="">Selecione o tipo</option>
+                    @foreach( $tipopneus as $tipopneu )
+                    <option value="{{$tipopneu->id or '' }}" 
+                        @isset($viatura->tipopneu->id)
+                        @if($viatura->tipopneu->id == $tipopneu->id)
+                        selected 
+                      @endif 
+                    @endisset
+                      ><p> {{ $tipopneu->descricao }} </p></option>
+                    @endforeach
                     
                   </select>
               </div>
@@ -174,9 +194,17 @@
                 <label>Cor</label>  
                 <select class="form-control" id="cor" required name="cor">
                     <option value="">Selecione a cor</option>
-                    <option value="Padrão PM">Padrão PM</option>
-                    <option value="Branca">Branca</option>
-                    <option value="Soint">SOINT</option>
+                   @isset($viatura)
+                    <option value="Padrão PM"
+                      @if($viatura->cor == 'Padrão PM') selected @endif
+                      >Padrão PM</option>
+                    <option value="CIPT"
+                      @if($viatura->cor == "CIPT") selected @endif
+                      >CIPT</option>
+                    <option value="SOINT"
+                      @if($viatura->cor == 'SOINT') selected @endif
+                      >SOINT</option>
+                    @endisset
                   </select>
               </div>
         </div> <br>
@@ -209,38 +237,6 @@
         }
     });
 
-
-$(function(){
-  mostrarItens();
-})
-
 });
 
-
-function mostrarItens(){
-  var e = document.getElementById("tipo_ocorr");
-  var itemSelecionado = e.options[e.selectedIndex].value;
-  if (itemSelecionado == 5){
-    $('#itemsRouboOnibus').css('display', 'block');
-  }else{
-    $('#itemsRouboOnibus').css('display', 'none');
-  }
-  if (itemSelecionado == 6){
-    $('#itemsRouboVeiculos').css('display', 'block');
-  }else{
-    $('#itemsRouboVeiculos').css('display', 'none');
-  }
-}
-
-
-$('#marcaveiculo').change(function () {
-        var id_veiculo = $(this).val();
-        $.get('/admin/veiculo/modelos/'+id_veiculo, function (modelos) {
-            $('select[name=modeloveiculo]').empty();
-            $.each(modelos, function (key, value) {
-                $('select[name=modeloveiculo]').append('<option value=' + value.id + '>' + value.descricao + '</option>');
-            });
-        });
-    });
-</script>
 @stop

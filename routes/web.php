@@ -43,7 +43,8 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home
 $this->group(['middleware' => ['auth'], 'namespace' => 'Frotas', 'prefix' => 'frota'], function(){
     $this->get('index','FrotaController@index')->name('frota.index');
     $this->get('lista','FrotaController@lista')->name('frota.lista');
-
+    $this->post('pesquisar','FrotaController@search')->name('frota.search');
+    $this->get('edit/{id}','FrotaController@edit')->name('frota.edit');
     $this->post('salvar','FrotaController@salvar')->name('frota.salvar');
 });
 

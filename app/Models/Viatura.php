@@ -22,4 +22,35 @@ class Viatura extends Model
         return $this->belongsTo(Opm::class);
     }
 
+    function combustivel() {
+        return $this->belongsTo(Combustivel::class);
+    }
+
+    function tipopneu() {
+        return $this->belongsTo(TipoPneu::class,'tipo_pneu_id');
+    }
+
+    function situacaoviatura() {
+        return $this->belongsTo(SituacaoViatura::class,'situacao_viatura_id');
+    }
+
+    public function search(Array $dataForm, $totalPage)
+    {
+     return 
+     //$retorno =
+     $this->
+     where(function($query) use ($dataForm){
+        if(isset($dataForm['situacao'])){
+            $query->where('situacao_viatura_id','=',$dataForm['situacao']);
+        }
+       if(isset($dataForm['popm'])){
+            $query->where('opm_id','=',$dataForm['popm']);
+        }  
+    })->orderBy('prefixo', 'asc')
+    ->paginate($totalPage);
+    //->toSql();
+   // dd($retorno);
+    
+    }
+
 }

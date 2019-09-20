@@ -166,7 +166,7 @@ return [
 
         [
             'text'        => 'Gestão de Frotas',
-            'url'         => 'frota/index',
+            'url'         => 'frota/lista',
             'icon'        => 'truck',
             'label_color' => 'success',    
         ],   
