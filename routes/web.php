@@ -43,7 +43,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home
 $this->group(['middleware' => ['auth'], 'namespace' => 'Frotas', 'prefix' => 'frota'], function(){
     $this->get('index','FrotaController@index')->name('frota.index');
     $this->get('lista','FrotaController@lista')->name('frota.lista');
-    $this->post('pesquisar','FrotaController@search')->name('frota.search');
+    $this->any('pesquisar','FrotaController@search')->name('frota.search');
     $this->get('edit/{id}','FrotaController@edit')->name('frota.edit');
     $this->post('salvar','FrotaController@salvar')->name('frota.salvar');
 });
@@ -66,6 +66,11 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' 
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Armamento', 'prefix' => 'armas'], function(){
     $this->get('lista','ArmamentoController@lista')->name('armas.lista');
+
+    $this->get('index','ArmamentoController@index')->name('armas.index');
+    $this->any('pesquisar','ArmamentoController@search')->name('armas.search');
+    $this->get('edit/{id}','ArmamentoController@edit')->name('armas.edit');
+    $this->post('salvar','ArmamentoController@salvar')->name('armas.salvar');
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefix' => 'rh'], function(){
