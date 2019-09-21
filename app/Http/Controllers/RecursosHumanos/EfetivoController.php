@@ -1,7 +1,7 @@
 <?php
 
 namespace sgcom\Http\Controllers\RecursosHumanos;
-
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -97,6 +97,17 @@ class EfetivoController extends Controller
         //return redirect()->back()->withErrors('Erros')->withInput();
         return redirect()->back()->with('success', 'Atualizado com sucesso!');
 
+
+    }
+
+    public function getMatricula($id)
+    {
+
+       $efetivo =  DB::table('pmgeral')
+       ->where('matricula', $id)
+       ->get();
+
+        return response()->json($efetivo);
 
     }
 }

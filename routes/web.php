@@ -87,6 +87,7 @@ $this->post('update-perfil', 'Admin\UserController@update')->name('profile.updat
 Route::get('picture', 'Admin\UserController@getPicture')->middleware('auth');
 
 $this->get('/', 'Site\SGCOMController@index')->name('home');
+$this->get('/rh/matricula/{id}', 'RecursosHumanos\EfetivoController@getMatricula')->name('register.matricula');
 
 Auth::routes();
 

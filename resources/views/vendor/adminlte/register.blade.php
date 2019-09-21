@@ -18,9 +18,22 @@
             <form action="{{ url(config('adminlte.register_url', 'register')) }}" method="post">
                 {!! csrf_field() !!}
 
+                <div class="form-group has-feedback {{ $errors->has('matricula') ? 'has-error' : '' }}">
+                    <input type="text" id="matricula"  name="matricula" class="form-control" value="{{ old('matricula') }}"
+                    placeholder="Informe sua matricula">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    @if ($errors->has('matricula'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('matricula') }}</strong>
+                        </span>
+                    @endif
+                </div>
+<input type="hidden" id="opm_id" name="opm_id"  value="" >
+<input type="hidden" id="efetivo_id" name="efetivo_id" value="">
+
                 <div class="form-group has-feedback {{ $errors->has('name') ? 'has-error' : '' }}">
-                    <input type="text" name="name" class="form-control" value="{{ old('name') }}"
-                           placeholder="{{ trans('adminlte::adminlte.full_name') }}">
+                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}"
+                    readonly       placeholder="{{ trans('adminlte::adminlte.full_name') }}">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     @if ($errors->has('name'))
                         <span class="help-block">
@@ -73,4 +86,26 @@
 
 @section('adminlte_js')
     @yield('js')
+    <script>
+     $('#matricula').focus(function () {       
+        $('#name').val("");
+        $('#efetivo_id').val("");
+        $('#opm_id').val("");        
+    });
+    
+    $('#matricula').blur(function () {
+        var matr = $(this).val();
+     
+        $.get('/rh/matricula/'+matr, function (efetivo) {
+        $('#name').val("");
+           $('#name').val(efetivo[0].nome);
+           $('#efetivo_id').val(efetivo[0].id);
+            $('#opm_id').val(efetivo[0].opm_id);
+            
+        }); 
+    });
+
+
+    
+</script>
 @stop

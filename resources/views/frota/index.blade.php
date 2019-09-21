@@ -239,4 +239,16 @@
 
 });
 
+$('#marcaveiculo').change(function () {
+        var id_veiculo = $(this).val();
+        $.get('/admin/veiculo/modelos/'+id_veiculo, function (modelos) {
+            $('select[name=modeloveiculo]').empty();
+            $.each(modelos, function (key, value) {
+                $('select[name=modeloveiculo]').append('<option value=' + value.id + '>' + value.descricao + '</option>');
+            });
+        });
+    });
+    
+</script>
+
 @stop
