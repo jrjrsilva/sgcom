@@ -45,6 +45,44 @@
                   @endforeach
                 </select>
               </div> 
+            
+             <div class="col-xs-4"> 
+                <label>Emprego</label>  
+                <select class="form-control" id="emprego" name="emprego" required >
+                  <option value="">Selecione o Emprego</option>
+                  @isset($viatura)
+                   <option value="Administrativo"
+                     @if($viatura->emprego == 'Administrativo') selected @endif
+                     >Administrativo</option>
+                   <option value="Operacional"
+                     @if($viatura->emprego == "Operacional") selected @endif
+                     >Operacional</option>
+                   <option value="Inteligência"
+                     @if($viatura->emprego == 'Inteligência') selected @endif
+                     >Inteligência</option>
+                   @endisset
+                 
+                </select>
+              </div> 
+            
+            <div class="col-xs-4"> 
+                <label>Propriedade do Veiculo</label>  
+                <select class="form-control" id="propriedade" name="propriedade" required >
+                  <option value="">Selecione a Propriedade</option>
+                  @isset($viatura)
+                   <option value="Patrimônio PM"
+                     @if($viatura->propriedade == 'Patrimônio PM') selected @endif
+                     >Patrimônio PM</option>
+                   <option value="Alugada"
+                     @if($viatura->propriedade == "Alugada") selected @endif
+                     >Alugada</option>
+                   <option value="Reserva Temporária"
+                     @if($viatura->propriedade == 'Reserva Temporária') selected @endif
+                     >Raserva Temporária</option>
+                   @endisset
+                 
+                </select>
+              </div> 
 
               <div class="col-xs-4"> 
                 <label>Placa</label>
@@ -205,6 +243,22 @@
                       @if($viatura->cor == 'SOINT') selected @endif
                       >SOINT</option>
                     @endisset
+                  </select>
+              </div>
+        <div class="col-xs-3">
+                <label>Bateria</label>  
+                <select class="form-control" id="bateria" name="bateria" required>
+                    <option value="">Selecione a bateria</option>
+                    @foreach( $baterias as $bateria )
+                    <option value="{{$bateria->id or '' }}" 
+                        @isset($viatura->bateria->id)
+                        @if($viatura->bateria->id == $bateria->id)
+                        selected 
+                      @endif 
+                    @endisset
+                      ><p> {{ $bateria->descricao }} </p></option>
+                    @endforeach
+
                   </select>
               </div>
         </div> <br>

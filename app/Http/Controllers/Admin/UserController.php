@@ -24,7 +24,7 @@ class UserController extends Controller
                
         $ghs = GrauHierarquico::orderBy('precedencia','asc')->get();
 
-        $url = Storage::url('302213212.png');
+        $url = null;
 
       view()->share(compact('opms','ghs','url'));
       }

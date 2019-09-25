@@ -27,6 +27,7 @@ class EfetivoController extends Controller
 
     public function index()
     {
+    // dd( $this->getPrevisao());
       //  dd( auth()->user());
 
    /*   $efetivos = Efetivo::join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
@@ -108,6 +109,20 @@ class EfetivoController extends Controller
        ->get();
 
         return response()->json($efetivo);
+
+    }
+
+    public function getDistribuicao()
+    {
+      $prev = DB::table('distribuicao_efetivo')->select('total')->where('opm_id','2050411')->pluck('total')->toArray();
+      dd($prev);
+    }
+
+    public function getPrevisao()
+    {
+      $prev = DB::table('distribuicao_efetivo')->select('total')->where('opm_id','2050411')->pluck('total')->toArray();
+   
+      return response()->json($prev);
 
     }
 }

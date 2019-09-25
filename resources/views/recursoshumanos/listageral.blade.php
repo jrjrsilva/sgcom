@@ -103,7 +103,15 @@
 @stop
 
 @section('js')
+<script>
+
+$(document).ready(function(){
+ 
+});
+</script>
+
  <script>
+      var dataPrevisto =  [0, 1, 1, 3, 11, 11, 30,25,100];
        let grafico = document.getElementById('grafico').getContext('2d');
        let chart = new Chart(grafico, {
         type: 'bar',
@@ -112,7 +120,7 @@
                     
         datasets: [{
                 label: 'Previsto',
-                data: [0, 1, 1, 3, 11, 11, 30,25,100],
+                data: dataPrevisto,
                 backgroundColor: "rgba(255, 0, 0, 0.9)",
                 borderColor: "#0000ff"
             },

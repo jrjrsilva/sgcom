@@ -22,6 +22,10 @@ class Viatura extends Model
         return $this->belongsTo(Opm::class);
     }
 
+    function bateria() {
+        return $this->belongsTo(Bateria::class);
+    }
+
     function combustivel() {
         return $this->belongsTo(Combustivel::class);
     }

@@ -13,6 +13,7 @@ use sgcom\Models\SituacaoViatura;
 use sgcom\Models\Viatura;
 use sgcom\Models\Combustivel;
 use sgcom\Models\TipoPneu;
+use sgcom\Models\Bateria;
 
 class FrotaController extends Controller
 {
@@ -25,7 +26,8 @@ class FrotaController extends Controller
       $situacaoviaturas = SituacaoViatura::orderBy('descricao','asc')->get();
       $combustiveis = Combustivel::orderBy('descricao','asc')->get();
       $tipopneus = TipoPneu::orderBy('descricao','asc')->get();
-      view()->share(compact('opms','marcaveiculos',
+      $baterias = Bateria::orderBy('descricao','asc')->get();
+      view()->share(compact('opms','marcaveiculos','baterias',
       'modeloveiculos','situacaoviaturas','combustiveis','tipopneus'));
     }
     
@@ -68,6 +70,9 @@ class FrotaController extends Controller
           $viatura->tipo_pneu_id  = $request->tipopneu;
           $viatura->km  = $request->km;
           $viatura->cor =   $request->cor;
+          $viatura->emprego = $request->emprego;
+          $viatura->bateria_id = $request->bateria;
+          $viatura->propriedade = $request->propriedade;
   
             $retorno =  $viatura->save();
 

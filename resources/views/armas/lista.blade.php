@@ -68,6 +68,8 @@
                         <th>Especie</th>
                         <th>OPM</th>
                         <th>Situação</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
                         <th></th>
                       </tr>
                       </thead>
@@ -79,6 +81,8 @@
                         <td>{{$arma->especiearma->nome}}</td>
                         <td>{{$arma->opm->opm_sigla}}</td>
                         <td>{{$arma->situacaoarma->nome}}</td>
+                        <td>{{$arma->marcaarma->nome}}</td>
+                        <td>{{$arma->modeloarma->nome}}</td>
                         <td>
                           <a href="{{route('armas.edit',$arma->id)}}" class="btn btn-primary btn-flat"> <i class="fa fa-edit"></i></a>
                         </td>
@@ -93,18 +97,36 @@
                         <th>Especie</th>
                         <th>OPM</th>
                         <th>Situação</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
                       <th></th>
                       </tr>
                       </tfoot>
                     </table>
+                    <table id="tab2" class="table table-bordered">
+                      <thead>
+                         <tr>
+                             <th></th>
+                             <th></th>
+                             
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                         <td>
+                          @if (isset($dataForm))
+                          {{ $armas->appends($dataForm)->links() }}
+                         @else
+                           {!! $armas->links()!!}                  
+                         @endif
+                         </td>
+                         <td align="right">Total de registros</td>
+                         <td>{{ $armas->total() }}</td> 
+                      </tr>
+                     </tbody>
+                </table>
                     <div >
-                      @if (isset($dataForm))
-                       {{ $armas->appends($dataForm)->links() }}
-                      @else
-                        {!! $armas->links()!!}
-                      
-                      
-                      @endif
+                     
                   
                   </div>
                     

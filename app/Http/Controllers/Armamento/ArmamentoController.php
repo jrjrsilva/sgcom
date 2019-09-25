@@ -10,6 +10,8 @@ use sgcom\Models\Opm;
 use sgcom\Models\Arma;
 use sgcom\Models\Calibre;
 use sgcom\Models\EspecieArma;
+use sgcom\Models\MarcaArma;
+use sgcom\Models\ModeloArma;
 use sgcom\Models\SituacaoArma;
 
 class ArmamentoController extends Controller
@@ -21,8 +23,10 @@ class ArmamentoController extends Controller
       $calibres = Calibre::all();
       $especies = EspecieArma::all();
       $situacaoarmas = SituacaoArma::all();
+      $marcaarmas = MarcaArma::all();
+      $modeloarmas = ModeloArma::all();
      
-      view()->share(compact('opms','calibres','especies','situacaoarmas'));
+      view()->share(compact('opms','calibres','especies','situacaoarmas','modeloarmas','marcaarmas'));
     }
     
     public function lista()

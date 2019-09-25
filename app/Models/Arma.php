@@ -28,6 +28,14 @@ class Arma extends Model
         return $this->belongsTo(SituacaoArma::class,'situacao');
     }
 
+    function marcaarma() {
+        return $this->belongsTo(MarcaArma::class,'marca_da_arma');
+    }
+
+    function modeloarma() {
+        return $this->belongsTo(ModeloArma::class,'modelo');
+    }
+
     public function search(Array $dataForm, $totalPage)
     {
      return 

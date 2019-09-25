@@ -161,8 +161,6 @@
                          
                         <a href="{{route('servico.ocorrencia.excluir',$ocorrencia->id)}}" 
                                 onclick="return confirmExcluirOcorrencia();" class="btn btn-danger btn-flat"><i class="fa fa-trash-o"></i></a>
-                        
-                    
                     </td>
                   </tr>
                   @empty
@@ -184,13 +182,18 @@
                   <thead>
                      <tr>
                          <th></th>
-                         <th></th>
-                         
+                         <th></th>                         
                     </tr>
                   </thead>
                   <tbody>
                   <tr>
-                     <td> {!! $ocorrencias->links()!!}</td>
+                     <td> 
+                      @if (isset($dataForm))
+                      {{ $ocorrencias->appends($dataForm)->links() }}
+                     @else
+                       {!! $ocorrencias->links()!!}                  
+                     @endif
+                     </td>
                      <td align="right">Total de registros</td>
                      <td>{{ $ocorrencias->total() }}</td> 
                   </tr>
