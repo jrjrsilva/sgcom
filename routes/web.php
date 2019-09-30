@@ -11,6 +11,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 
     $this->get('usuarios', 'UserController@index')->name('admin.usuarios');
     $this->get('usuarios/{id}', 'UserController@status')->name('admin.usuarios.status');
+    $this->post('usuarios/salvar', 'UserController@salvar')->name('admin.usuarios.salvar');
     $this->get('usuarios/{id}/edit', 'UserController@edit')->name('admin.usuarios.edit');
     $this->post('usuarios', 'UserController@search')->name('admin.usuarios.search');
     $this->get('/', 'AdminController@index')->name('admin.home');
@@ -79,6 +80,9 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
     $this->get('listageral/{id?}/edit','EfetivoController@edit')->name('rh.edit');
     $this->get('listageral/{id?}/detalhe','EfetivoController@detalhe')->name('rh.detalhe');
     $this->post('salvar','EfetivoController@salvar')->name('rh.salvar');
+    $this->get('previsaoefetivo/{id}','EfetivoController@getPrevisao')->name('rh.previsao');
+    $this->get('realefetivo/{id}','EfetivoController@getEfetivoReal')->name('rh.efetivoReal');
+    
 });
 
 

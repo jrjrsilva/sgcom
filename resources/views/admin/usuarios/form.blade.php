@@ -18,7 +18,7 @@
     <section class="content">
  <!--FORMULÁRIO -->                            
 
-    <form role="form" method="POST" action="{{ route('rh.salvar')}}" >
+    <form role="form" method="POST" action="{{ route('admin.usuarios.salvar')}}" >
     {!! csrf_field() !!}
     <input type="hidden" name="id" id="id" value="{{ $user->id or '' }}">
  <!--DADOS  DO POLICIAL-->   

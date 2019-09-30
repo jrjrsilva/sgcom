@@ -11,10 +11,63 @@
 @stop
 
 @section('content')
-    <p>Gestão de Efetivo </p>
-     <div>
-      <canvas id="grafico"></canvas>
-     </div>
+<div class="row">
+  <div class="col-md-4 col-sm-6 col-12">
+         <div class="info-box bg-aqua">
+         <span class="info-box-icon"><i class="fa fa-bar-chart"></i></span>
+             <div class="info-box-content">
+             <span class="info-box-text">Efetivo Total do CPR</span>
+             <span class="info-box-number">{{ $cprTotal }}</span>
+         <!-- The progress section is optional -->
+         <div class="progress">
+           <div class="progress-bar" style="width: {{ $cprTotal }}%"></div>
+         </div>
+         <span class="progress-description">
+           {{$previsaoTotalCpr}} é o efetivo previsto
+         </span>
+         </div>
+       <!-- /.info-box-content -->
+    </div>
+ </div>
+
+ <div class="col-md-4 col-sm-6 col-12">
+  <div class="info-box bg-aqua">
+  <span class="info-box-icon"><i class="fa fa-bar-chart"></i></span>
+      <div class="info-box-content">
+      <span class="info-box-text">Efetivo Total da Undade</span>
+      <span class="info-box-number">{{ $opmTotal }}</span>
+  <!-- The progress section is optional -->
+  <div class="progress">
+    <div class="progress-bar" style="width: {{ $previsao }}%"></div>
+  </div>
+  <span class="progress-description">
+    {{$previsaoTotalOpm}} é o efetivo previsto para a OPM
+  </span>
+  </div>
+<!-- /.info-box-content -->
+</div>
+</div>
+ 
+</div>
+    <div class="box">
+      <div class="box-header with-border">
+        <h3 class="box-title">Gráfico</h3>
+        <div class="box-tools pull-right">
+          <!-- Collapse Button -->
+          <button type="button" class="btn btn-box-tool" data-widget="collapse">
+            <i class="fa fa-minus"></i>
+          </button>
+        </div>
+        <!-- /.box-tools -->
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <canvas id="grafico"></canvas>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
       <div class="box">
             <div class="box-header">
             <form action="{{route('rh.searchMatricula')}}" method="POST" class="form form-inline">
@@ -111,7 +164,35 @@ $(document).ready(function(){
 </script>
 
  <script>
-      var dataPrevisto =  [0, 1, 1, 3, 11, 11, 30,25,100];
+
+function renderChart(data, labels) {
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'This week',
+                data: data,
+            }]
+        },
+    });
+}
+
+$("#renderBtn").click(
+    function () {
+        data = [20000, 14000, 12000, 15000, 18000, 19000, 22000];
+        labels =  ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+        renderChart(data, labels);
+    }
+);
+
+
+console.log({{$previsao}});
+
+
+      var dataPrevisto =  {{$previsao}};
+      var dataRealEfetivo = {{$realEfetivo}}
        let grafico = document.getElementById('grafico').getContext('2d');
        let chart = new Chart(grafico, {
         type: 'bar',
@@ -126,16 +207,33 @@ $(document).ready(function(){
             },
             {
                 label: 'Disponível',
-                data: [0, 0, 1, 3, 9, 8, 15, 5, 85],
+                data: dataRealEfetivo,
                 backgroundColor: "rgba(0, 255, 0, 0.3)",
                 borderColor: "#002200"
             }
         ]
     }
        });
-
-
-       
+   
  </script>   
 
 @stop
+
+@section('style')
+<style>
+  *{
+    margin:0;
+    padding:0;
+  }
+  #suadiv{
+    position:relative;
+    top:0;
+    left:0;
+    z-index:11;
+    background-color:#fff;
+    width:50%;
+    height:50%;
+  }
+  </style>
+  
+@endsection

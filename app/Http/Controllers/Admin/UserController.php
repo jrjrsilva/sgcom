@@ -91,6 +91,12 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Falha ao atualizar o perfil!');
     }
 
+    public function salvar(Request $request)
+    {
+      return $this->index();
+    }
+
+
     public function searchOld(Request $request, User $user)
     {
       // dd($request->all());
