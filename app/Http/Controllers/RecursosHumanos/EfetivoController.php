@@ -147,10 +147,53 @@ class EfetivoController extends Controller
 
    public function getPrevisaoGH($opm)
     {
-      $prev = DB::table('distribuicao_efetivo')->select('total')->where('opm_id',$opm)->pluck('total')->toArray();
+      $cel = DB::table('distribuicao_efetivo')
+      ->where('opm_id',$opm)
+      ->where('grauhierarquico_id',3470)
+      ->sum('total');
+
+      $tencel = DB::table('distribuicao_efetivo')
+      ->where('opm_id',$opm)
+      ->where('grauhierarquico_id',3460)
+      ->sum('total');
+
+      $maj = DB::table('distribuicao_efetivo')
+      ->where('opm_id',$opm)
+      ->where('grauhierarquico_id',3450)
+      ->sum('total');
+
+      $cap = DB::table('distribuicao_efetivo')
+      ->where('opm_id',$opm)
+      ->where('grauhierarquico_id',3440)
+      ->sum('total');
+
+      $ten = DB::table('distribuicao_efetivo')
+      ->where('opm_id',$opm)
+      ->where('grauhierarquico_id',3430)
+      ->sum('total');
+
+      $subten = DB::table('distribuicao_efetivo')
+      ->where('opm_id',$opm)
+      ->where('grauhierarquico_id',3400)
+      ->sum('total');
+
+      $sgt = DB::table('distribuicao_efetivo')
+      ->where('opm_id',$opm)
+      ->where('grauhierarquico_id',3390)
+      ->sum('total');
+
+      $cb = DB::table('distribuicao_efetivo')
+      ->where('opm_id',$opm)
+      ->where('grauhierarquico_id',3340)
+      ->sum('total');
+
+      $sd = DB::table('distribuicao_efetivo')
+      ->where('opm_id',$opm)
+      ->where('grauhierarquico_id',3330)
+      ->sum('total');
        
-      $final_array = array($prev);
-      return json_encode($final_array[0]);
+      $retorno = '['.$cel.','.$tencel.','.$maj.','.$cap.','.$ten.','.$subten.','.$sgt.','.$cb.','.$sd.']';
+      return $retorno;
     }
 
     public function getPrevisaoTotalCpr($cpr)
