@@ -148,7 +148,6 @@ return [
                     'icon' => 'dashboard',
                 ]
                 ,  
-
                 [
                     'text' => 'Produtividade',
                     'url'  => 'servico/produtividade',
@@ -158,7 +157,7 @@ return [
         ],   
 
         [
-            'text'        => 'Recursos Humanoss',
+            'text'        => 'Recursos Humanos',
             'url'         => 'rh/listageral',
             'icon'        => 'users',
             'label_color' => 'success',    

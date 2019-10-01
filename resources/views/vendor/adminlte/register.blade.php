@@ -9,15 +9,16 @@
 
 @section('body')
     <div class="register-box">
-        <div class="register-logo">
+        <!--<div class="register-logo">
             <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</a>
-        </div>
+        </div>-->
 
         <div class="register-box-body">
+            
+            <p class="login-box-msg"><img src="http://sgcom.cprcatlantico.com.br/logo_systemPNG.png"></p>
             <p class="login-box-msg">{{ trans('adminlte::adminlte.register_message') }}</p>
             <form action="{{ url(config('adminlte.register_url', 'register')) }}" method="post">
                 {!! csrf_field() !!}
-
                 <div class="form-group has-feedback {{ $errors->has('matricula') ? 'has-error' : '' }}">
                     <input type="text" id="matricula"  name="matricula" class="form-control" value="{{ old('matricula') }}"
                     placeholder="Informe sua matricula">
@@ -32,8 +33,8 @@
 <input type="hidden" id="efetivo_id" name="efetivo_id" value="">
 
                 <div class="form-group has-feedback {{ $errors->has('name') ? 'has-error' : '' }}">
-                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}"
-                    readonly       placeholder="{{ trans('adminlte::adminlte.full_name') }}">
+                    <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}"
+                           placeholder="{{ trans('adminlte::adminlte.full_name') }}" readonly>
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     @if ($errors->has('name'))
                         <span class="help-block">
@@ -86,7 +87,7 @@
 
 @section('adminlte_js')
     @yield('js')
-    <script>
+<script>
      $('#matricula').focus(function () {       
         $('#name').val("");
         $('#efetivo_id').val("");
@@ -103,9 +104,6 @@
             $('#opm_id').val(efetivo[0].opm_id);
             
         }); 
-    });
-
-
-    
+    });    
 </script>
 @stop

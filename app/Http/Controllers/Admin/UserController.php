@@ -96,18 +96,6 @@ class UserController extends Controller
       return $this->index();
     }
 
-
-    public function searchOld(Request $request, User $user)
-    {
-      // dd($request->all());
-      $dataForm = $request->except('_token');
- 
-      $users =  $user->search($dataForm, $this->totalPage);
-     // dd($efetivos);
-
-      return view('admin.usuarios.index',compact('users','dataForm'));
-    }
-
     public function search(Request $dataForm)
     {
      
