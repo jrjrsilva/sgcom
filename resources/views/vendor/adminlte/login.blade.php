@@ -13,7 +13,7 @@
        <!-- <div class="login-logo">
           <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</a>
         </div>
-        <!-- /.login-logo -->
+         /.login-logo -->
         <div class="login-box-body">
              
              <p class="login-box-msg"><img src="http://sgcom.cprcatlantico.com.br/logo_systemPNG.png"></p>

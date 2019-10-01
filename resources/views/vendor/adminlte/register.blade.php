@@ -26,6 +26,7 @@
                     @if ($errors->has('matricula'))
                         <span class="help-block">
                             <strong>{{ $errors->first('matricula') }}</strong>
+                           
                         </span>
                     @endif
                 </div>
@@ -51,6 +52,11 @@
                             <strong>{{ $errors->first('email') }}</strong>
                         </span>
                     @endif
+                    @if ($errors->has('efetivo'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('efetivo') }}</strong>
+                    </span>
+                @endif
                 </div>
                 <div class="form-group has-feedback {{ $errors->has('password') ? 'has-error' : '' }}">
                     <input type="password" name="password" class="form-control"

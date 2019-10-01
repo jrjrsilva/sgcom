@@ -27,7 +27,4 @@ class User extends Authenticatable
     public function efetivo(){
         return $this->belongsTo(Efetivo::class);
     }
-
- 
-    
 }
