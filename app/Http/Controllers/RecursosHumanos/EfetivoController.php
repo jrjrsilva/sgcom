@@ -17,11 +17,11 @@ class EfetivoController extends Controller
     private $totalPage = 100;
 
     public function __construct() {
-      $opms = Opm::orderBy('opm_sigla', 'asc')->get();
-      //$opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
+     // $opms = Opm::orderBy('opm_sigla', 'asc')->get();
+      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
       $ghs = GrauHierarquico::orderBy('precedencia','asc')->get();
      
-      view()->share(compact('opms','ghs','aniversarios'));
+      view()->share(compact('opms','ghs'));
     }
  
     public function dadosGerais()
@@ -49,27 +49,23 @@ class EfetivoController extends Controller
        $efetivos = Efetivo::where('opm_id','999')->paginate($this->totalPage);
      
        $opm = 2050411;//Auth::user()->efetivo->opm_id;
-    
-    
+
        $usr = Auth::user();
    
        $valor = $usr->efetivo->opm_id;
-            
-  
-     
-     $aniversarios = DB::table('pmgeral')
-     ->select('*')
-     ->whereDay('datanascimento', date('d'))
-     ->whereMonth('datanascimento',date('m'))
-     ->where('opm_id', $valor)->get();
+    
+      $aniversarios = DB::table('pmgeral')
+        ->select('*')
+        ->whereDay('datanascimento', date('d'))
+        ->whereMonth('datanascimento',date('m'))
+        ->where('opm_id', $valor)->get();
 
-        return view('recursoshumanos.listageral',compact('efetivos','aniversarios','valor'));
+      return view('recursoshumanos.listageral',compact('efetivos','aniversarios','valor'));
     }
 
     public function searchMatricula(Request $request, Efetivo $efetivo)
     {
       $this->dadosGerais();
-      
       // dd($request->all());
       $dataForm = $request->except('_token');
  
@@ -85,9 +81,7 @@ class EfetivoController extends Controller
       if(!$efetivo){
         abort(404);
       }
-      
       return view('recursoshumanos.form', compact('efetivo'));
-    
     }
 
     public function detalhe($id)
@@ -96,7 +90,6 @@ class EfetivoController extends Controller
       if(!$efetivo){
         abort(404);
       }
-
       return view('recursoshumanos.detalhe', compact('efetivo'));
     }
 
@@ -123,7 +116,6 @@ class EfetivoController extends Controller
         $efetivo->matricula = $request->matricula;
         $efetivo->sexo = $request->sexo;
 
-
         $efetivo->save();
 
         return redirect()->back()->with('success', 'Atualizado com sucesso!');
@@ -136,13 +128,11 @@ class EfetivoController extends Controller
 
     public function getMatricula($id)
     {
-
        $efetivo =  DB::table('pmgeral')
        ->where('matricula', $id)
        ->get();
 
         return response()->json($efetivo);
-
     }
 
    public function getPrevisaoGH($opm)

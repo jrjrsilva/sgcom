@@ -164,33 +164,6 @@ $(document).ready(function(){
 </script>
 
  <script>
-
-function renderChart(data, labels) {
-    var ctx = document.getElementById("myChart").getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'This week',
-                data: data,
-            }]
-        },
-    });
-}
-
-$("#renderBtn").click(
-    function () {
-        data = [20000, 14000, 12000, 15000, 18000, 19000, 22000];
-        labels =  ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-        renderChart(data, labels);
-    }
-);
-
-
-console.log({{$previsao}});
-
-
       var dataPrevisto =  {{$previsao}};
       var dataRealEfetivo = {{$realEfetivo}}
        let grafico = document.getElementById('grafico').getContext('2d');
@@ -220,20 +193,5 @@ console.log({{$previsao}});
 @stop
 
 @section('style')
-<style>
-  *{
-    margin:0;
-    padding:0;
-  }
-  #suadiv{
-    position:relative;
-    top:0;
-    left:0;
-    z-index:11;
-    background-color:#fff;
-    width:50%;
-    height:50%;
-  }
-  </style>
   
 @endsection
