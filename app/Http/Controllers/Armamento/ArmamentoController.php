@@ -28,17 +28,43 @@ class ArmamentoController extends Controller
      
       view()->share(compact('opms','calibres','especies','situacaoarmas','modeloarmas','marcaarmas'));
     }
+
+    public function dadosGerais(){
+      $usr = Auth()->user();
+      $armasManutencao = Arma::where('opm_id',$usr->efetivo->opm_id)
+      ->where('situacao',1)
+      ->count();
+
+      $armasCargaPessoal = Arma::where('opm_id',$usr->efetivo->opm_id)
+      ->where('situacao',13)
+      ->count();
+
+      $armasPericiaIcap = Arma::where('opm_id',$usr->efetivo->opm_id)
+      ->where('situacao',5)
+      ->count();
+
+      view()->share(compact('armasManutencao','armasCargaPessoal','armasPericiaIcap'));
+   
+    }
     
     public function lista()
     {
+     
+      $this->dadosGerais();
+
       $opms = DB::table('opm')->select('id')->where('cpr_id', '=','12')->pluck('id')->toArray();
-    
-      $armas = 
-      Arma::whereIn('opm_id',$opms)->orderBy('numero_de_serie')->paginate($this->totalPage);
+      $usr = Auth()->user();
+     
+      $armas = Arma::where('opm_id',$usr->efetivo->opm_id)
+      ->orderBy('numero_de_serie')
+      ->paginate($this->totalPage);
+     
+      //$armas = Arma::whereIn('opm_id',$opms)->orderBy('numero_de_serie')->paginate($this->totalPage);
     /*  DB::table('arma')
      ->select('*')
      ->whereIn('opm_id',$opms)
      ->paginate($this->totalPage); */
+
       return view('armas.lista',compact('armas'));
     }
   
@@ -83,7 +109,8 @@ class ArmamentoController extends Controller
       $dataForm = $request->except('_token');
  
       $armas =  $arma->search($dataForm, $this->totalPage);
-     // dd($efetivos);
+    
+      $this->dadosGerais();
 
       return view('armas.lista',compact('armas','dataForm'));
     }

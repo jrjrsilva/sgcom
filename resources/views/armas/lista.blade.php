@@ -6,11 +6,86 @@
     <h1>Gestão de Armas</h1>
     <ol class="breadcrumb">
             <li><a href="{{route('armas.lista')}}">Gestão de Armas</a></li>
-    <li><a href="{{route('armas.index')}}">Cadastro</a></li>
+    		<li><a href="{{route('armas.index')}}">Cadastro</a></li>
         </ol>  
 @stop
 
 @section('content')
+
+<div class="row">
+     <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box bg-aqua">
+            <span class="info-box-icon"><i class="fa fa-bar-chart"></i></span>
+                <div class="info-box-content">
+                <span class="info-box-text">Armas </span>
+                <span class="info-box-number">{{ $armas->total() }}</span>
+            <!-- The progress section is optional -->
+            <div class="progress">
+              <div class="progress-bar" style="width: 20%"></div>
+            </div>
+            <span class="progress-description">
+              
+            </span>
+            </div>
+          <!-- /.info-box-content -->
+       </div>
+    </div>
+    
+    <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box bg-red">
+            <span class="info-box-icon"><i class="fa fa-meh-o"></i></span>
+                <div class="info-box-content">
+                <span class="info-box-text">ARMAS EM MANUTENÇÂO</span>
+                <span class="info-box-number">{{ $armasManutencao}}</span>
+            <!-- The progress section is optional -->
+            <div class="progress">
+              <div class="progress-bar" style="width: 30%"></div>
+            </div>
+            <span class="progress-description">
+            </span>
+            </div>
+          <!-- /.info-box-content -->
+       </div>
+    </div>
+    
+    <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box bg-green">
+            <span class="info-box-icon"><i class="fa fa-automobile"></i></span>
+                <div class="info-box-content">
+                <span class="info-box-text">Carga Pessoal</span>
+                <span class="info-box-number">{{$armasCargaPessoal}}</span>
+            <!-- The progress section is optional -->
+            <div class="progress">
+              <div class="progress-bar" style="width: 00%"></div>
+            </div>
+            <span class="progress-description">
+                
+              </span>
+            </div>
+          <!-- /.info-box-content -->
+       </div>
+    </div>
+    
+    <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box bg-yellow">
+            <span class="info-box-icon"><i class="fa fa-comments-o"></i></span>
+                <div class="info-box-content">
+                <span class="info-box-text">PERÍCIA/ICAP</span>
+                <span class="info-box-number">{{$armasPericiaIcap}}</span>
+            <!-- The progress section is optional -->
+            <div class="progress">
+            <div class="progress-bar" style="width: 30%"></div>
+            </div>
+            <span class="progress-description">
+            </span>
+            </div>
+          <!-- /.info-box-content -->
+       </div>
+    </div>
+    
+    
+    
+</div>
     <h2>Listagem</h2>
     @include('site.includes.alerts')
     <div class="box">
@@ -21,7 +96,7 @@
                     <input  type="text" name="pserial"  id="pserial" class="form-control"
                      placeholder="Informe o serial" maxlength="10"/>
 
-                    <label for="psituacao">Especie da Arma:</label>
+                    <label for="psituacao">Situação da Arma:</label>
                     <select class="form form-control" id="psituacao" name="psituacao">
                       <option value="">Selecione a Situação</option>
                       @foreach( $situacaoarmas as $situacao )

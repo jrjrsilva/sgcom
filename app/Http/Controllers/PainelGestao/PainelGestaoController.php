@@ -8,6 +8,7 @@ use sgcom\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use sgcom\Models\Opm;
 use sgcom\Models\Efetivo;
+use sgcom\Models\Viatura;
 use sgcom\Models\GrauHierarquico;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -34,7 +35,9 @@ class PainelGestaoController extends Controller
 
        $opm = Auth::user()->efetivo->opm_id;
      
-       $efetivos = Efetivo::where('opm_id',$opm)->paginate($this->totalPage);
+       $efetivos = Efetivo::where('opm_id',$opm)
+       ->orderBy('grauhierarquico_id', 'DESC')
+       ->paginate($this->totalPage);
      
       $aniversarios = DB::table('pmgeral')
         ->select('*')
@@ -53,7 +56,9 @@ class PainelGestaoController extends Controller
       $cprt = $usr->efetivo->opm->cpr_id;
       $opmTotal = $this->getEfetivoTotalOpm($opmt);
       $cprTotal = $this->getEfetivoTotalCpr($cprt);
-     
+      $viaturas = Viatura::orderBy('prefixo')
+      ->where('opm_id',$opmt)
+      ->paginate($this->totalPage);
       $homicidioCpr = DB::table('ocorrencia')
       ->where('tipoocorrencia_id', 1)
       ->count();
@@ -68,8 +73,10 @@ class PainelGestaoController extends Controller
            else 
           $phomicidioOpm = 0;
 
+        $vlhom_cpr = '['.$homicidioCpr.']';
+        $vlhom_opm = '['.$homicidioOpm.']';
 
-     return view()->share(compact('opmTotal','cprTotal','homicidioCpr','homicidioOpm'));
+     return view()->share(compact('viaturas','vlhom_opm','vlhom_cpr','opmTotal','cprTotal','homicidioCpr','homicidioOpm','phomicidioOpm'));
     }
 
     

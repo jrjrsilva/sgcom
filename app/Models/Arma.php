@@ -3,6 +3,7 @@
 namespace sgcom\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Arma extends Model
 {
@@ -38,6 +39,8 @@ class Arma extends Model
 
     public function search(Array $dataForm, $totalPage)
     {
+        $opms = DB::table('opm')->select('id')->where('cpr_id', '=','12')->pluck('id')->toArray();
+
      return 
      //$retorno =
      $this->
@@ -57,7 +60,9 @@ class Arma extends Model
        if(isset($dataForm['popm'])){
             $query->where('opm_id','=',$dataForm['popm']);
         }  
-    })->orderBy('numero_de_serie', 'asc')
+    })
+     ->whereIn('opm_id',$opms)
+    ->orderBy('numero_de_serie', 'asc')
     ->paginate($totalPage);
     //->toSql();
    // dd($retorno);

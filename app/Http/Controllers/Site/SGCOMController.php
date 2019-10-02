@@ -42,13 +42,17 @@ class SGCOMController extends Controller
    
        $opm = $usr->efetivo->opm_id;
 
-       $efetivos = Efetivo::where('opm_id',$opm)->paginate($this->totalPage);
+       $efetivos = Efetivo::where('opm_id',$opm)
+       ->orderBy('grauhierarquico_id', 'DESC')
+       ->paginate($this->totalPage);
     
       $aniversarios = DB::table('pmgeral')
         ->select('*')
         ->whereDay('datanascimento', date('d'))
         ->whereMonth('datanascimento',date('m'))
-        ->where('opm_id', $opm)->get();
+        ->where('opm_id', $opm)
+        ->orderBy('datanascimento')
+        ->get();
 
       return view('site.auth.index',compact('efetivos','aniversarios','valor'));
         
