@@ -27,7 +27,9 @@ class FrotaController extends Controller
       $combustiveis = Combustivel::orderBy('descricao','asc')->get();
       $tipopneus = TipoPneu::orderBy('descricao','asc')->get();
       $baterias = Bateria::orderBy('descricao','asc')->get();
-      view()->share(compact('opms','marcaveiculos','baterias',
+      $baixadas = Viatura::where('situacao_viatura_id',4)->count();      
+      $operantes = Viatura::whereIn('situacao_viatura_id', [2,3,6])->count();
+      view()->share(compact('opms','marcaveiculos','baterias','baixadas','operantes',
       'modeloveiculos','situacaoviaturas','combustiveis','tipopneus'));
     }
     

@@ -48,17 +48,15 @@ class EfetivoController extends Controller
                           ->orderBy('grauHierarquico.precedencia','asc')->paginate($this->totalPage);*/
        $efetivos = Efetivo::where('opm_id','999')->paginate($this->totalPage);
      
-       $opm = 2050411;//Auth::user()->efetivo->opm_id;
-
        $usr = Auth::user();
    
-       $valor = $usr->efetivo->opm_id;
+       $opm = $usr->efetivo->opm_id;
     
       $aniversarios = DB::table('pmgeral')
         ->select('*')
         ->whereDay('datanascimento', date('d'))
         ->whereMonth('datanascimento',date('m'))
-        ->where('opm_id', $valor)->get();
+        ->where('opm_id', $opm)->get();
 
       return view('recursoshumanos.listageral',compact('efetivos','aniversarios','valor'));
     }

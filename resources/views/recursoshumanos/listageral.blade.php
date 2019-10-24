@@ -142,10 +142,7 @@
                  {{ $efetivos->appends($dataForm)->links() }}
                 @else
                   {!! $efetivos->links()!!}
-                
-                
                 @endif
-            
             </div>
               
             </div>
@@ -157,6 +154,9 @@
 
 @section('js')
 <script>
+$("#opm").change(function(){
+  //alert ('ola');
+})
 
 $(document).ready(function(){
  

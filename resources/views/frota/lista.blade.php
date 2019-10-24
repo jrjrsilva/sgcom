@@ -11,15 +11,70 @@
 @stop
 
 @section('content')
-    <h2>Listagem</h2>
     @include('site.includes.alerts')
+    <div class="row">
+     <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box bg-aqua">
+            <span class="info-box-icon"><i class="fa fa-automobile"></i></span>
+                <div class="info-box-content">
+                <span class="info-box-text">Total de Viaturas</span>
+                <span class="info-box-number">0{{ $viaturas->total() }}</span>
+            <!-- The progress section is optional -->
+            <div class="progress">
+              <div class="progress-bar" style="width: 100%"></div>
+            </div>
+            <span class="progress-description">
+              
+            </span>
+            </div>
+          <!-- /.info-box-content -->
+       </div>
+    </div>
+    
+    <div class="col-md-3 col-sm-6 col-12">
+      <div class="info-box bg-green">
+          <span class="info-box-icon"><i class="fa fa-automobile"></i></span>
+              <div class="info-box-content">
+              <span class="info-box-text">Viaturas Operantes</span>
+              <span class="info-box-number">{{ $operantes }}</span>
+          <!-- The progress section is optional -->
+          <div class="progress">
+            <div class="progress-bar" style="width: 00%"></div>
+          </div>
+          <span class="progress-description">
+           
+          </span>
+          </div>
+        <!-- /.info-box-content -->
+     </div>
+  </div>
+    <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box bg-red">
+            <span class="info-box-icon"><i class="fa fa-automobile"></i></span>
+                <div class="info-box-content">
+                <span class="info-box-text">Viaturas Baixadas</span>
+                <span class="info-box-number">{{ $baixadas }}</span>
+            <!-- The progress section is optional -->
+            <div class="progress">
+              <div class="progress-bar" style="width: {{$baixadas}}%"></div>
+            </div>
+            <span class="progress-description">
+          
+            </span>
+            </div>
+          <!-- /.info-box-content -->
+       </div>
+    </div>
+    
+    
+    
+</div>
     <div class="box">
                   <div class="box-header">
                   <form action="{{route('frota.search')}}" method="POST" class="form form-inline">
-                    {!! csrf_field() !!}
-                    
+                    {!! csrf_field() !!}                    
                             <label>Situação</label>  
-                            <select class="form-control" id="situacao" required name="situacao">
+                            <select class="form-control" id="situacao" name="situacao">
                                 <option value="">Selecione a Situação</option>
                                 @foreach( $situacaoviaturas as $situacaoviatura )
                                 <option value="{{$situacaoviatura->id or '' }}" 
@@ -85,17 +140,31 @@
                       </tr>
                       </tfoot>
                     </table>
-                    <div >
-                      @if (isset($dataForm))
-                       {{ $viaturas->appends($dataForm)->links() }}
-                      @else
-                        {!! $viaturas->links()!!}
-                      
-                      
-                      @endif
                   
-                  </div>
-                    
+                    <table id="tab2" class="table table-bordered">
+                      <thead>
+                         <tr>
+                             <th></th>
+                             <th></th>                         
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                         <td> 
+                          @if (isset($dataForm))
+                          {{ $viaturas->appends($dataForm)->links() }}
+                         @else
+                           {!! $viaturas->links()!!}                  
+                         @endif
+                         </td>
+                         <td align="right">Total de registros</td>
+                         <td>{{ $viaturas->total() }}</td> 
+                      </tr>
+                     </tbody>
+                </table>
+                  
+                  
+                   
                   </div>
                   <!-- /.box-body -->
                 </div>
