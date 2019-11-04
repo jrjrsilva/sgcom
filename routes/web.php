@@ -51,7 +51,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Frotas', 'prefix' => 'fr
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Cvli', 'prefix' => 'cvli'], function(){
     $this->get('index','CvliController@index')->name('cvli.index');
-    $this->get('json','CvliController@json')->name('cvli.json');
+   // $this->get('json','CvliController@json')->name('cvli.json');
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Cvp', 'prefix' => 'cvp'], function(){
@@ -94,6 +94,5 @@ Route::get('picture', 'Admin\UserController@getPicture')->name('picture')->middl
 $this->get('/', 'Site\SGCOMController@index')->name('home');
 $this->get('/rh/matricula/{id}', 'Recursoshumanos\EfetivoController@getMatricula')->name('register.matricula');
 
+$this->get('/cvli/json','Cvli\CvliController@json')->name('cvli.json');
 Auth::routes();
-
-

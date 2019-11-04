@@ -186,7 +186,13 @@
               <input type="text" class="form-control" placeholder="Informe o local da ocorrência" required
               value="{{  $ocorrencia->ocorrencia_local or '' }}" id="local_ocorrencia" name="local_ocorrencia"> 
               </div>
-        </div> <br>
+
+              <input type="text" id="address-input" name="address_address" class="form-control map-input"> 
+              <input type="hidden" name="address_latitude" id="address-latitude" value="0" /> 
+              <input type="hidden" name="address_longitude" id="address-longitude" value="0" />
+        </div> 
+        
+        <br>
 
 <!-- GUARNIÇÃO DE SERVIÇO -->
 
@@ -763,4 +769,6 @@ $('#marcaveiculo').change(function () {
         });
     });
 </script>
+
+   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places"></script>
 @stop
