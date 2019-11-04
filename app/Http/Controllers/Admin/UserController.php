@@ -74,7 +74,7 @@ class UserController extends Controller
                    $extenstion = $request->image->extension();
                    $nameFile = "{$name}.{$extenstion}";
 
-                   $upload = $request->image->storeAs('users',$nameFile);
+                   $upload = $request->image->move(public_path().'/img_perfil',$nameFile);
 
                    $data['image'] = $nameFile;
                    
@@ -159,6 +159,8 @@ class UserController extends Controller
     }
 
     public function getPicture() {
-        return \Image::make(file_get_contents(storage_path('/users/' . Auth::user()->image)))->response();
+        return \Image::make((storage_path('/users/' . Auth::user()->image)))->response();
     }
+
+   
 }

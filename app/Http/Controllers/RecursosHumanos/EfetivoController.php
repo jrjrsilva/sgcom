@@ -64,11 +64,9 @@ class EfetivoController extends Controller
     public function searchMatricula(Request $request, Efetivo $efetivo)
     {
       $this->dadosGerais();
-      // dd($request->all());
       $dataForm = $request->except('_token');
  
       $efetivos =  $efetivo->searchUnique($dataForm, $this->totalPage);
-     // dd($efetivos);
 
       return view('recursoshumanos.listageral',compact('efetivos','dataForm'));
     }

@@ -51,6 +51,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Frotas', 'prefix' => 'fr
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Cvli', 'prefix' => 'cvli'], function(){
     $this->get('index','CvliController@index')->name('cvli.index');
+    $this->get('json','CvliController@json')->name('cvli.json');
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Cvp', 'prefix' => 'cvp'], function(){
@@ -88,7 +89,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
 
 $this->get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middleware('auth');
 $this->post('update-perfil', 'Admin\UserController@update')->name('profile.update')->middleware('auth');
-Route::get('picture', 'Admin\UserController@getPicture')->middleware('auth');
+Route::get('picture', 'Admin\UserController@getPicture')->name('picture')->middleware('auth');
 
 $this->get('/', 'Site\SGCOMController@index')->name('home');
 $this->get('/rh/matricula/{id}', 'Recursoshumanos\EfetivoController@getMatricula')->name('register.matricula');

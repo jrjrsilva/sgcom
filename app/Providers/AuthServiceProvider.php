@@ -27,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('rh-edit',function($user, $efetivo){
+        Gate::define('rh-list',function($user, $efetivo){
             return $user->efetivo->opm->cpr->id == $efetivo->opm->id;
             });
     }

@@ -38,9 +38,9 @@
     <div class="col-xs-12">
         <label for="image">Foto:</label>
         @if(auth()->user()->image != null)
-    <img src="{{ url('storage/users/'.auth()->user()->image)}}" alt="{{ auth()->user()->name}}" style="max-width: 50px;">
+    <img src="{{asset(public_path().'/img_perfil/'.auth()->user()->image)}}" alt="{{ auth()->user()->name}}" style="max-width: 50px;">
         @endif
-        <img src="{{$url}}">
+       
             <input type="file" name="image" id="image" class="form-group">
     </div>
     <div class="col-xs-12">
