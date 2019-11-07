@@ -183,27 +183,18 @@
         <div class="form-row">
               <div class="col">
                 <label>Local da Ocorrência</label>
-              <input type="text" class="form-control" placeholder="Informe o local da ocorrência" required 
+              <input type="text" class="form-control" placeholder="Informe o local da ocorrência" required
+              onblur="getCoordenadas()"
               value="{{  $ocorrencia->ocorrencia_local or '' }}" id="local_ocorrencia" name="local_ocorrencia"> 
           
             </div>          
         </div> 
-        <div class="form-row">
-            <div class="col-xs-2">
-                <button type="button" onclick="getCoordenadas()" class="btn btn-info pull-right">Coordenadas</button>
-            </div> 
-            <div class="col-xs-5">
-              <label>Latitude da Ocorrência</label>
-            <input type="text" class="form-control" placeholder="Latitude da ocorrência" 
+        
+            <input type="hidden" class="form-control" placeholder="Latitude da ocorrência" 
             value="{{  $ocorrencia->lat or '' }}" id="latitude" name="latitude"> 
-            </div>   
-            <div class="col-xs-5">
-                <label>Longitude da Ocorrência</label>
-              <input type="text" class="form-control" placeholder="Longitude da ocorrência" 
-              value="{{  $ocorrencia->lng or '' }}" id="longitude" name="logitude"> 
-              </div>         
-      </div> </div>
-        <br> <br>
+            <input type="hidden" class="form-control" placeholder="Longitude da ocorrência" 
+              value="{{  $ocorrencia->lng or '' }}" id="longitude" name="longitude"> 
+        <br>
 
 <!-- GUARNIÇÃO DE SERVIÇO -->
 

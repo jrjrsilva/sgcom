@@ -130,7 +130,8 @@ class OcorrenciaController extends Controller
       $ocorrencia->tipo_veiculo           =$request->tipoveiculo;
       $ocorrencia->placa_veiculo          =$request->placaveiculo;
 
-
+      $ocorrencia->lat                    =$request->latitude;
+      $ocorrencia->lng                    =$request->longitude;
 
       if(Auth::check()){
         $ocorrencia->user_id              = Auth::user()->id;
