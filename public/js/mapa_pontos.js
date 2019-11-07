@@ -4,9 +4,9 @@ var infoBox = [];
 var markers = [];
 
 function initialize() {
-    var latlng = new google.maps.LatLng(-13.849313, -38.8866439);
+    var latlng = new google.maps.LatLng(-12.991010,-38.466069);
     var options = {
-        zoom: 5,
+        zoom: 8,
         center: latlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -44,7 +44,7 @@ $(document).ready(function () {
                             ponto.lat,
                             ponto.lng),
                     title: ponto.name,
-                   // icon: '../images/marcador.png'
+                    icon: '../images/marcador.png'
                 });
                 var myOptions = {
                     content: ponto.name,

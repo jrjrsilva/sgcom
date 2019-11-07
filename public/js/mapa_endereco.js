@@ -19,7 +19,7 @@ function initialize() {
         });
     }
 
-    map = new google.maps.Map(document.getElementById("mapa"), options);
+    map = new google.maps.Map(document.getElementById("map"), options);
 
     geocoder = new google.maps.Geocoder();
 
@@ -99,7 +99,7 @@ $(document).ready(function () {
                 if (results[0]) {
                     $('#pesquisar').val(results[0].formatted_address);
                     $('#latitude').val(marker.getPosition().lat());
-                    $('#longitude').val(marker.getPosition().lng());
+                    $('#longitude ').val(marker.getPosition().lng());
 
                     for (i = 0; i < 10; i++) {
                         switch (results[0].address_components[i].types[0]) {

@@ -4,14 +4,12 @@
 
 @section('content_header')
     <h1>Painel de CVLI</h1>
-    <p>{{$cvlis}}</p>
 @stop
 
 @section('content')
         <div class="container-fluid" style="width:100%; height:800px;">
                 <div class="content" id="map" style="width:100%; height:100%; border: solid 1px;">
-
-                    </div>
+                </div>
         </div>
 @stop
 

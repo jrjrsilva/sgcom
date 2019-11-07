@@ -12,12 +12,7 @@ class CvliController extends Controller
 {
     public function index()
     {
-      $cvlis = DB::table('ocorrencia')
-      ->join('tipo_ocorrencia','ocorrencia.tipoocorrencia_id','tipo_ocorrencia.id')
-      ->where('tipo_ocorrencia.indice_id', 1)
-      ->select(DB::raw("ocorrencia_local as name, lat,lng"))
-      ->get()->toJson();
-      return view('cvli.index',compact('cvlis'));
+     return view('cvli.index');
     }
 
   
@@ -26,6 +21,7 @@ class CvliController extends Controller
         return  DB::table('ocorrencia')
         ->join('tipo_ocorrencia','ocorrencia.tipoocorrencia_id','tipo_ocorrencia.id')
         ->where('tipo_ocorrencia.indice_id', 1)
+	->where('lat','!=','null')
         ->select(DB::raw("ocorrencia_local as name, lat,lng"))
         ->get()->toJson();
                     } catch (\Exception $e) {

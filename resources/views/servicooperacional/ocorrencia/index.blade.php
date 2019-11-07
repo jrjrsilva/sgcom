@@ -179,20 +179,31 @@
             </select>
     </div>
 
-</div> <br>
+</div>
         <div class="form-row">
               <div class="col">
                 <label>Local da Ocorrência</label>
-              <input type="text" class="form-control" placeholder="Informe o local da ocorrência" required
+              <input type="text" class="form-control" placeholder="Informe o local da ocorrência" required 
               value="{{  $ocorrencia->ocorrencia_local or '' }}" id="local_ocorrencia" name="local_ocorrencia"> 
-              </div>
-
-              <input type="text" id="address-input" name="address_address" class="form-control map-input"> 
-              <input type="hidden" name="address_latitude" id="address-latitude" value="0" /> 
-              <input type="hidden" name="address_longitude" id="address-longitude" value="0" />
+          
+            </div>          
         </div> 
-        
-        <br>
+        <div class="form-row">
+            <div class="col-xs-2">
+                <button type="button" onclick="getCoordenadas()" class="btn btn-info pull-right">Coordenadas</button>
+            </div> 
+            <div class="col-xs-5">
+              <label>Latitude da Ocorrência</label>
+            <input type="text" class="form-control" placeholder="Latitude da ocorrência" 
+            value="{{  $ocorrencia->lat or '' }}" id="latitude" name="latitude"> 
+            </div>   
+            <div class="col-xs-5">
+                <label>Longitude da Ocorrência</label>
+              <input type="text" class="form-control" placeholder="Longitude da ocorrência" 
+              value="{{  $ocorrencia->lng or '' }}" id="longitude" name="logitude"> 
+              </div>         
+      </div> </div>
+        <br> <br>
 
 <!-- GUARNIÇÃO DE SERVIÇO -->
 
@@ -770,5 +781,29 @@ $('#marcaveiculo').change(function () {
     });
 </script>
 
-   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places"></script>
+<script type="text/javascript" src="/js/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&amp;language=pt-BR&amp;libraries=places"></script>
+<script type="text/javascript" src="/js/mapa_endereco.js"></script>
+<script>
+ var autoCompleteInput = document.getElementById('local_ocorrencia');
+  var autoCompleteOpcoes = {
+      types: ['geocode']
+    }
+
+  autocomplete = new google.maps.places.Autocomplete(autoCompleteInput,autoCompleteOpcoes);
+  
+  
+  function getCoordenadas(){
+    var local = autocomplete.getPlace();
+    var marcador = {
+      latitude: local.geometry.location.lat(),
+      longitude: local.geometry.location.lng(),
+    }
+    $("#latitude").val(marcador.latitude);
+    $("#longitude").val(marcador.longitude);
+    console.log(marcador);
+  }
+  
+</script>
+
 @stop
