@@ -189,8 +189,7 @@
           
             </div>          
         </div> 
-        
-            <input type="hidden" class="form-control" placeholder="Latitude da ocorrência" 
+         <input type="hidden" class="form-control" placeholder="Latitude da ocorrência" 
             value="{{  $ocorrencia->lat or '' }}" id="latitude" name="latitude"> 
             <input type="hidden" class="form-control" placeholder="Longitude da ocorrência" 
               value="{{  $ocorrencia->lng or '' }}" id="longitude" name="longitude"> 
@@ -774,7 +773,7 @@ $('#marcaveiculo').change(function () {
 
 <script type="text/javascript" src="/js/jquery-ui.custom.min.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&amp;language=pt-BR&amp;libraries=places"></script>
-<script type="text/javascript" src="/js/mapa_endereco.js"></script>
+
 <script>
  var autoCompleteInput = document.getElementById('local_ocorrencia');
   var autoCompleteOpcoes = {

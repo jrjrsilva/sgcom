@@ -53,7 +53,7 @@
                     </tr>
                     <tr>
                         <td>{{$ocorrencia->data or '' }}</td>
-                        <td>{{  $ocorrencia->hora or '' }}</td>
+                        <td>{{$ocorrencia->hora or '' }}</td>
                         <td>{{$ocorrencia->tipoocorrencia->descricao}}</td>
                     </tr>
                     </tbody>

@@ -17,6 +17,14 @@ class Efetivo extends Model
         return $this->belongsTo(GrauHierarquico::class);
     }
 
+    public function secao(){
+        return $this->belongsTo(Secao::class);
+    }
+
+    public function funcao(){
+        return $this->belongsTo(Funcao::class);
+    }
+
     public function opm(){
         return $this->belongsTo(Opm::class);
     }

@@ -10,6 +10,9 @@ use sgcom\Models\Opm;
 use sgcom\Models\Efetivo;
 use sgcom\Models\GrauHierarquico;
 use Illuminate\Support\Facades\Auth;
+use sgcom\Models\Secao;
+use sgcom\Models\Funcao;
+
 
 class EfetivoController extends Controller
 {
@@ -20,8 +23,10 @@ class EfetivoController extends Controller
      // $opms = Opm::orderBy('opm_sigla', 'asc')->get();
       $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
       $ghs = GrauHierarquico::orderBy('precedencia','asc')->get();
+      $secoes = Secao::orderBy('nome','asc')->get();
+      $funcoes = Funcao::orderBy('nome','asc')->get();
      
-      view()->share(compact('opms','ghs'));
+      view()->share(compact('opms','ghs','secoes','funcoes'));
     }
  
     public function dadosGerais()
@@ -95,7 +100,7 @@ class EfetivoController extends Controller
 
     public function salvar(Request $request)
     {
-//dd($request->all());
+    //dd($request->all());
       $efetivo = new Efetivo();
       try{      
       if($request->id != null)
@@ -111,6 +116,18 @@ class EfetivoController extends Controller
         $efetivo->tiposangue = $request->tiposangue;
         $efetivo->matricula = $request->matricula;
         $efetivo->sexo = $request->sexo;
+        $efetivo->cnh = $request->cnh;
+        $efetivo->categoria_cnh = $request->categoriacnh;
+        $efetivo->eh_motorista = $request->ehmotorista;
+        $efetivo->motorista_tipo = $request->motoristatipo;
+        $efetivo->validade_cnh = $request->validadecnh;
+        $efetivo->funcao_id   = $request->funcao;
+        $efetivo->secao_id  = $request->secao;
+        
+        $efetivo->formacao_academica = $request->formacao;
+        $efetivo->area_conhecimento = $request->areaconhecimento;
+        $efetivo->curso_academico = $request->cursoacademico;
+        $efetivo->ano_conclusao = $request->anoconclusao;
 
         $efetivo->save();
 
@@ -118,7 +135,7 @@ class EfetivoController extends Controller
 
       } catch (\Exception $e) {
         $Errors = $e->getMessage();
-        return redirect()->back()->withErrors('Erros')->withInput();
+        return redirect()->back()->withErrors('error')->withInput();
       }
     }
 
