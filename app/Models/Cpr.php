@@ -8,6 +8,8 @@ class Cpr extends Model
 {
     protected $table = 'cpr';
 
+    public $timestamps = false;
+
     public function opms(){
         return $this->hasMany(OPM::class);
     }

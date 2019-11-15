@@ -183,7 +183,7 @@
         <label for="validadecnh">Data de Validade</label>
           <input type="date" class="form-control timepicker" placeholder="Selecione a Data"
            id="validadecnh" name="validadecnh" value="{{$efetivo->validade_cnh or '' }}"           
-           required>
+           >
           <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
     </div>
   </div>
@@ -213,22 +213,22 @@
       @endif >Operacional</option>
   </select>
 </div>
-</div>
+</div> <br>
 <div class="row">
     <div class="col-xs-5">
-        <label for="cnh">Endereço</label>
-      <input type="text" class="form-control" id="cnh"
-       name="cnh" maxlength="11" value="{{$efetivo->cnh}}">
+        <label for="endereco">Endereço</label>
+      <input type="text" class="form-control" id="endereco"
+       name="endereco" maxlength="200" value="{{$efetivo->endereco or ''}}">
     </div>
     <div class="col-xs-2">
-        <label for="cnh">Telefone</label>
-      <input type="text" class="form-control" id="cnh"
-       name="cnh" maxlength="11" value="{{$efetivo->cnh}}">
+        <label for="telefone">Telefone</label>
+      <input type="text" class="form-control" id="telefone"
+       name="telefone" maxlength="14" value="{{$efetivo->telefone or ''}}">
     </div>
-    <div class="col-xs-3">
-        <label for="cnh">E-mail</label>
-      <input type="text" class="form-control" id="cnh"
-       name="cnh" maxlength="11" value="{{$efetivo->cnh}}">
+    <div class="col-xs-4">
+        <label for="email">E-mail</label>
+      <input type="text" class="form-control" id="email"
+       name="email" maxlength="120" value="{{$efetivo->email or ''}}">
     </div>
 
 </div>
@@ -256,7 +256,7 @@
           </select>
         </div> 
 
-        <div class="col-xs-2"> 
+        <div class="col-xs-4"> 
             <label for="secao">Seção</label>
           <select class="form-control" id="secao" name="secao" required >
             <option value="">Selecione</option>
@@ -283,7 +283,22 @@
               @endisset ><p> {{ $funcao->nome }} </p></option>
             @endforeach
           </select>
-        </div>     
+        </div>  
+        <div class="col-xs-2"> 
+          <label for="situacao">Situação</label>
+          <select class="form-control" id="situacao" name="situacao" required >
+            <option value="">Selecione</option>
+            @foreach( $situacoes as $situacao )
+            <option value="{{ $situacao->id or ''}}" 
+              @isset($efetivo->situacao->id)
+                @if($efetivo->situacao->id == $situacao->id)
+                  selected 
+                @endif 
+              @endisset ><p> {{ $situacao->nome}} </p></option>
+            @endforeach
+          </select>
+        </div>
+           
   </div> <br>
 </div>
         <br>

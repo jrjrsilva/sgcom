@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Aisp extends Model
 {
 
+    public $timestamps = false;
 
 public function search(Array $dataForm, $totalPage)
 {

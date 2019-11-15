@@ -15,9 +15,9 @@
     </div>
 @endif
 
-@if(session('error'))
+@if(session('Errors'))
     <div id="alert" class="alert alert-danger">
-        {{session('error')}}
+        {{session('Errors')}}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 			    <span aria-hidden="true">&times;</span>
 			  </button>

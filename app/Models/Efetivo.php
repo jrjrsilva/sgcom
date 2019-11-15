@@ -28,6 +28,10 @@ class Efetivo extends Model
     public function opm(){
         return $this->belongsTo(Opm::class);
     }
+
+    public function situacao(){
+        return $this->belongsTo(SituacaoEfetivo::class,'situacao_efetivo_id');
+    }
     
     public function search(Array $dataForm, $totalPage)
     {

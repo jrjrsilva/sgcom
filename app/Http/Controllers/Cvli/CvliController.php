@@ -23,7 +23,7 @@ class CvliController extends Controller
         ->join('envolvido','ocorrencia.id','envolvido.ocorrencia_id')
         ->where('tipo_ocorrencia.indice_id', 1)
 	      ->where('lat','!=','null')
-        ->select(DB::raw("ocorrencia_local as name, lat,lng,tipo_ocorrencia.descricao, ocorrencia.id, concat(envolvido.nome,' - ',envolvido.tipo_envol)"))
+        ->select(DB::raw("ocorrencia_local as name, lat,lng,tipo_ocorrencia.descricao, ocorrencia.id, concat(envolvido.nome,' - ',envolvido.tipo_envol) as envolvido"))
         ->get()->toJson();
                     } catch (\Exception $e) {
                   return Redirect::back()->withErros(["Erro! Não foi possível abrir."]);

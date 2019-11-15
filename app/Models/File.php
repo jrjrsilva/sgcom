@@ -9,4 +9,6 @@ class File extends Model
     
     protected $table = 'file';
     protected $fillable = ['nome', 'mime', 'caminho', 'tamanho'];
+
+    public $timestamps = false;
 }

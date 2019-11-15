@@ -8,6 +8,8 @@ class Opm extends Model
 {
     protected $table = 'opm';
 
+    public $timestamps = false;
+
     public function search(Array $dataForm, $totalPage)
     {
     //$retorno =
@@ -26,4 +28,9 @@ class Opm extends Model
     public function cpr(){
         return $this->belongsTo(Cpr::class);
     }
+
+    public function secoes($opm){
+        return $this->whereIn([1,3])->get();   
+    }
+
 }
