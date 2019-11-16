@@ -219,7 +219,7 @@ return [
         ],
 
         [
-            'text' => 'Profile',
+            'text' => 'Usuários',
             'url'  => 'admin/usuarios',
             'icon' => 'user',
         ],

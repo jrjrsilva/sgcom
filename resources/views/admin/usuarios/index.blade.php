@@ -67,6 +67,7 @@
                    <td>{{$user->status}}</td>
                    <td>
                       <a href="{{route('admin.usuarios.status',$user->id)}}" class="btn btn-adn">Mudar Status</a>
+                      <a href="{{route('admin.usuarios.papel',$user->id)}}">Papeis</a>
                    </td>
                 </tr>
                 @empty

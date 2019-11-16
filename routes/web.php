@@ -14,8 +14,13 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
     $this->post('usuarios/salvar', 'UserController@salvar')->name('admin.usuarios.salvar');
     $this->get('usuarios/{id}/edit', 'UserController@edit')->name('admin.usuarios.edit');
     $this->post('usuarios', 'UserController@search')->name('admin.usuarios.search');
-    $this->get('/', 'AdminController@index')->name('admin.home');
+   
+    $this->get('usuarios/papel/{id}', 'UserController@papel')->name('admin.usuarios.papel');
+    $this->post('usuarios/papel/{papel}', 'UserController@papelSalvar')->name('admin.usuarios.papelSalvar');
+    $this->delete('usuarios/papel/{usuario}/{papel}', 'UserController@papelDestroy')->name('admin.usuarios.papelDestroy');
 
+
+    $this->get('/', 'AdminController@index')->name('admin.home');
     $this->get('/veiculo/modelos/{id}', 'VeiculoController@getModelosVeiculo')->name('admin.modelosveiculo');
 
 
@@ -90,6 +95,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
 $this->get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middleware('auth');
 $this->post('update-perfil', 'Admin\UserController@update')->name('profile.update')->middleware('auth');
 Route::get('picture', 'Admin\UserController@getPicture')->name('picture')->middleware('auth');
+
 
 $this->get('/', 'Site\SGCOMController@index')->name('home');
 $this->get('/rh/matricula/{id}', 'Recursoshumanos\EfetivoController@getMatricula')->name('register.matricula');

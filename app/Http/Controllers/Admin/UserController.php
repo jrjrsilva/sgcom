@@ -11,7 +11,7 @@ use sgcom\User;
 use sgcom\Models\Opm;
 use sgcom\Models\Efetivo;
 use sgcom\Models\GrauHierarquico;
-
+use sgcom\Models\Papel;
 
 class UserController extends Controller
 {
@@ -48,6 +48,31 @@ class UserController extends Controller
     public function profile()
     {
         return view('site.profile.profile');
+    }
+
+    public function papel($id){
+        $usuario = User::find($id);
+        $papeis = Papel::all();
+        return view('admin.usuarios.papel',compact('usuario','papeis'));
+    }
+
+    public function papelSalvar(Request $request, $id){
+        $usuario    = User::find($id);
+        $dados      = $request->all();
+
+        $papel = Papel::find($dados['papel_id']);
+        $usuario->adicionarPapel($papel);
+
+        return redirect()->back();
+    }
+
+    public function papelDestroy($id, $papel_id){
+        $usuario    = User::find($id);
+      
+        $papel = Papel::find($papel_id);
+        $usuario->removerPapel($papel);
+
+        return redirect()->back();
     }
 
     public function update(Request $request)

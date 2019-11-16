@@ -141,8 +141,8 @@ class EfetivoController extends Controller
         return redirect()->back()->with('success', 'Atualizado com sucesso!');
 
       } catch (\Exception $e) {
-        $Errors = $e->getMessage();
-        return redirect()->back()->withErrors('Errors')->withInput();
+        $errors = $e->getMessage();
+        return redirect()->back()->withErrors('errors')->withInput();
       }
     }
 

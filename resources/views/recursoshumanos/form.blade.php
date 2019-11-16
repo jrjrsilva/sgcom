@@ -355,10 +355,12 @@
                   </select>
                 </div> 
 
-                <div class="col-xs-2"> 
+                <div class="col-xs-5">
                   <label for="cursoacademico">Informe o curso</label>
-                  <input type="text" name="cursoacademico" id="cursoacademico" maxlength="60" value="{{$efetivo->curso_academico or ''}}" >
-                </div>
+              <input type="text" class="form-control" placeholder="Curso Acadêmico" maxlength="60"
+              value="{{  $efetivo->curso_academico or '' }}" id="cursoacademico" name="cursoacademico"> 
+              </div>
+
                 
                 <div class="col-xs-2"> 
                     <label for="anoconclusao">Ano de Conclusão</label>
