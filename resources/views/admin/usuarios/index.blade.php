@@ -38,10 +38,6 @@
                   <button  type="submit" class="btn btn-primary">Pesquisar</button>
               </form>
             </div>
-            <div class="box-header">
-              <button  type="submit" class="btn btn-primary">Novo Usuário</button>
-             
-            </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">

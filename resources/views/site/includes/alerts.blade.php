@@ -1,11 +1,3 @@
-@if($Errors->any())
-<div class="alert alert-warning">
-    @foreach ($Errors as $error)
-        <p>{{ $error }}</p>
-    @endforeach
-</div>
-@endif
-
 @if(session('success'))
     <div id="alert" class="alert alert-success">
            {{session('success')}} 

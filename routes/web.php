@@ -19,6 +19,15 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
     $this->post('usuarios/papel/{papel}', 'UserController@papelSalvar')->name('admin.usuarios.papelSalvar');
     $this->delete('usuarios/papel/{usuario}/{papel}', 'UserController@papelDestroy')->name('admin.usuarios.papelDestroy');
 
+   
+    $this->get('papeis/novo', 'PapelController@show')->name('admin.papeis.novo');
+    $this->get('papeis/{id}', 'PapelController@edit')->name('admin.papeis.edit');
+    $this->get('papeis', 'PapelController@index')->name('admin.papeis');
+    $this->post('papeis/salvar', 'PapelController@papelSalvar')->name('admin.papeis.salvar');
+   
+    $this->post('papeis/atualizar', 'PapelController@update')->name('admin.papeis.update');
+    $this->delete('papeis/{papel}', 'PapelController@papelDestroy')->name('admin.papeis.papelDestroy');
+
 
     $this->get('/', 'AdminController@index')->name('admin.home');
     $this->get('/veiculo/modelos/{id}', 'VeiculoController@getModelosVeiculo')->name('admin.modelosveiculo');

@@ -231,7 +231,8 @@ return [
                 [
                     'text' => 'AISP',
                     'url'  => 'admin/aisp',
-                ],  
+                ], 
+
                 [
                     'text' => 'CPR',
                     'url'  => 'admin/cpr',
@@ -240,6 +241,10 @@ return [
                     'text' => 'OPM',
                     'url'  => 'admin/opm',
                 ],
+                [
+                    'text' => 'Papeis',
+                    'url'  => 'admin/papeis',
+                ], 
             ],
         ],
        
