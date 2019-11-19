@@ -119,17 +119,11 @@
             <label for="data_inicio">  Início</label>
                 <input type="date" class="form-control timepicker" placeholder="Período Inicial"
                  id="data_inicio" name="data_inicio" >                
-         
-           
-            
-     
-              <label for="data_fim">  Fim</label>
+            <label for="data_fim">  Fim</label>
                 <input type="date" class="form-control timepicker" placeholder="Período Final"
                  id="data_fim" name="data_fim">
-          
-        
+
             <button  type="submit" class="btn btn-primary">Pesquisar</button>     
-             
           </form>
          
          

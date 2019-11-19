@@ -29,6 +29,11 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
     $this->delete('papeis/{papel}', 'PapelController@papelDestroy')->name('admin.papeis.papelDestroy');
 
 
+    $this->get('papeis/permissao/{id}', 'PapelController@permissao')->name('admin.papeis.permissao');
+    $this->post('papeis/permissao/{permissao}', 'PapelController@permissoesStore')->name('admin.papeis.permissao.store');
+    $this->delete('papeis/permissao/{usuario}/{permissao}', 'PapelController@permissoesDestroy')->name('admin.papeis.permissao.destroy');
+
+
     $this->get('/', 'AdminController@index')->name('admin.home');
     $this->get('/veiculo/modelos/{id}', 'VeiculoController@getModelosVeiculo')->name('admin.modelosveiculo');
 

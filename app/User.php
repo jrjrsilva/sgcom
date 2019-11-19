@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use sgcom\Models\Efetivo;
 use sgcom\Models\Papel;
+use sgcom\Models\Permissao;
 
 class User extends Authenticatable
 {
@@ -24,6 +25,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function ehAdmin(){
+        return $this->existePapel('Admin');
+    }
 
     public function efetivo(){
         return $this->belongsTo(Efetivo::class);
@@ -60,5 +65,21 @@ class User extends Authenticatable
         }
 
         return $this->papeis()->detach($papel);
+    }
+
+    public function temUmPapelDestes($papeis){
+        $userPapeis = $this->papeis;
+        return !! collect([$papeis])->intersect($userPapeis)->count();
+    }
+
+    public function hasPermission(Permissao $permissao) { 
+        return $this->hasAnyRoles($permissao->papeis); 
+      }
+
+    public function hasAnyRoles($papeis){
+        if(is_array($papeis) or is_object($papeis) ){
+           return !! $papeis->intersect($this->papeis)->count();    
+        }
+        return $this->papeis->contains('nome',$papeis);
     }
 }

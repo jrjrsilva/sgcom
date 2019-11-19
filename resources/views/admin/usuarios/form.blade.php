@@ -5,7 +5,7 @@
 @section('content_header')
     <h1>Gestão de Usuários</h1>
     <ol class="breadcrumb">
-        <li><a href="">Gestão de Usuários</a></li>
+        <li><a href="{{route('admin.usuarios')}}">Usuários</a></li>
         <li><a href="">Usuário</a></li>
     </ol>
 @stop

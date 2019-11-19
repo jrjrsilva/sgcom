@@ -3,7 +3,7 @@
 @section('title', 'SGCOM | Admin')
 
 @section('content_header')
-    <h1>usuários</h1>
+    <h1>Usuários</h1>
     <ol class="breadcrumb">
         <li><a href="">Dashboard</a></li>
         <li><a href="">Usuários</a></li>
@@ -63,7 +63,7 @@
                    <td>{{$user->status}}</td>
                    <td>
                       <a href="{{route('admin.usuarios.status',$user->id)}}" class="btn btn-adn">Mudar Status</a>
-                      <a href="{{route('admin.usuarios.papel',$user->id)}}">Papeis</a>
+                      <a href="{{route('admin.usuarios.papel',$user->id)}}" class="btn btn-info">Papeis</a>
                    </td>
                 </tr>
                 @empty

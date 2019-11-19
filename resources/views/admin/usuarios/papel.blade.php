@@ -10,19 +10,20 @@
     </ol>
 @stop
 @section('content')
-	<p >Lista de Papéis para {{$usuario->efetivo->grauhierarquico->nome}} - {{$usuario->efetivo->nome}}</p>
+<p >Lista de Papéis para: {{$usuario->efetivo->grauhierarquico->sigla}}  {{$usuario->efetivo->nome}}  :: {{$usuario->efetivo->opm->opm_sigla}}</p>
     <div class="box">
 		<div class="box-header">
 			<form action="{{route('admin.usuarios.papelSalvar',$usuario->id)}}" method="post">
 			{{ csrf_field() }}
-			<div class="input-field">
-				<select name="papel_id">
+			<div class="form-group col-xs-2">
+				<select name="papel_id" class="form-control">
 					@foreach($papeis as $papel)
 					<option value="{{$papel->id}}">{{$papel->nome}}</option>
 					@endforeach
 				</select>
+				
 			</div>
-				<button class="btn blue">Adicionar</button>
+			<button class="btn btn-primary">Adicionar</button>
 			</form>
 
 

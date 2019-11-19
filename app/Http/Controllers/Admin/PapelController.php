@@ -3,6 +3,7 @@
 namespace sgcom\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use sgcom\Http\Controllers\Controller;
 use sgcom\Models\Papel;
 use sgcom\Models\Permissao;
@@ -16,12 +17,17 @@ class PapelController extends Controller
      */
     public function index()
     {
+     /*  if ($this->authorize('index')){
+        abort(403,"Não autorizado!");
+      }
+       */
       $papeis = Papel::all();
      
       return view('admin.papel.index',compact('papeis'));
     }
 
-    public function permissoes($id)
+  
+    public function permissao($id)
     {
       $papel = Papel::find($id);
       $permissoes = Permissao::all();
@@ -29,7 +35,9 @@ class PapelController extends Controller
       return view('admin.papel.permissao',compact('papel','permissoes'));
     }
 
-    public function permissaoStore(Request $request,$id)
+   
+
+    public function permissoesStore(Request $request,$id)
     {
         $papel = Papel::find($id);
         $dados = $request->all();
@@ -38,7 +46,7 @@ class PapelController extends Controller
         return redirect()->back();
     }
 
-    public function permissaoDestroy($id,$permissao_id)
+    public function permissoesDestroy($id,$permissao_id)
     {
       $papel = Papel::find($id);
       $permissao = Permissao::find($permissao_id);
@@ -129,4 +137,7 @@ class PapelController extends Controller
       Papel::find($id)->delete();
       return redirect()->route('admin.papeis');
     }
+
+
+    
 }

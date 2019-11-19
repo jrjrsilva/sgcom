@@ -218,16 +218,19 @@ return [
             'icon' => 'calendar',
         ],
 
-        [
-            'text' => 'Usuários',
-            'url'  => 'admin/usuarios',
-            'icon' => 'user',
-        ],
+      
      
         [
             'text'    => 'Tabelas Básicas',
             'icon'    => 'share',
             'submenu' => [ 
+               
+                [
+                    'text' => 'Usuários',
+                    'url'  => 'admin/usuarios',
+                    'icon' => 'user',
+                ],
+             
                 [
                     'text' => 'AISP',
                     'url'  => 'admin/aisp',

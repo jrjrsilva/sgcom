@@ -5,7 +5,10 @@ namespace sgcom\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use sgcom\Models\Efetivo;
+use sgcom\Models\Papel;
 use sgcom\User;
+use sgcom\Models\Permissao;
+use sgcom\Policies\PapelPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -15,7 +18,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'sgcom\Model' => 'sgcom\Policies\ModelPolicy',
+       // 'sgcom\Model' => 'sgcom\Policies\ModelPolicy',
+       // Papel::class => PapelPolicy::class,
     ];
 
     /**
@@ -26,9 +30,21 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        Gate::define('rh-list',function($user, $efetivo){
-            return $user->efetivo->opm->cpr->id == $efetivo->opm->id;
-            });
+        Gate::before(function ($user) {
+            if ($user->ehAdmin()) {
+                return true;
+            }
+        });
+  
+         foreach($this->listaPermissoes() as $permissao){
+             Gate::define($permissao->nome,function(User $user) use ($permissao){
+                return $user->hasPermission($permissao);
+                });
+        }
     }
+
+    public function listaPermissoes(){
+        return Permissao::with('papeis')->get();
+    }
+
 }
