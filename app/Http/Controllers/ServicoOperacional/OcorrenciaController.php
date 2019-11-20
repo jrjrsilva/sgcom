@@ -59,6 +59,9 @@ class OcorrenciaController extends Controller
 
     public function listar()
     {
+
+      $this->authorize('ocorrencia-list');
+
       $ocorrencias = Ocorrencia::orderBy('data', 'desc')->paginate($this->totalPage);
       $cvli = DB::table('ocorrencia')
               ->join('tipo_ocorrencia','ocorrencia.tipoocorrencia_id','tipo_ocorrencia.id')

@@ -141,11 +141,13 @@ return [
                     'text' => 'Ocorrências',
                     'url'  => 'servico/ocorrencia',
                     'icon' => 'pencil-square-o',
+                    'can'  => 'ocorrencia-list',
                 ],
                 [
                     'text' => 'Listar Ocorrências',
                     'url'  => 'servico/listarocorrencias',
                     'icon' => 'dashboard',
+                    'can'  => 'ocorrencia-list',
                 ]
                 ,  
                 [
@@ -160,61 +162,67 @@ return [
             'text'        => 'Recursos Humanos',
             'url'         => 'rh/listageral',
             'icon'        => 'users',
-            'label_color' => 'success',    
+            'label_color' => 'success',
+            'can'         => 'rh-list',    
         ],   
 
         [
             'text'        => 'Gestão de Frotas',
             'url'         => 'frota/lista',
             'icon'        => 'truck',
-            'label_color' => 'success',    
+            'label_color' => 'success', 
+            'can'         => 'gf-list',    
         ],   
 
         [
             'text'        => 'Armamento',
             'url'         => 'armas/lista',
             'icon'        => 'bullseye',
-            'label_color' => 'success',    
+            'label_color' => 'success',
+            'can'         => 'armamento-list',     
         ],   
 
         [
             'text'        => 'Inteligência Policial',
             'url'         => 'inteligencia/index',
             'icon'        => 'desktop',
-            'label_color' => 'success',    
+            'label_color' => 'success',   
+            'can'         => 'integencia-list',  
         ],   
 
         [
             'text'        => 'CVLI',
             'url'         => 'cvli/index',
             'icon'        => 'odnoklassniki',
-            'label_color' => 'danger',    
+            'label_color' => 'danger',
+            'can'         => 'cvli-list',     
         ],   
         
         [
             'text'        => 'CVP',
             'url'         => 'cvp/index',
             'icon'        => 'exclamation-circle',
-            'label_color' => 'success',    
+            'label_color' => 'success', 
+            'can'         => 'cvp-list',    
         ],   
 
         'Configurações',
 
         [
             'text' => 'Mensagens',
-            'url'  => 'admin/settings',
+            'url'  => '#',
             'icon' => 'envelope',
         ],
 
         [
             'text' => 'Chat Serviço Operacional',
-            'url'  => 'admin/settings',
+            'url'  => '#',
             'icon' => 'comments',
         ],
 
         [
             'text' => 'Calendário',
-            'url'  => 'admin/settings',
+            'url'  => '#',
             'icon' => 'calendar',
         ],
 
@@ -229,24 +237,29 @@ return [
                     'text' => 'Usuários',
                     'url'  => 'admin/usuarios',
                     'icon' => 'user',
+                    'can'         => 'usr-list', 
                 ],
              
                 [
                     'text' => 'AISP',
                     'url'  => 'admin/aisp',
+                    'can'         => 'aisp-list', 
                 ], 
 
                 [
                     'text' => 'CPR',
                     'url'  => 'admin/cpr',
+                    'can'         => 'cpr-list', 
                 ],   
                 [
                     'text' => 'OPM',
                     'url'  => 'admin/opm',
+                    'can'         => 'opm-list', 
                 ],
                 [
                     'text' => 'Papeis',
                     'url'  => 'admin/papeis',
+                    'can'         => 'papel-list', 
                 ], 
             ],
         ],
