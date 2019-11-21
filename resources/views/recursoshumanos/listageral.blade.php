@@ -11,6 +11,7 @@
 @stop
 
 @section('content')
+
 <div class="row">
   <div class="col-md-4 col-sm-6 col-12">
          <div class="info-box bg-aqua">
@@ -47,6 +48,18 @@
 <!-- /.info-box-content -->
 </div>
 </div>
+
+<div class="col-md-4 col-sm-6 col-12">
+  <div class="info-box bg-aqua">
+  <span class="info-box-icon"><i class="fa fa-bar-chart"></i></span>
+      <div class="info-box-content">
+      <span class="info-box-text">Efetivo Total por Sexo</span>
+      <span class="info-box-number">Efetivo Masculino: {{ $porSexo[0]->M }}</span>
+      <span class="info-box-number">Efetivo Feminino: {{ $porSexo[0]->F }}</span>
+    </div>
+<!-- /.info-box-content -->
+</div>
+</div>
  
 </div>
     <div class="box">
@@ -67,6 +80,8 @@
       <!-- /.box-body -->
     </div>
     <!-- /.box -->
+
+    
 
       <div class="box">
             <div class="box-header">

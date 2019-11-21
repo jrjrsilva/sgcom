@@ -41,8 +41,9 @@ class EfetivoController extends Controller
       $realEfetivo = $this->getEfetivoRealGH($opmt);
       $previsaoTotalCpr = $this->getPrevisaoTotalCpr($cprt);
       $previsaoTotalOpm = $this->getPrevisaoTotalOpm($opmt);
-
-     return view()->share(compact('opmTotal','cprTotal','previsao','realEfetivo','previsaoTotalCpr','previsaoTotalOpm'));
+      $porSexo = ($this->agrupamentoSexo($opmt));
+      
+     return view()->share(compact('opmTotal','cprTotal','previsao','realEfetivo','previsaoTotalCpr','previsaoTotalOpm','porSexo'));
     }
 
 
@@ -293,7 +294,18 @@ class EfetivoController extends Controller
     public function getAniversarioMes()
     {
       $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
-      $aniversarios = Efetivo::where('datanascimento','=',day(now))->get();
+     return $aniversarios = Efetivo::where('datanascimento','=',day(now))->get();
+    }
+
+    /*
+     Agrupamento por Sexo
+    */
+    public function agrupamentoSexo($opmt)
+    {
+       return $porSexo = DB::table('pmgeral')
+       ->select(DB::raw('count(case when sexo =  "F" then 0 end) as F, count(case when sexo = "M"  then 0 end) as M '))
+       ->where('opm_id','=' ,$opmt)
+       ->get();
     }
 
 
