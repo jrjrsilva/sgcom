@@ -42,8 +42,8 @@ class EfetivoController extends Controller
       $previsaoTotalCpr = $this->getPrevisaoTotalCpr($cprt);
       $previsaoTotalOpm = $this->getPrevisaoTotalOpm($opmt);
       $porSexo = ($this->agrupamentoSexo($opmt));
-      
-     return view()->share(compact('opmTotal','cprTotal','previsao','realEfetivo','previsaoTotalCpr','previsaoTotalOpm','porSexo'));
+      $porSexoCpr = ($this->agrupamentoSexoCpr($cprt));
+     return view()->share(compact('opmTotal','cprTotal','previsao','realEfetivo','previsaoTotalCpr','previsaoTotalOpm','porSexo','porSexoCpr'));
     }
 
 
@@ -298,7 +298,7 @@ class EfetivoController extends Controller
     }
 
     /*
-     Agrupamento por Sexo
+     Agrupamento por Sexo OPM
     */
     public function agrupamentoSexo($opmt)
     {
@@ -308,5 +308,13 @@ class EfetivoController extends Controller
        ->get();
     }
 
+    public function agrupamentoSexoCpr($cprt)
+    {
+       return $porSexo = DB::table('pmgeral')
+       ->join('opm', 'pmgeral.opm_id','=','opm.id')
+       ->select(DB::raw('count(case when sexo =  "F" then 0 end) as F, count(case when sexo = "M"  then 0 end) as M '))
+       ->where('opm.cpr_id','=' ,$cprt)
+       ->get();
+    }
 
    }
