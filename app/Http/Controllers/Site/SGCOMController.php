@@ -15,7 +15,7 @@ use DateTime;
 
 class SGCOMController extends Controller
 {
-    private $totalPage = 5;
+    private $totalPage = 15;
 
 
     public function __construct() {
@@ -46,15 +46,9 @@ class SGCOMController extends Controller
        ->orderBy('grauhierarquico_id', 'DESC')
        ->paginate($this->totalPage);
     
-      $aniversarios = DB::table('pmgeral')
-        ->select('*')
-        ->whereDay('datanascimento', date('d'))
-        ->whereMonth('datanascimento',date('m'))
-        ->where('opm_id', $opm)
-        ->orderBy('datanascimento')
-        ->get();
+    
 
-      return view('site.auth.index',compact('efetivos','aniversarios','valor'));
+      return view('site.auth.index',compact('efetivos','valor'));
         
     }
 
@@ -207,13 +201,5 @@ class SGCOMController extends Controller
      ->count();
      return $efetivoOpm;
    }
-
-
-   public function getAniversarioMes()
-   {
-     $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
-     $aniversarios = Efetivo::where('datanascimento','=',day(now))->get();
-   }
-
 
 }

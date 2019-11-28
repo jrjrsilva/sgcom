@@ -13,17 +13,22 @@ use sgcom\Models\GrauHierarquico;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use DateTime;
+use sgcom\Service\EfetivoService;
+
 
 class PainelGestaoController extends Controller
 {
    
-    private $totalPage = 10;
+    private $totalPage = 20;
+    private $efetivoService;
+    
 
 
     public function __construct() {
          $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
          $ghs = GrauHierarquico::orderBy('precedencia','asc')->get();
-        
+         $this->efetivoService = new EfetivoService();
+
          view()->share(compact('opms','ghs'));
     }
  
@@ -39,13 +44,7 @@ class PainelGestaoController extends Controller
        ->orderBy('grauhierarquico_id', 'DESC')
        ->paginate($this->totalPage);
      
-      $aniversarios = DB::table('pmgeral')
-        ->select('*')
-        ->whereDay('datanascimento', date('d'))
-        ->whereMonth('datanascimento',date('m'))
-        ->where('opm_id', $opm)->get();
-
-        return view('painelgestao.index',compact('efetivos','aniversarios'));
+         return view('painelgestao.index',compact('efetivos'));
         
     }
 
@@ -76,7 +75,11 @@ class PainelGestaoController extends Controller
         $vlhom_cpr = '['.$homicidioCpr.']';
         $vlhom_opm = '['.$homicidioOpm.']';
 
-     return view()->share(compact('viaturas','vlhom_opm','vlhom_cpr','opmTotal','cprTotal','homicidioCpr','homicidioOpm','phomicidioOpm'));
+        $aniversarios = $this->efetivoService->getAniversarioHojeCpr($cprt);
+        $aniversariosA = $this->efetivoService->getAniversarioAmanhaCpr($cprt);
+        $aniversariosD = $this->efetivoService->getAniversarioDepoisCpr($cprt);
+
+     return view()->share(compact('aniversarios','aniversariosA','aniversariosD','viaturas','vlhom_opm','vlhom_cpr','opmTotal','cprTotal','homicidioCpr','homicidioOpm','phomicidioOpm'));
     }
 
     

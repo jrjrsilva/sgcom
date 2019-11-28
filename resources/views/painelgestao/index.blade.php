@@ -30,22 +30,48 @@
             
     <div class="col-xs-8">
         <table id="tbEfetivo" class="table table-bordered table-striped">
-            <caption>Efetivo</caption>
+            <caption>Aniversariantes Hoje</caption>
             <thead>
             <tr>
               
-              <th>Grau Hierarquico</th>
+              <th>OPM</th>
+              <th>GH</th>
               <th>Nome</th>
-              <th>Matrícula</th>
+              <th>Data</th>
           
             </tr>
             </thead>
             <tbody>
-            @forelse($efetivos as $efetivo)
+            @forelse($aniversarios as $efetivo)
             <tr>
-              <td>{{$efetivo->grauhierarquico->sigla}}</td>
+              <td>{{$efetivo->opm_sigla}}</td>
+              <td>{{$efetivo->sigla}}</td>
               <td>{{$efetivo->nome}}</td>
-              <td>{{$efetivo->matricula}}</td>
+              <td>{{ \Carbon\Carbon::parse($efetivo->datanascimento)->format('d/m')}}</td>
+              <td>
+                 
+              </td>
+            </tr>
+            @empty
+            @endforelse 
+            @forelse($aniversariosA as $efetivo)
+            <tr>
+              <td>{{$efetivo->opm_sigla}}</td>
+              <td>{{$efetivo->sigla}}</td>
+              <td>{{$efetivo->nome}}</td>
+              <td>{{ \Carbon\Carbon::parse($efetivo->datanascimento)->format('d/m')}}</td>
+              <td>
+                 
+              </td>
+            </tr>
+            @empty
+            @endforelse 
+            @forelse($aniversariosD as $efetivo)
+            <tr>
+              <td>{{$efetivo->opm_sigla}}</td>
+              <td>{{$efetivo->sigla}}</td>
+              <td>{{$efetivo->nome}}</td>
+              <td>{{ \Carbon\Carbon::parse($efetivo->datanascimento)->format('d/m')}}</td>
               <td>
                  
               </td>
@@ -55,18 +81,19 @@
            </tbody>
             <tfoot>
             <tr>
-              <th>Grau Hierarquico</th>
+              <th>OPM</th>
+              <th>GH</th>
               <th>Nome</th>
-              <th>Matrícula</th>
+              <th>Data</th>
              <th></th>
             </tr>
             </tfoot>
           </table>
           <div >
             @if (isset($dataForm))
-             {{ $efetivos->appends($dataForm)->links() }}
+             {{ $aniversarios->appends($dataForm)->links() }}
             @else
-              {!! $efetivos->links()!!}
+              {!! $aniversarios->links()!!}
             @endif
         
         </div>

@@ -102,6 +102,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
     $this->post('salvar','EfetivoController@salvar')->name('rh.salvar');
     $this->get('previsaoefetivo/{id}','EfetivoController@getPrevisao')->name('rh.previsao');
     $this->get('realefetivo/{id}','EfetivoController@getEfetivoReal')->name('rh.efetivoReal');
+    $this->get('removerdaopm/{id}', 'EfetivoController@removerDaOpm')->name('rh.removerDaOpm');
     
 });
 

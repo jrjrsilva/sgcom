@@ -43,7 +43,12 @@ class EfetivoController extends Controller
       $previsaoTotalOpm = $this->getPrevisaoTotalOpm($opmt);
       $porSexo = ($this->agrupamentoSexo($opmt));
       $porSexoCpr = ($this->agrupamentoSexoCpr($cprt));
-     return view()->share(compact('opmTotal','cprTotal','previsao','realEfetivo','previsaoTotalCpr','previsaoTotalOpm','porSexo','porSexoCpr'));
+      $aniversariosDiaCpr = $this->getAniversarioDiaCpr($cprt);
+      $aniversariosMesCpr = $this->getAniversarioMesCpr($cprt);
+      $agrupamento = $this->agrupamentoTempoServicoCpr($cprt);
+      $agrupamentoIdade = $this->agrupamentoIdadeCpr($cprt);
+
+     return view()->share(compact('agrupamentoIdade','agrupamento','aniversariosMesCpr','aniversariosDiaCpr','opmTotal','cprTotal','previsao','realEfetivo','previsaoTotalCpr','previsaoTotalOpm','porSexo','porSexoCpr'));
     }
 
 
@@ -291,10 +296,27 @@ class EfetivoController extends Controller
     }
 
 
-    public function getAniversarioMes()
+    public function getAniversarioMesCpr($cprt)
     {
-      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
-     return $aniversarios = Efetivo::where('datanascimento','=',day(now))->get();
+     return $aniversarios = DB::table('pmgeral')
+     ->join('opm', 'pmgeral.opm_id','=','opm.id')
+     ->where('opm.cpr_id','=' ,$cprt)
+     ->whereMonth('datanascimento','=',date('m'))
+     ->select('nome', 'opm.opm_sigla','datanascimento')
+     ->orderBy('grauhierarquico_id','desc')
+     ->get();
+    }
+
+    public function getAniversarioDiaCpr($cprt)
+    {
+      return $aniversarios = DB::table('pmgeral')
+     ->join('opm', 'pmgeral.opm_id','=','opm.id')
+     ->where('opm.cpr_id','=' ,$cprt)
+     ->whereMonth('datanascimento','=',date('m'))
+     ->whereDay('datanascimento','=',date('d'))
+     ->select('nome', 'opm.opm_sigla','datanascimento')
+     ->orderBy('grauhierarquico_id','desc')
+     ->get();
     }
 
     /*
@@ -312,9 +334,114 @@ class EfetivoController extends Controller
     {
        return $porSexo = DB::table('pmgeral')
        ->join('opm', 'pmgeral.opm_id','=','opm.id')
-       ->select(DB::raw('count(case when sexo =  "F" then 0 end) as F, count(case when sexo = "M"  then 0 end) as M '))
+       ->select(DB::raw('
+       count(case when sexo = "F" then 0 end) as F, 
+       count(case when sexo = "M" then 0 end) as M '))
        ->where('opm.cpr_id','=' ,$cprt)
        ->get();
+    }
+
+    public function agrupamentoTempoServicoCpr($cprt)
+    {
+     $m_30 = DB::table('pmgeral')
+       ->join('opm', 'pmgeral.opm_id','=','opm.id')
+       ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE())) as M_30
+        '))
+       ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) >= 30')
+       ->where('opm.cpr_id','=' ,$cprt)
+       ->count();
+
+      $m_25_29 = DB::table('pmgeral')
+       ->join('opm', 'pmgeral.opm_id','=','opm.id')
+       ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE())) as M_25_29
+        '))
+       ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) >= 25')
+       ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) <= 29')
+       ->where('opm.cpr_id','=' ,$cprt)
+       ->count();
+
+       $m_20_24 = DB::table('pmgeral')
+       ->join('opm', 'pmgeral.opm_id','=','opm.id')
+       ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE())) as M_20_24
+        '))
+       ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) >= 20')
+       ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) <= 24')
+       ->where('opm.cpr_id','=' ,$cprt)
+       ->count();
+
+       $m_20 = DB::table('pmgeral')
+       ->join('opm', 'pmgeral.opm_id','=','opm.id')
+       ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE())) as M_20
+        '))
+       ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) <= 20')
+       ->where('opm.cpr_id','=' ,$cprt)
+       ->count();
+
+       $retorno = '['.$m_20.','.$m_20_24.','.$m_25_29.','.$m_30.']';
+       return $retorno;
+    }
+
+    public function agrupamentoIdadeCpr($cprt)
+    {
+     $m_30 = DB::table('pmgeral')
+       ->join('opm', 'pmgeral.opm_id','=','opm.id')
+       ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , datanascimento,CURDATE())) as M_30
+        '))
+       ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) >= 56')
+       ->where('opm.cpr_id','=' ,$cprt)
+       ->count();
+
+      $m_25_29 = DB::table('pmgeral')
+       ->join('opm', 'pmgeral.opm_id','=','opm.id')
+       ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , datanascimento,CURDATE())) as M_25_29
+        '))
+       ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) >= 46')
+       ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) <= 55')
+       ->where('opm.cpr_id','=' ,$cprt)
+       ->count();
+
+       $m_20_24 = DB::table('pmgeral')
+       ->join('opm', 'pmgeral.opm_id','=','opm.id')
+       ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , datanascimento,CURDATE())) as M_20_24
+        '))
+       ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) >= 36')
+       ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) <= 45')
+       ->where('opm.cpr_id','=' ,$cprt)
+       ->count();
+
+       $m_20 = DB::table('pmgeral')
+       ->join('opm', 'pmgeral.opm_id','=','opm.id')
+       ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , datanascimento,CURDATE())) as M_20
+        '))
+       ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) <= 35')
+       ->where('opm.cpr_id','=' ,$cprt)
+       ->count();
+
+       $retorno = '['.$m_20.','.$m_20_24.','.$m_25_29.','.$m_30.']';
+       return $retorno;
+    }
+
+    public function removerDaOpm($id)
+    {
+     
+      $efetivo = Efetivo::find($id);
+        if(!$efetivo){
+            abort(404);
+          }
+
+        $efetivo->opm_id = 3099991;            
+        
+        $update = $efetivo->save();
+        if($update)
+        return $this->index();
     }
 
    }

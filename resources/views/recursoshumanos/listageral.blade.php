@@ -72,9 +72,9 @@
 <!-- /.info-box-content -->
 </div>
 </div>
- 
 </div>
-    <div class="box">
+
+<div class="box">
       <div class="box-header with-border">
         <h3 class="box-title">Gráfico</h3>
         <div class="box-tools pull-right">
@@ -87,7 +87,10 @@
       </div>
       <!-- /.box-header -->
       <div class="box-body">
+          <canvas id="idade" ></canvas>
+        <canvas id="tempo" ></canvas>
         <canvas id="grafico"></canvas>
+<canvas id="pie-chart" width="800" height="450"></canvas>
       </div>
       <!-- /.box-body -->
     </div>
@@ -119,7 +122,7 @@
             
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="tabl-1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   
@@ -145,7 +148,7 @@
                   <td>{{ \Carbon\Carbon::parse($efetivo->dataadmissao)->format('d/m/Y')}}</td>
                   <td>
                     <a href="{{route('rh.edit',$efetivo->id)}}" class="btn btn-adn">Editar</a>
-                   
+                    <a href="{{route('rh.removerDaOpm',$efetivo->id)}}" class="btn btn-danger">Remover da OPM</a>
                   </td>
                 </tr>
                 @empty
@@ -186,11 +189,104 @@ $("#opm").change(function(){
 })
 
 $(document).ready(function(){
- 
+ new Chart(document.getElementById("pie-chart"), {
+    type: 'pie',
+    data: {
+      labels: ['Até 35 Anos de idade', 'Entre 36 e 45 anos de idade', 'Entre 46 e 55 anos de idade', 'Acima de 56 anos de idade'],
+      datasets: [{
+        label: "",
+        backgroundColor: [ 'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+],
+        data:  {{$agrupamentoIdade}}
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Distribuição do efetivo por idade'
+      }
+    }
+});
+
 });
 </script>
+<script>
+    var ctx = document.getElementById('idade').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+            labels: ['Até 35 Anos de idade', 'Entre 36 e 45 anos de idade', 'Entre 46 e 55 anos de idade', 'Acima de 56 anos de idade'],
+            datasets: [{
+                label: 'Quantidade de policiais',
+                data:  {{$agrupamentoIdade}},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
 
+<script>
+    var ctx = document.getElementById('tempo').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'polarArea',
+        data: {
+            labels: ['Até 20 Anos', 'Entre 21 e 24 anos', 'Entre 25 e 29 anos', 'Acima de 30'],
+            datasets: [{
+                label: 'Quantidade de policiais',
+                data:  {{$agrupamento}},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+    </script>
  <script>
+  
+
       var dataPrevisto =  {{$previsao}};
       var dataRealEfetivo = {{$realEfetivo}}
        let grafico = document.getElementById('grafico').getContext('2d');
@@ -215,7 +311,8 @@ $(document).ready(function(){
     }
        });
    
- </script>   
+ </script> 
+  
 
 @stop
 

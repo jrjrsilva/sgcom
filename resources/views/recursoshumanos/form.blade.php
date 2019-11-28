@@ -5,7 +5,7 @@
 @section('content_header')
     <h1>Recursos Humanos</h1>
     <ol class="breadcrumb">
-        <li><a href="">Recursos Humanos</a></li>
+    <li><a href="{{route('rh.listar')}}">Recursos Humanos</a></li>
         <li><a href="">Efetivo</a></li>
     </ol>
 @stop
