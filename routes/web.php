@@ -79,7 +79,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Cvp', 'prefix' => 'cvp']
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'PainelGestao', 'prefix' => 'painel'], function(){
     $this->get('index','PainelGestaoController@index')->name('painel.index');
-});
+  });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' => 'inteligencia'], function(){
     $this->get('index','InteligenciaController@index')->name('inteligencia.index');
@@ -96,14 +96,16 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Armamento', 'prefix' => 
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefix' => 'rh'], function(){
     $this->get('listageral','EfetivoController@index')->name('rh.listar');
-    $this->any('listageral-search', 'EfetivoController@searchMatricula')->name('rh.searchMatricula');
+    $this->get('aniversariantes','EfetivoController@aniversariantes')->name('rh.aniversariantes');
+    $this->any('listageral-search', 'EfetivoController@search')->name('rh.search');
     $this->get('listageral/{id?}/edit','EfetivoController@edit')->name('rh.edit');
     $this->get('listageral/{id?}/detalhe','EfetivoController@detalhe')->name('rh.detalhe');
     $this->post('salvar','EfetivoController@salvar')->name('rh.salvar');
     $this->get('previsaoefetivo/{id}','EfetivoController@getPrevisao')->name('rh.previsao');
     $this->get('realefetivo/{id}','EfetivoController@getEfetivoReal')->name('rh.efetivoReal');
     $this->get('removerdaopm/{id}', 'EfetivoController@removerDaOpm')->name('rh.removerDaOpm');
-    
+    //$this->post('pesquisar-aniversario', 'PainelGestaoController@pesquisaAniversarios')->name('painel.pesquisaAniversarios');
+    $this->any('pesquisar-aniversario', 'EfetivoController@pesquisaAniversarios')->name('rh.pesquisaAniversarios');
 });
 
 

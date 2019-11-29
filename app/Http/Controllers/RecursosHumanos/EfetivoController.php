@@ -13,42 +13,42 @@ use Illuminate\Support\Facades\Auth;
 use sgcom\Models\Secao;
 use sgcom\Models\Funcao;
 use sgcom\Models\SituacaoEfetivo;
+use sgcom\Service\EfetivoService;
 
 class EfetivoController extends Controller
 {
   
     private $totalPage = 100;
+    private $efetivoService;
 
     public function __construct() {
-     // $opms = Opm::orderBy('opm_sigla', 'asc')->get();
-      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
-      $ghs = GrauHierarquico::orderBy('precedencia','asc')->get();
-      $secoes = Secao::orderBy('nome','asc')->get();
-      $funcoes = Funcao::orderBy('nome','asc')->get();
-      $situacoes = SituacaoEfetivo::orderBy('nome','asc')->get();
-     
-      view()->share(compact('opms','ghs','secoes','funcoes','situacoes'));
+      $this->efetivoService = new EfetivoService();
     }
  
     public function dadosGerais()
     {
       $usr = Auth::user();
       $opmt = $usr->efetivo->opm_id;
-      $cprt = $usr->efetivo->opm->cpr_id;
+      $cprId = $usr->efetivo->opm->cpr_id;
       $opmTotal = $this->getEfetivoTotalOpm($opmt);
-      $cprTotal = $this->getEfetivoTotalCpr($cprt);
+      $cprTotal = $this->getEfetivoTotalCpr($cprId);
       $previsao = $this->getPrevisaoGH($opmt);
       $realEfetivo = $this->getEfetivoRealGH($opmt);
-      $previsaoTotalCpr = $this->getPrevisaoTotalCpr($cprt);
+      $previsaoTotalCpr = $this->getPrevisaoTotalCpr($cprId);
       $previsaoTotalOpm = $this->getPrevisaoTotalOpm($opmt);
       $porSexo = ($this->agrupamentoSexo($opmt));
-      $porSexoCpr = ($this->agrupamentoSexoCpr($cprt));
-      $aniversariosDiaCpr = $this->getAniversarioDiaCpr($cprt);
-      $aniversariosMesCpr = $this->getAniversarioMesCpr($cprt);
-      $agrupamento = $this->agrupamentoTempoServicoCpr($cprt);
-      $agrupamentoIdade = $this->agrupamentoIdadeCpr($cprt);
+      $porSexoCpr = ($this->agrupamentoSexoCpr($cprId));
+      $agrupamento = $this->agrupamentoTempoServicoCpr($cprId);
+      $agrupamentoIdade = $this->agrupamentoIdadeCpr($cprId);
+      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
+      $ghs = GrauHierarquico::orderBy('precedencia','asc')->get();
+      $secoes = Secao::orderBy('nome','asc')->get();
+      $funcoes = Funcao::orderBy('nome','asc')->get();
+      $situacoes = SituacaoEfetivo::orderBy('nome','asc')->get();
 
-     return view()->share(compact('agrupamentoIdade','agrupamento','aniversariosMesCpr','aniversariosDiaCpr','opmTotal','cprTotal','previsao','realEfetivo','previsaoTotalCpr','previsaoTotalOpm','porSexo','porSexoCpr'));
+     return view()->share(compact('agrupamentoIdade','agrupamento','opmTotal','cprTotal','previsao',
+     'realEfetivo','previsaoTotalCpr','previsaoTotalOpm','porSexo','porSexoCpr',
+     'opms','ghs','secoes','funcoes','situacoes'));
     }
 
 
@@ -64,16 +64,22 @@ class EfetivoController extends Controller
    
        $opm = $usr->efetivo->opm_id;
     
-      $aniversarios = DB::table('pmgeral')
-        ->select('*')
-        ->whereDay('datanascimento', date('d'))
-        ->whereMonth('datanascimento',date('m'))
-        ->where('opm_id', $opm)->get();
-
-      return view('recursoshumanos.listageral',compact('efetivos','aniversarios','valor'));
+        return view('recursoshumanos.listageral',compact('efetivos','valor'));
     }
 
-    public function searchMatricula(Request $request, Efetivo $efetivo)
+    public function retornoRemover($id)
+    {
+     $this->dadosGerais();
+
+        $efetivos = Efetivo::where('opm_id',$id)
+        ->orderBy('grauhierarquico_id','DESC')
+        ->paginate($this->totalPage);
+     
+      
+        return view('recursoshumanos.listageral',compact('efetivos'));
+    }
+
+    public function search(Request $request, Efetivo $efetivo)
     {
       $this->dadosGerais();
       $dataForm = $request->except('_token');
@@ -89,6 +95,7 @@ class EfetivoController extends Controller
       if(!$efetivo){
         abort(404);
       }
+      $this->dadosGerais();
       return view('recursoshumanos.form', compact('efetivo'));
     }
 
@@ -296,22 +303,22 @@ class EfetivoController extends Controller
     }
 
 
-    public function getAniversarioMesCpr($cprt)
+    public function getAniversarioMesCpr($cprId)
     {
      return $aniversarios = DB::table('pmgeral')
      ->join('opm', 'pmgeral.opm_id','=','opm.id')
-     ->where('opm.cpr_id','=' ,$cprt)
+     ->where('opm.cpr_id','=' ,$cprId)
      ->whereMonth('datanascimento','=',date('m'))
      ->select('nome', 'opm.opm_sigla','datanascimento')
      ->orderBy('grauhierarquico_id','desc')
      ->get();
     }
 
-    public function getAniversarioDiaCpr($cprt)
+    public function getAniversarioDiaCpr($cprId)
     {
       return $aniversarios = DB::table('pmgeral')
      ->join('opm', 'pmgeral.opm_id','=','opm.id')
-     ->where('opm.cpr_id','=' ,$cprt)
+     ->where('opm.cpr_id','=' ,$cprId)
      ->whereMonth('datanascimento','=',date('m'))
      ->whereDay('datanascimento','=',date('d'))
      ->select('nome', 'opm.opm_sigla','datanascimento')
@@ -330,18 +337,18 @@ class EfetivoController extends Controller
        ->get();
     }
 
-    public function agrupamentoSexoCpr($cprt)
+    public function agrupamentoSexoCpr($cprId)
     {
        return $porSexo = DB::table('pmgeral')
        ->join('opm', 'pmgeral.opm_id','=','opm.id')
        ->select(DB::raw('
        count(case when sexo = "F" then 0 end) as F, 
        count(case when sexo = "M" then 0 end) as M '))
-       ->where('opm.cpr_id','=' ,$cprt)
+       ->where('opm.cpr_id','=' ,$cprId)
        ->get();
     }
 
-    public function agrupamentoTempoServicoCpr($cprt)
+    public function agrupamentoTempoServicoCpr($cprId)
     {
      $m_30 = DB::table('pmgeral')
        ->join('opm', 'pmgeral.opm_id','=','opm.id')
@@ -349,7 +356,7 @@ class EfetivoController extends Controller
        count(TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE())) as M_30
         '))
        ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) >= 30')
-       ->where('opm.cpr_id','=' ,$cprt)
+       ->where('opm.cpr_id','=' ,$cprId)
        ->count();
 
       $m_25_29 = DB::table('pmgeral')
@@ -359,7 +366,7 @@ class EfetivoController extends Controller
         '))
        ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) >= 25')
        ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) <= 29')
-       ->where('opm.cpr_id','=' ,$cprt)
+       ->where('opm.cpr_id','=' ,$cprId)
        ->count();
 
        $m_20_24 = DB::table('pmgeral')
@@ -369,7 +376,7 @@ class EfetivoController extends Controller
         '))
        ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) >= 20')
        ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) <= 24')
-       ->where('opm.cpr_id','=' ,$cprt)
+       ->where('opm.cpr_id','=' ,$cprId)
        ->count();
 
        $m_20 = DB::table('pmgeral')
@@ -378,14 +385,14 @@ class EfetivoController extends Controller
        count(TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE())) as M_20
         '))
        ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) <= 20')
-       ->where('opm.cpr_id','=' ,$cprt)
+       ->where('opm.cpr_id','=' ,$cprId)
        ->count();
 
        $retorno = '['.$m_20.','.$m_20_24.','.$m_25_29.','.$m_30.']';
        return $retorno;
     }
 
-    public function agrupamentoIdadeCpr($cprt)
+    public function agrupamentoIdadeCpr($cprId)
     {
      $m_30 = DB::table('pmgeral')
        ->join('opm', 'pmgeral.opm_id','=','opm.id')
@@ -393,7 +400,7 @@ class EfetivoController extends Controller
        count(TIMESTAMPDIFF(YEAR , datanascimento,CURDATE())) as M_30
         '))
        ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) >= 56')
-       ->where('opm.cpr_id','=' ,$cprt)
+       ->where('opm.cpr_id','=' ,$cprId)
        ->count();
 
       $m_25_29 = DB::table('pmgeral')
@@ -403,7 +410,7 @@ class EfetivoController extends Controller
         '))
        ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) >= 46')
        ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) <= 55')
-       ->where('opm.cpr_id','=' ,$cprt)
+       ->where('opm.cpr_id','=' ,$cprId)
        ->count();
 
        $m_20_24 = DB::table('pmgeral')
@@ -413,7 +420,7 @@ class EfetivoController extends Controller
         '))
        ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) >= 36')
        ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) <= 45')
-       ->where('opm.cpr_id','=' ,$cprt)
+       ->where('opm.cpr_id','=' ,$cprId)
        ->count();
 
        $m_20 = DB::table('pmgeral')
@@ -422,7 +429,7 @@ class EfetivoController extends Controller
        count(TIMESTAMPDIFF(YEAR , datanascimento,CURDATE())) as M_20
         '))
        ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) <= 35')
-       ->where('opm.cpr_id','=' ,$cprt)
+       ->where('opm.cpr_id','=' ,$cprId)
        ->count();
 
        $retorno = '['.$m_20.','.$m_20_24.','.$m_25_29.','.$m_30.']';
@@ -431,17 +438,47 @@ class EfetivoController extends Controller
 
     public function removerDaOpm($id)
     {
-     
+      $usr = Auth::user();
+   
+       $opm_id = $usr->efetivo->opm_id;
+    
       $efetivo = Efetivo::find($id);
         if(!$efetivo){
             abort(404);
           }
 
+        $opm_id = $efetivo->opm_id;
         $efetivo->opm_id = 3099991;            
         
         $update = $efetivo->save();
         if($update)
-        return $this->index();
+          return $this->retornoRemover($opm_id);
+    }
+
+    public function aniversariantes()
+    {
+      $usr = Auth::user();
+      $opmt = $usr->efetivo->opm_id;
+      $cprt = $usr->efetivo->opm->cpr_id;
+
+      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=',$cprt)->get();
+    
+
+        $aniversarios = $this->efetivoService->getAniversarioMes($cprt);
+
+     return view('recursoshumanos.aniversariantes',compact('opms','aniversarios','aniversariosA','aniversariosD','viaturas','vlhom_opm','vlhom_cpr','opmTotal','cprTotal','homicidioCpr','homicidioOpm','phomicidioOpm'));
+    }
+
+    public function pesquisaAniversarios(Request $request, Efetivo $efetivo)
+    { 
+      
+      // dd($request->all());
+      $dataForm = $request->all();
+ 
+      $aniversarios =  $efetivo->pesquisaAniversarios($dataForm, $this->totalPage);
+      $this->dadosGerais();
+     // dd($aniversarios);
+      return view('recursoshumanos.aniversariantes', compact('aniversarios'));
     }
 
    }

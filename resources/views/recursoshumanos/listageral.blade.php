@@ -87,10 +87,12 @@
       </div>
       <!-- /.box-header -->
       <div class="box-body">
+          <input type="text" value="75" class="dial">
+
           <canvas id="idade" ></canvas>
         <canvas id="tempo" ></canvas>
         <canvas id="grafico"></canvas>
-<canvas id="pie-chart" width="800" height="450"></canvas>
+        <canvas id="pie-chart" width="800" height="450"></canvas>
       </div>
       <!-- /.box-body -->
     </div>
@@ -100,7 +102,7 @@
 
       <div class="box">
             <div class="box-header">
-            <form action="{{route('rh.searchMatricula')}}" method="POST" class="form form-inline">
+            <form action="{{route('rh.search')}}" method="POST" class="form form-inline">
               {!! csrf_field() !!}
               <label for="pnome">Nome:</label>    
               <input  type="text" name="pnome"  id="pnome" class="form-control"
@@ -147,7 +149,7 @@
                   <td>{{$efetivo->sexo}}</td>
                   <td>{{ \Carbon\Carbon::parse($efetivo->dataadmissao)->format('d/m/Y')}}</td>
                   <td>
-                    <a href="{{route('rh.edit',$efetivo->id)}}" class="btn btn-adn">Editar</a>
+                    <a href="{{route('rh.edit',$efetivo->id)}}" class="btn btn-primary">Editar</a>
                     <a href="{{route('rh.removerDaOpm',$efetivo->id)}}" class="btn btn-danger">Remover da OPM</a>
                   </td>
                 </tr>
@@ -167,14 +169,29 @@
                 </tr>
                 </tfoot>
               </table>
-              <div >
-                @if (isset($dataForm))
-                 {{ $efetivos->appends($dataForm)->links() }}
-                @else
-                  {!! $efetivos->links()!!}
-                @endif
-            </div>
-              
+          <table id="tab2" class="table table-bordered">
+              <thead>
+                 <tr>
+                     <th></th>
+                     <th></th>                         
+                </tr>
+              </thead>
+              <tbody>
+              <tr>
+                 <td> 
+                  @if (isset($dataForm))
+                  {{ $efetivos->appends($dataForm)->links() }}
+                 @else
+                   {!! $efetivos->links()!!}                  
+                 @endif
+                 </td>
+                 <td align="right">Total de registros</td>
+                 <td>{{ $efetivos->total() }}</td> 
+              </tr>
+             </tbody>
+        </table> 
+            
+
             </div>
             <!-- /.box-body -->
           </div>
@@ -189,6 +206,14 @@ $("#opm").change(function(){
 })
 
 $(document).ready(function(){
+  $(function(){
+          $(".dial").knob({
+              readOnly=true,
+              data-thickness=".4",
+              data-fgColor="chartreuse",
+          });
+      });
+
  new Chart(document.getElementById("pie-chart"), {
     type: 'pie',
     data: {
@@ -314,6 +339,9 @@ $(document).ready(function(){
  </script> 
   
 
+  <script>
+    
+  </script>
 @stop
 
 @section('style')

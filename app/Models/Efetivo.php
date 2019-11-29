@@ -77,4 +77,25 @@ class Efetivo extends Model
         $dataAlvo = mktime( 0, 0, 0, $mes, $dia, $ano);
         return  floor((((($hoje - $dataAlvo) / 60) / 60) / 24) / 365.25);
       }
+
+    public function pesquisaAniversarios(Array $dataForm, $totalPage)
+    {
+        
+     $retorno =
+     $this->join('opm','pmgeral.opm_id','=','opm.id')
+     ->join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
+     ->where('opm.cpr_id','=' ,12)   
+     ->whereMonth('datanascimento','=',$dataForm['mes'])
+     ->where(function($query) use ($dataForm){
+        if(isset($dataForm['opm'])){
+            $query->where('opm.id','=',$dataForm['opm']);
+        }})
+    ->select('nome', 'opm.opm_sigla','datanascimento','grauhierarquico.sigla')    
+    ->orderBy('grauhierarquico_id', 'DESC')
+    ->paginate($totalPage);
+    //->toSql();
+    //dd($retorno);
+     return $retorno;
+    }
+
 }

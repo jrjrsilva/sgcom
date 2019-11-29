@@ -159,11 +159,39 @@ return [
         ],   
 
         [
-            'text'        => 'Recursos Humanos',
+            'text'        => 'Gestão de Pessoal',
             'url'         => 'rh/listageral',
             'icon'        => 'users',
             'label_color' => 'success',
             'can'         => 'rh-list',    
+
+            'submenu' => [ 
+                [
+                    'text' => 'Aniversariantes',
+                    'url'  => 'rh/aniversariantes',
+                    'icon' => 'tasks',
+                ],  
+
+                [
+                    'text' => 'Ocorrências',
+                    'url'  => 'servico/ocorrencia',
+                    'icon' => 'pencil-square-o',
+                    'can'  => 'ocorrencia-list',
+                ],
+                [
+                    'text' => 'Listar Ocorrências',
+                    'url'  => 'servico/listarocorrencias',
+                    'icon' => 'dashboard',
+                    'can'  => 'ocorrencia-list',
+                ]
+                ,  
+                [
+                    'text' => 'Produtividade',
+                    'url'  => 'servico/produtividade',
+                    'icon' => 'sticky-note',
+                ],  
+            ],   
+
         ],   
 
         [

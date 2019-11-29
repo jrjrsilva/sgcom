@@ -5,6 +5,7 @@ namespace sgcom\Service;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
 use sgcom\Models\Efetivo;
+use sgcom\Models\Opm;
 
 class EfetivoService
 {
@@ -17,12 +18,22 @@ class EfetivoService
       $cprt = $usr->efetivo->opm->cpr_id; */
     }
 
-    public function getAniversarioMes()
+   
+    public function getAniversarioMes($cprt)
     {
-      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
-      $aniversarios = Efetivo::where('datanascimento','=',day(now))->get();
+     $aniversariosHoje = DB::table('pmgeral')
+     ->join('opm', 'pmgeral.opm_id','=','opm.id')
+     ->join('grauhierarquico', 'pmgeral.grauhierarquico_id','=','grauhierarquico.id')
+     ->where('opm.cpr_id','=' ,$cprt)
+     ->whereMonth('datanascimento','=',date('m'))
+     ->select('nome', 'opm.opm_sigla','datanascimento','grauhierarquico.sigla')
+     ->orderBy('grauhierarquico_id','desc')
+     ->paginate($this->totalPage);
+     // dd($aniversariosHoje);
+     return $aniversariosHoje;
     }
 
+   
     public function getEfetivoTotalCpr($cpr)
     {
       $efetivoCpr = Efetivo::join('opm','opm_id','=','opm.id')

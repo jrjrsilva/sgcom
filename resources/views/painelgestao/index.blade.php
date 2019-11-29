@@ -30,10 +30,9 @@
             
     <div class="col-xs-8">
         <table id="tbEfetivo" class="table table-bordered table-striped">
-            <caption>Aniversariantes Hoje</caption>
+            <caption>Aniversariantes</caption>
             <thead>
-            <tr>
-              
+            <tr>              
               <th>OPM</th>
               <th>GH</th>
               <th>Nome</th>
@@ -99,44 +98,6 @@
         </div>
     </div>     
    
-    <div class="col-xs-4">
-        <table id="example1" class="table table-bordered table-striped">
-            <caption>Viaturas</caption>
-            <thead>
-            <tr>             
-              <th>Prefixo</th>
-              <th>Modelo</th>
-              <th>Situação</th>
-            </tr>
-            </thead>
-            <tbody>
-            @forelse($viaturas as $viatura)
-            <tr>
-              <td>{{$viatura->prefixo}}</td>
-              <td>{{$viatura->modeloveiculo->descricao}}</td>
-              <td>{{$viatura->situacaoviatura->descricao}}</td>
-            </tr>
-            @empty
-            @endforelse 
-           </tbody>
-            <tfoot>
-            <tr>
-                  <th>Prefixo</th>
-                  <th>Modelo</th>
-                  <th>Situação</th>
-            </tr>
-            </tfoot>
-          </table>
-          <div >
-            @if (isset($dataForm))
-             {{ $viaturas->appends($dataForm)->links() }}
-            @else
-              {!! $viaturas->links()!!}
-            
-            
-            @endif
-        
-        </div>
     </div>     
    
 </div>

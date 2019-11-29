@@ -39,12 +39,12 @@ class PainelGestaoController extends Controller
       $this->dadosGerais();
 
        $opm = Auth::user()->efetivo->opm_id;
-     
+        
        $efetivos = Efetivo::where('opm_id',$opm)
        ->orderBy('grauhierarquico_id', 'DESC')
        ->paginate($this->totalPage);
      
-         return view('painelgestao.index',compact('efetivos'));
+         return view('painelgestao.index',compact('efetivos','opms'));
         
     }
 
@@ -55,6 +55,7 @@ class PainelGestaoController extends Controller
       $cprt = $usr->efetivo->opm->cpr_id;
       $opmTotal = $this->getEfetivoTotalOpm($opmt);
       $cprTotal = $this->getEfetivoTotalCpr($cprt);
+      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=',$cprt)->get();
       $viaturas = Viatura::orderBy('prefixo')
       ->where('opm_id',$opmt)
       ->paginate($this->totalPage);
@@ -79,7 +80,7 @@ class PainelGestaoController extends Controller
         $aniversariosA = $this->efetivoService->getAniversarioAmanhaCpr($cprt);
         $aniversariosD = $this->efetivoService->getAniversarioDepoisCpr($cprt);
 
-     return view()->share(compact('aniversarios','aniversariosA','aniversariosD','viaturas','vlhom_opm','vlhom_cpr','opmTotal','cprTotal','homicidioCpr','homicidioOpm','phomicidioOpm'));
+     return view()->share(compact('opms','aniversarios','aniversariosA','aniversariosD','viaturas','vlhom_opm','vlhom_cpr','opmTotal','cprTotal','homicidioCpr','homicidioOpm','phomicidioOpm'));
     }
 
     
@@ -221,7 +222,10 @@ class PainelGestaoController extends Controller
    public function getAniversarioMes()
    {
      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
-     $aniversarios = Efetivo::where('datanascimento','=',day(now))->get();
+     $aniversarios = Efetivo::where('datanascimento','=',day(now))
+     
+     ->get();
    }
 
+  
 }
