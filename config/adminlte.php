@@ -121,7 +121,8 @@ return [
             'text'        => 'Painel de Gestão',
             'url'         => 'painel/index',
             'icon'        => 'bar-chart-o',
-            'label_color' => 'success',    
+            'label_color' => 'success', 
+            'can'         => 'gestor-cmd'   
         ],   
         
         [
@@ -129,7 +130,7 @@ return [
             'url'         => '#',
             'icon'        => 'clipboard',
             'label_color' => 'success',    
-
+            'can'  => 'ocorrencia-list',
             'submenu' => [ 
                 [
                     'text' => 'Escala Operacional',
@@ -160,7 +161,6 @@ return [
 
         [
             'text'        => 'Gestão de Pessoal',
-            'url'         => 'rh/listageral',
             'icon'        => 'users',
             'label_color' => 'success',
             'can'         => 'rh-list',    
@@ -173,23 +173,12 @@ return [
                 ],  
 
                 [
-                    'text' => 'Ocorrências',
-                    'url'  => 'servico/ocorrencia',
+                    'text' => 'Efetivo',
+                    'url'  => 'rh/listageral',
                     'icon' => 'pencil-square-o',
-                    'can'  => 'ocorrencia-list',
+                    'can'  => 'rh-list',
                 ],
-                [
-                    'text' => 'Listar Ocorrências',
-                    'url'  => 'servico/listarocorrencias',
-                    'icon' => 'dashboard',
-                    'can'  => 'ocorrencia-list',
-                ]
-                ,  
-                [
-                    'text' => 'Produtividade',
-                    'url'  => 'servico/produtividade',
-                    'icon' => 'sticky-note',
-                ],  
+              
             ],   
 
         ],   
@@ -259,6 +248,7 @@ return [
         [
             'text'    => 'Tabelas Básicas',
             'icon'    => 'share',
+            'can'     =>'Admin',
             'submenu' => [ 
                
                 [

@@ -2,6 +2,7 @@
 
 namespace sgcom\Http\Controllers\Admin;
 
+use Faker\Provider\Image;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -81,10 +82,10 @@ class UserController extends Controller
 
         $data = $request->all();
 
-       if($data['password'] != null)
+      /*  if($data['password'] != null)
             $data['password'] = bcrypt($data['password']);
         else
-           unset($data['password']);
+           unset($data['password']); */
 
       // $data['image'] = $user->image;
 
@@ -184,7 +185,7 @@ class UserController extends Controller
     }
 
     public function getPicture() {
-        return \Image::make((storage_path('/users/' . Auth::user()->image)))->response();
+        return image::make(public_path('/img_perfil/' . Auth::user()->image))->response();
     }
 
    

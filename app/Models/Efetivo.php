@@ -50,8 +50,8 @@ class Efetivo extends Model
 
     public function searchUnique(Array $dataForm, $totalPage)
     {
-     return 
-     //$retorno =
+    
+     $retorno =
      $this->
      where(function($query) use ($dataForm){
         if(isset($dataForm['pnome'])){
@@ -67,7 +67,7 @@ class Efetivo extends Model
     ->paginate($totalPage);
     //->toSql();
    // dd($retorno);
-    
+   return $retorno;
     }
 
     

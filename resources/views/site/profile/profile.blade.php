@@ -22,23 +22,22 @@
                         {!! csrf_field() !!}
     <div class="col-xs-12">
         <label for="name">Nome:</label>
-        <input type="text" name="name" value="{{ auth()->user()->name }}">
+        {{ auth()->user()->efetivo->nome }}
     </div>
     
     <div class="col-xs-12">
             <label for="email">Email:</label>
-            <input type="email" name="email" value="{{ auth()->user()->email }}">
+            {{ auth()->user()->email }}
         </div>
         
-    <div class="col-xs-12">
-            <label for="password">Senha:</label>
-            <input type="password" name="password" value="">
-        </div>
+  
         
     <div class="col-xs-12">
         <label for="image">Foto:</label>
+      
         @if(auth()->user()->image != null)
-    <img src="{{asset(public_path().'/img_perfil/'.auth()->user()->image)}}" alt="{{ auth()->user()->name}}" style="max-width: 50px;">
+    <img src="{{asset('img_perfil/'.auth()->user()->image)}}" alt="{{ auth()->user()->name}}" style="max-width: 150px;">
+    <img src="{{url('/public/img_perfil/'.auth()->user()->image)}}" alt="{{ auth()->user()->name}}" style="max-width: 150px; max-height: 150px;">
         @endif
        
             <input type="file" name="image" id="image" class="form-group">

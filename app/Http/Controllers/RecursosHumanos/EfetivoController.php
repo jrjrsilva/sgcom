@@ -459,26 +459,23 @@ class EfetivoController extends Controller
     {
       $usr = Auth::user();
       $opmt = $usr->efetivo->opm_id;
-      $cprt = $usr->efetivo->opm->cpr_id;
+      $cprid = $usr->efetivo->opm->cpr_id;
 
-      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=',$cprt)->get();
-    
+      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=',$cprid)->get();
+      $aniversarios = $this->efetivoService->getAniversarioMes($cprid);
 
-        $aniversarios = $this->efetivoService->getAniversarioMes($cprt);
-
-     return view('recursoshumanos.aniversariantes',compact('opms','aniversarios','aniversariosA','aniversariosD','viaturas','vlhom_opm','vlhom_cpr','opmTotal','cprTotal','homicidioCpr','homicidioOpm','phomicidioOpm'));
+     return view('recursoshumanos.aniversariantes',compact('opms','aniversarios'));
     }
 
     public function pesquisaAniversarios(Request $request, Efetivo $efetivo)
     { 
-      
       // dd($request->all());
       $dataForm = $request->all();
  
       $aniversarios =  $efetivo->pesquisaAniversarios($dataForm, $this->totalPage);
       $this->dadosGerais();
      // dd($aniversarios);
-      return view('recursoshumanos.aniversariantes', compact('aniversarios'));
+      return view('recursoshumanos.aniversariantes', compact('aniversarios','dataForm'));
     }
 
    }

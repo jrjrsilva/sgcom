@@ -13,8 +13,6 @@
     
     <form  action="{{route('rh.pesquisaAniversarios')}}" method="POST" class="form form-inline">
      {!! csrf_field() !!}        
-   
-     
      <label for="mes">Mês:</label>
      <select class="form-control" id="mes" name="mes" >
        <option value="01">Janeiro</option>
@@ -88,7 +86,7 @@
                <tbody>
                 <tr>
                    <td> 
-                        @if (isset($dataForm))
+                      @if (isset($dataForm))
                         {{ $aniversarios->appends($dataForm)->links() }}
                        @else
                          {!! $aniversarios->links()!!}

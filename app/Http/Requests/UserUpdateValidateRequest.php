@@ -23,10 +23,11 @@ class UserUpdateValidateRequest extends FormRequest
      */
     public function rules()
     {
+        $id = auth()->user()->id;
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'string|min:8|max:20',
+            'email' => 'required|string|email|max:255|unique:users,email,{$id},id',
+            'password' => 'min:6|max:20',
             'image' => 'image',
         ];
     }
