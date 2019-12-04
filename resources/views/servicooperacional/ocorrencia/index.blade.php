@@ -772,7 +772,7 @@ $('#marcaveiculo').change(function () {
 </script>
 
 <script type="text/javascript" src="/js/jquery-ui.custom.min.js"></script>
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&amp;language=pt-BR&amp;libraries=places"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&amp;language=pt-BR&amp;libraries=places&amp;region=BR"></script>
 
 <script>
  var autoCompleteInput = document.getElementById('local_ocorrencia');
@@ -788,10 +788,11 @@ $('#marcaveiculo').change(function () {
     var marcador = {
       latitude: local.geometry.location.lat(),
       longitude: local.geometry.location.lng(),
+      
     }
     $("#latitude").val(marcador.latitude);
     $("#longitude").val(marcador.longitude);
-    console.log(marcador);
+    //console.log(local);
   }
   
 </script>

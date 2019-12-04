@@ -3,7 +3,7 @@
 @section('title', 'SGCOM | RH')
 
 @section('content_header')
-    <h1>Recursos Humanos</h1>
+    <h1>Gestão de Pessoal</h1>
     <ol class="breadcrumb">
         <li><a href="">Dashboard</a></li>
         <li><a href="">RH</a></li>
@@ -87,9 +87,7 @@
       </div>
       <!-- /.box-header -->
       <div class="box-body">
-          <input type="text" value="75" class="dial">
-
-          <canvas id="idade" ></canvas>
+        <canvas id="idade" ></canvas>
         <canvas id="tempo" ></canvas>
         <canvas id="grafico"></canvas>
         <canvas id="pie-chart" width="800" height="450"></canvas>
@@ -149,6 +147,7 @@
                   <td>{{$efetivo->sexo}}</td>
                   <td>{{ \Carbon\Carbon::parse($efetivo->dataadmissao)->format('d/m/Y')}}</td>
                   <td>
+                    <a href="{{route('rh.historico',$efetivo->id)}}" class="btn btn-primary">Histórico</a>
                     <a href="{{route('rh.edit',$efetivo->id)}}" class="btn btn-primary">Editar</a>
                     <a href="{{route('rh.removerDaOpm',$efetivo->id)}}" class="btn btn-danger">Remover da OPM</a>
                   </td>
@@ -206,24 +205,16 @@ $("#opm").change(function(){
 })
 
 $(document).ready(function(){
-  $(function(){
-          $(".dial").knob({
-              readOnly=true,
-              data-thickness=".4",
-              data-fgColor="chartreuse",
-          });
-      });
-
  new Chart(document.getElementById("pie-chart"), {
     type: 'pie',
     data: {
       labels: ['Até 35 Anos de idade', 'Entre 36 e 45 anos de idade', 'Entre 46 e 55 anos de idade', 'Acima de 56 anos de idade'],
       datasets: [{
         label: "",
-        backgroundColor: [ 'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
+        backgroundColor: [ 'rgba(255, 99, 132, 0.9)',
+                    'rgba(54, 162, 235, 0.9)',
+                    'rgba(255, 206, 86, 0.9)',
+                    'rgba(75, 192, 192, 0.9)',
 ],
         data:  {{$agrupamentoIdade}}
       }]
@@ -337,11 +328,7 @@ $(document).ready(function(){
        });
    
  </script> 
-  
 
-  <script>
-    
-  </script>
 @stop
 
 @section('style')

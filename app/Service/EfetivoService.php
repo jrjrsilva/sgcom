@@ -4,6 +4,7 @@ namespace sgcom\Service;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
+use sgcom\Models\Cep;
 use sgcom\Models\Efetivo;
 use sgcom\Models\Opm;
 
@@ -18,6 +19,13 @@ class EfetivoService
       $cprt = $usr->efetivo->opm->cpr_id; */
     }
 
+    public function getCep($cep)
+    {
+      $endereco = DB::table('cep')
+      ->where('cep','=',$cep)
+      ->get();
+      return $endereco;
+    }
    
     public function getAniversarioMes($cprt)
     {

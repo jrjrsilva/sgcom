@@ -104,14 +104,17 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
     $this->get('previsaoefetivo/{id}','EfetivoController@getPrevisao')->name('rh.previsao');
     $this->get('realefetivo/{id}','EfetivoController@getEfetivoReal')->name('rh.efetivoReal');
     $this->get('removerdaopm/{id}', 'EfetivoController@removerDaOpm')->name('rh.removerDaOpm');
-    //$this->post('pesquisar-aniversario', 'PainelGestaoController@pesquisaAniversarios')->name('painel.pesquisaAniversarios');
     $this->any('pesquisar-aniversario', 'EfetivoController@pesquisaAniversarios')->name('rh.pesquisaAniversarios');
+    $this->get('historico/{id}','EfetivoController@historicopolicial')->name('rh.historico');
+    $this->get('historiconovo/{id}','EfetivoController@historiconovo')->name('rh.historiconovo');
+    $this->post('salvarhistorico','EfetivoController@salvarhistorico')->name('rh.salvarhistorico');
 });
 
 
 $this->get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middleware('auth');
 $this->post('update-perfil', 'Admin\UserController@update')->name('profile.update')->middleware('auth');
-Route::get('picture', 'Admin\UserController@getPicture')->name('picture')->middleware('auth');
+$this->get('picture', 'Admin\UserController@getPicture')->name('picture')->middleware('auth');
+$this->get('obtercep/{cep}', 'Recursoshumanos\EfetivoController@getCep')->name('obtercep')->middleware('auth');
 
 
 $this->get('/', 'Site\SGCOMController@index')->name('home');

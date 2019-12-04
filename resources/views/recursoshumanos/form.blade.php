@@ -3,9 +3,9 @@
 @section('title', 'SGCOM ')
 
 @section('content_header')
-    <h1>Recursos Humanos</h1>
+    <h1>Gestão de Pessoal</h1>
     <ol class="breadcrumb">
-    <li><a href="{{route('rh.listar')}}">Recursos Humanos</a></li>
+    <li><a href="{{route('rh.listar')}}">Dashboard</a></li>
         <li><a href="">Efetivo</a></li>
     </ol>
 @stop
@@ -215,10 +215,35 @@
 </div>
 </div> <br>
 <div class="row">
+    <div class="col-xs-2">
+        <label for="cep">CEP</label>
+      <input type="text" class="form-control" id="cep" onblur="buscarCep()"
+       name="cep" maxlength="10" value="{{$efetivo->cep or ''}}">
+    </div>
     <div class="col-xs-5">
         <label for="endereco">Endereço</label>
       <input type="text" class="form-control" id="endereco"
        name="endereco" maxlength="200" value="{{$efetivo->endereco or ''}}">
+    </div>
+    <div class="col-xs-1">
+        <label for="\..">Número</label>
+      <input type="text" class="form-control" id="numero"
+       name="numero" maxlength="60" value="{{$efetivo->numero or ''}}">
+    </div>
+    <div class="col-xs-3">
+        <label for="bairro">Bairro</label>
+      <input type="text" class="form-control" id="bairro"
+       name="bairro" maxlength="60" value="{{$efetivo->bairro or ''}}">
+    </div>
+    <div class="col-xs-3">
+        <label for="complemento">Complemento</label>
+      <input type="text" class="form-control" id="complemento"
+       name="complemento" maxlength="60" value="{{$efetivo->complemento or ''}}">
+    </div>
+    <div class="col-xs-2">
+        <label for="cidade_estado">Cidade</label>
+      <input type="text" class="form-control" id="cidade_estado"
+       name="cidade_estado" maxlength="60" value="{{$efetivo->cidade_estado or ''}}">
     </div>
     <div class="col-xs-2">
         <label for="telefone">Telefone</label>
@@ -405,6 +430,29 @@
 
 });
 
+function buscarCep()
+{
+  var cep = $("#cep").val();
+  $.ajax({
+    url: "/obtercep/"+cep,
+    type: "get",
+    //data: "",
+    dataType: "json"
+
+}).done(function(resposta) {
+    $("#bairro").val(resposta[0].bairro);
+    $("#cidade_estado").val(resposta[0].cidade_estado);
+    $("#endereco").val(resposta[0].logradouro);
+    console.log(resposta[0].bairro);
+
+}).fail(function(jqXHR, textStatus ) {
+    console.log("Request failed: " + textStatus);
+
+}).always(function() {
+    console.log("completou");
+});
+
+}
 
   </script>
 @stop

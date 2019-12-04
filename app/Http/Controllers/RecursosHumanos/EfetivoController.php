@@ -12,7 +12,9 @@ use sgcom\Models\GrauHierarquico;
 use Illuminate\Support\Facades\Auth;
 use sgcom\Models\Secao;
 use sgcom\Models\Funcao;
+use sgcom\Models\HistoricoPolicial;
 use sgcom\Models\SituacaoEfetivo;
+use sgcom\Models\TipoHistorico;
 use sgcom\Service\EfetivoService;
 
 class EfetivoController extends Controller
@@ -120,34 +122,39 @@ class EfetivoController extends Controller
       if($request->id != null)
         $efetivo = Efetivo::find($request->id);
 
-        $efetivo->nome                = $request->nome;
-        $efetivo->dataadmissao        = $request->data_admissao;
-        $efetivo->datanascimento      = $request->data_nascimento;
-        $efetivo->opm_id              = $request->opm;
-        $efetivo->grauhierarquico_id  = $request->gh;
-        $efetivo->fatorrh             = $request->fatorrh;
-        $efetivo->tiposangue          = $request->tiposangue;
-        $efetivo->matricula           = $request->matricula;
-        $efetivo->sexo                = $request->sexo;
+        $efetivo->nome                  = $request->nome;
+        $efetivo->dataadmissao          = $request->data_admissao;
+        $efetivo->datanascimento        = $request->data_nascimento;
+        $efetivo->opm_id                = $request->opm;
+        $efetivo->grauhierarquico_id    = $request->gh;
+        $efetivo->fatorrh               = $request->fatorrh;
+        $efetivo->tiposangue            = $request->tiposangue;
+        $efetivo->matricula             = $request->matricula;
+        $efetivo->sexo                  = $request->sexo;
         
-        $efetivo->cnh                 = $request->cnh;
-        $efetivo->categoria_cnh       = $request->categoriacnh;
-        $efetivo->eh_motorista        = $request->ehmotorista;
-        $efetivo->motorista_tipo      = $request->motoristatipo;
-        $efetivo->validade_cnh        = $request->validadecnh;
+        $efetivo->cnh                   = $request->cnh;
+        $efetivo->categoria_cnh         = $request->categoriacnh;
+        $efetivo->eh_motorista          = $request->ehmotorista;
+        $efetivo->motorista_tipo        = $request->motoristatipo;
+        $efetivo->validade_cnh          = $request->validadecnh;
         
-        $efetivo->funcao_id           = $request->funcao;
-        $efetivo->secao_id            = $request->secao;
+        $efetivo->funcao_id             = $request->funcao;
+        $efetivo->secao_id              = $request->secao;
         
-        $efetivo->formacao_academica  = $request->formacao;
-        $efetivo->area_conhecimento   = $request->areaconhecimento;
-        $efetivo->curso_academico     = $request->cursoacademico;
-        $efetivo->ano_conclusao       = $request->anoconclusao;
+        $efetivo->formacao_academica    = $request->formacao;
+        $efetivo->area_conhecimento     = $request->areaconhecimento;
+        $efetivo->curso_academico       = $request->cursoacademico;
+        $efetivo->ano_conclusao         = $request->anoconclusao;
         
-        $efetivo->situacao_efetivo_id = $request->situacao;
+        $efetivo->situacao_efetivo_id   = $request->situacao;
         $efetivo->endereco            = $request->endereco;
-        $efetivo->telefone            = $request->telefone;
-        $efetivo->email               = $request->email;
+        $efetivo->bairro              = $request->bairro;
+        $efetivo->numero                = $request->numero;
+        $efetivo->complemento           = $request->complemento;
+        $efetivo->cidade_estado         = $request->cidade_estado;
+        $efetivo->cep                   = $request->cep;
+        $efetivo->telefone              = $request->telefone;
+        $efetivo->email                 = $request->email;
 
         $efetivo->save();
 
@@ -471,11 +478,69 @@ class EfetivoController extends Controller
     { 
       // dd($request->all());
       $dataForm = $request->all();
- 
+     
       $aniversarios =  $efetivo->pesquisaAniversarios($dataForm, $this->totalPage);
       $this->dadosGerais();
      // dd($aniversarios);
       return view('recursoshumanos.aniversariantes', compact('aniversarios','dataForm'));
+    }
+
+    public function historicopolicial($id)
+    { 
+  
+      $this->dadosGerais();
+      $historicos = HistoricoPolicial::where('efetivo_id',$id)
+        ->orderBy('data_inicio','DESC')
+        ->paginate($this->totalPage);
+       $efetivo = Efetivo::find($id);
+
+       $tiposhistorico = TipoHistorico::all();
+    
+     return view('recursoshumanos/historico',compact('historicos','efetivo','tiposhistorico'));
+    }
+
+
+    public function historiconovo($id)
+    { 
+  
+      $this->dadosGerais();
+     
+       $efetivo = Efetivo::find($id);
+
+       $tiposhistorico = TipoHistorico::all();
+    
+     return view('recursoshumanos/form_historico',compact('efetivo','tiposhistorico'));
+    }
+
+    public function salvarhistorico(Request $request)
+    {
+    //  dd($request->all());
+      try{
+        $efetivo = Efetivo::find($request->id);
+        $historico = new HistoricoPolicial();
+
+        $historico->data_inicio = $request->data_inicio;
+        $historico->data_fim = $request->data_fim;
+        $historico->observacao = $request->obs;
+        $historico->tipo_historico_id = $request->tipo;
+        $historico->efetivo_id = $efetivo->id;
+//dd($historico);
+        $historico->save();
+
+        return redirect()->back()->with('success', 'Atualizado com sucesso!');
+
+       } catch (\Exception $e) {
+        $errors = $e->getMessage();
+        return redirect()->back()->withErrors('errors')->withInput();
+      } 
+    }
+
+    public function getCep($cep)
+    {
+      $retorno =
+      $this->efetivoService->getCep($cep);
+
+      return json_encode($retorno);
     }
 
    }
