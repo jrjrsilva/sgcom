@@ -86,7 +86,7 @@
         <!-- /.box-tools -->
       </div>
       <!-- /.box-header -->
-      <div class="box-body">
+     <div class="box-body">
         <canvas id="idade" ></canvas>
         <canvas id="tempo" ></canvas>
         <canvas id="grafico"></canvas>
@@ -102,12 +102,27 @@
             <div class="box-header">
             <form action="{{route('rh.search')}}" method="POST" class="form form-inline">
               {!! csrf_field() !!}
+              <input type="hidden" id="cprId" name="cprId" value="{{Auth::user()->efetivo->opm->cpr->id}}">
               <label for="pnome">Nome:</label>    
               <input  type="text" name="pnome"  id="pnome" class="form-control"
                placeholder="Informe o nome"/>
                <label for="pmatricula">Matrícula:</label>    
               <input  type="number" pattern="[0-9]" maxlength=9 name="pmatricula"  id="pmatricula" class="form-control"
                placeholder="Informe a Matrícula"/>
+                <label for="pgh">Grau Hierarquico:</label>
+                <select class="form form-control" id="pgh" name="pgh">
+                  <option value="">Selecione o GH</option>
+                  @foreach( $ghs as $gh )
+                  <option value="{{ $gh->id }}" ><p> {{ $gh->sigla }} </p></option>
+                  @endforeach
+                </select>
+                <label for="pregional">Comando Regional:</label>
+                <select class="form form-control" id="pregional" name="pregional">
+                  <option value="">Selecione o CPR</option>
+                  @foreach( $cprs as $cpr )
+                  <option value="{{ $cpr->id }}" ><p> {{ $cpr->sigla }} </p></option>
+                  @endforeach
+                </select>
                 <label for="popm">OPM:</label>
                 <select class="form form-control" id="opm" name="popm">
                   <option value="">Selecione a OPM</option>
@@ -115,8 +130,28 @@
                   <option value="{{ $opm->id }}" ><p> {{ $opm->opm_sigla }} </p></option>
                   @endforeach
                 </select>
-              
-                  <button  type="submit" class="btn btn-primary">Pesquisar</button>
+                <label for="pfuncao">Função:</label>
+                <select class="form form-control" id="pfuncao" name="pfuncao">
+                  <option value="">Selecione a Função</option>
+                  @foreach( $funcoes as $funcao )
+                  <option value="{{ $funcao->id }}" ><p> {{ $funcao->nome }} </p></option>
+                  @endforeach
+                </select>
+                <label for="psecao">Seção:</label>
+                <select class="form form-control" id="psecao" name="psecao">
+                  <option value="">Selecione a Seção</option>
+                  @foreach( $secoes as $secao )
+                  <option value="{{ $secao->id }}" ><p> {{ $secao->nome }} </p></option>
+                  @endforeach
+                </select>
+                <label for="pcidade">Cidade:</label>
+                <select class="form form-control" id="pcidade" name="pcidade">
+                  <option value="">Selecione a Cidade</option>
+                  @foreach( $cidades as $cidade )
+                  <option value="{{ $cidade->cidade_estado }}" ><p> {{ $cidade->cidade_estado }} </p></option>
+                  @endforeach
+                </select>
+                  <button id="btn-pesquisar"  type="submit" class="btn btn-primary" >Pesquisar</button>
               </form>
             </div>
             
@@ -137,12 +172,13 @@
                 </tr>
                 </thead>
                 <tbody>
+
                 @forelse($efetivos as $efetivo)
                 <tr>
-                  <td>{{$efetivo->grauhierarquico->sigla}}</td>
+                  <td>{{$efetivo->sigla}}</td>
                   <td>{{$efetivo->nome}}</td>
                   <td>{{$efetivo->matricula}}</td>
-                  <td>{{$efetivo->opm->opm_sigla}}</td>
+                  <td>{{$efetivo->opm_sigla}}</td>
                   <td>{{$efetivo->tempoDecorrido($efetivo->dataadmissao)}}</td>
                   <td>{{$efetivo->sexo}}</td>
                   <td>{{ \Carbon\Carbon::parse($efetivo->dataadmissao)->format('d/m/Y')}}</td>
@@ -199,10 +235,28 @@
 @stop
 
 @section('js')
+
+
 <script>
-$("#opm").change(function(){
-  //alert ('ola');
-})
+
+
+$("#btn-pesquisar").click(function(){
+     var cont = 0;
+     $("#form input").each(function(){
+         if($(this).val() == "")
+             {
+               cont++;
+             }
+        });
+     if(cont == 0)
+         { 
+        vlcprid = $("#cprId").val();
+         $("#pregional").val(vlcprid);
+             $("#form").submit();
+         }
+  });
+
+
 
 $(document).ready(function(){
  new Chart(document.getElementById("pie-chart"), {

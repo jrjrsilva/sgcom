@@ -10,6 +10,7 @@ use sgcom\Models\Opm;
 use sgcom\Models\Efetivo;
 use sgcom\Models\GrauHierarquico;
 use Illuminate\Support\Facades\Auth;
+use sgcom\Models\Cpr;
 use sgcom\Models\Secao;
 use sgcom\Models\Funcao;
 use sgcom\Models\HistoricoPolicial;
@@ -47,10 +48,13 @@ class EfetivoController extends Controller
       $secoes = Secao::orderBy('nome','asc')->get();
       $funcoes = Funcao::orderBy('nome','asc')->get();
       $situacoes = SituacaoEfetivo::orderBy('nome','asc')->get();
+      $cprs = Cpr::whereIn('id',[4,11,12])->get();
+      $bairros = Efetivo::select(DB::raw('distinct(bairro)'))->where('bairro','<>','null')->get();
+      $cidades = Efetivo::select(DB::raw('distinct(cidade_estado) '))->where('cidade_estado','<>','null')->get();
 
      return view()->share(compact('agrupamentoIdade','agrupamento','opmTotal','cprTotal','previsao',
      'realEfetivo','previsaoTotalCpr','previsaoTotalOpm','porSexo','porSexoCpr',
-     'opms','ghs','secoes','funcoes','situacoes'));
+     'opms','ghs','secoes','funcoes','situacoes','cprs','bairros','cidades'));
     }
 
 

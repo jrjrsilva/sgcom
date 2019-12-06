@@ -5,6 +5,7 @@ namespace sgcom\Models;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Efetivo extends Model
 {
@@ -50,10 +51,11 @@ class Efetivo extends Model
 
     public function searchUnique(Array $dataForm, $totalPage)
     {
-    
+  //  dd( $dataForm);
      $retorno =
-     $this->
-     where(function($query) use ($dataForm){
+     $this->join('opm','pmgeral.opm_id','=','opm.id')
+     ->join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
+     ->where(function($query) use ($dataForm){
         if(isset($dataForm['pnome'])){
             $query->where('nome','LIKE','%' .$dataForm['pnome'].'%');
         }
@@ -62,11 +64,36 @@ class Efetivo extends Model
         }  
         if(isset($dataForm['popm'])){
             $query->where('opm_id','=',$dataForm['popm']);
+        } 
+        if(isset($dataForm['pgh'])){
+            $query->where('grauhierarquico_id','=',$dataForm['pgh']);
         }  
-    })->orderBy('grauhierarquico_id', 'DESC')
+        if(isset($dataForm['pregional'])){
+            $query->where('opm.cpr_id','=',$dataForm['pregional']);
+        }
+        if(isset($dataForm['pfuncao'])){
+            $query->where('funcao_id','=',$dataForm['pfuncao']);
+        }
+        if(isset($dataForm['psecao'])){
+            $query->where('secao_id','=',$dataForm['psecao']);
+        } 
+        if(isset($dataForm['pcidade'])){
+            $query->where('cidade_estado','=',$dataForm['pcidade']);
+        } 
+    })->select('pmgeral.id','grauhierarquico.sigla','matricula','opm.opm_sigla','dataadmissao','sexo','nome')
+    ->orderBy('grauhierarquico_id', 'DESC')
     ->paginate($totalPage);
-    //->toSql();
-   // dd($retorno);
+
+  /*   $usr = Auth::user();
+    $cprId = $usr->efetivo->opm->cpr_id;
+    $retorno =
+    $this->join('opm','pmgeral.opm_id','=','opm.id')
+    ->join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
+    ->where('opm.cpr_id','=',$cprId)
+     ->select('pmgeral.id','grauhierarquico.sigla','matricula','opm.opm_sigla','dataadmissao','sexo','nome')
+   ->orderBy('grauhierarquico_id', 'DESC')
+   ->paginate($totalPage);
+     */
    return $retorno;
     }
 
