@@ -178,6 +178,13 @@ return [
                     'icon' => 'pencil-square-o',
                     'can'  => 'rh-list',
                 ],
+
+                [
+                    'text' => 'Férias',
+                    'url'  => 'rh/previsao-ferias',
+                    'icon' => 'pencil-square-o',
+                    'can'  => 'rh-list',
+                ],
               
             ],   
 

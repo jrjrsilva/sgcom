@@ -50,11 +50,17 @@ class EfetivoController extends Controller
       $situacoes = SituacaoEfetivo::orderBy('nome','asc')->get();
       $cprs = Cpr::whereIn('id',[4,11,12])->get();
       $bairros = Efetivo::select(DB::raw('distinct(bairro)'))->where('bairro','<>','null')->get();
-      $cidades = Efetivo::select(DB::raw('distinct(cidade_estado) '))->where('cidade_estado','<>','null')->get();
+      $cidades = Efetivo::select(DB::raw('distinct(cidade_estado)'))->where('cidade_estado','<>','null')->get();
 
+      $ferias = Efetivo::where('situacao_efetivo_id','=',3)->count();
+      $jms = Efetivo::where('situacao_efetivo_id','=',6)->count();
+      $agregados = Efetivo::where('situacao_efetivo_id','=',5)->count();
+      $restricoes = Efetivo::where('situacao_efetivo_id','=',2)->count();
+      $gestantes = Efetivo::where('situacao_efetivo_id','=',4)->count();
+      
      return view()->share(compact('agrupamentoIdade','agrupamento','opmTotal','cprTotal','previsao',
-     'realEfetivo','previsaoTotalCpr','previsaoTotalOpm','porSexo','porSexoCpr',
-     'opms','ghs','secoes','funcoes','situacoes','cprs','bairros','cidades'));
+     'realEfetivo','previsaoTotalCpr','previsaoTotalOpm','porSexo','porSexoCpr','jms','agregados',
+     'opms','ghs','secoes','funcoes','situacoes','cprs','bairros','cidades','ferias','gestantes','restricoes'));
     }
 
 
@@ -94,7 +100,17 @@ class EfetivoController extends Controller
 
       return view('recursoshumanos.listageral',compact('efetivos','dataForm'));
     }
-
+    
+    public function searchHistorico(Request $request, HistoricoPolicial $historico)
+    {
+      $this->dadosGerais();
+      $dataForm = $request->except('_token');
+ 
+      $historicos =  $historico->searchHistorico($dataForm, $this->totalPage);
+      $efetivo = Efetivo::find($dataForm['id']);
+      $tiposhistorico = TipoHistorico::all();
+      return view('recursoshumanos.historico',compact('tiposhistorico','efetivo','historicos','dataForm'));
+    }
     public function edit($id)
     {
       $efetivo = Efetivo::find($id);
@@ -314,6 +330,17 @@ class EfetivoController extends Controller
     }
 
 
+    public function getPrevisaoFeriasCpr($cprId)
+    {
+     return $previsaoferias = DB::table('pmgeral')
+     ->join('opm', 'pmgeral.opm_id','=','opm.id')
+     ->where('opm.cpr_id','=' ,$cprId)
+     ->whereMonth('dataadmissao','=',date('m'))
+     ->select('nome', 'opm.opm_sigla','dataadmissao')
+     ->orderBy('grauhierarquico_id','desc')
+     ->get();
+    }
+
     public function getAniversarioMesCpr($cprId)
     {
      return $aniversarios = DB::table('pmgeral')
@@ -324,6 +351,7 @@ class EfetivoController extends Controller
      ->orderBy('grauhierarquico_id','desc')
      ->get();
     }
+
 
     public function getAniversarioDiaCpr($cprId)
     {
@@ -476,6 +504,32 @@ class EfetivoController extends Controller
       $aniversarios = $this->efetivoService->getAniversarioMes($cprid);
 
      return view('recursoshumanos.aniversariantes',compact('opms','aniversarios'));
+    }
+
+    public function previsaoferias()
+    {
+      $usr = Auth::user();
+      $opmt = $usr->efetivo->opm_id;
+      $cprid = $usr->efetivo->opm->cpr_id;
+
+      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=',$cprid)->get();
+      $previsaoFerias = $this->efetivoService->getPrevisaoFeriasCpr($cprid);
+
+     return  view('recursoshumanos.previsao-ferias',compact('opms','previsaoFerias'));
+    }
+
+    public function pesquisaPrevisaoferias(Request $request, Efetivo $efetivo)
+    { 
+      // dd($request->all());
+      $dataForm = $request->all();
+      $usr = Auth::user();
+      $opmt = $usr->efetivo->opm_id;
+      $cprid = $usr->efetivo->opm->cpr_id;
+      $previsaoFerias =  $efetivo->pesquisaFerias($dataForm, $this->totalPage);
+      $this->dadosGerais();
+     // dd($aniversarios);
+     $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=',$cprid)->get();
+      return view('recursoshumanos.previsao-ferias', compact('opms','previsaoFerias'));
     }
 
     public function pesquisaAniversarios(Request $request, Efetivo $efetivo)

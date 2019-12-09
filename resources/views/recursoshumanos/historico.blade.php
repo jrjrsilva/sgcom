@@ -12,17 +12,18 @@
 
 @section('content')
 <div class="box">
-  <label for="nome"></label>
+  <label for="nome">Nome: </label>
   <p>
-      {{$efetivo->nome}}
+      {{$efetivo->grauhierarquico->sigla}} - {{$efetivo->nome}}
     </p>
 </div>
 <div class="box">
   <div class="box-header">
-  <form action="{{route('rh.search')}}" method="POST" class="form form-inline">
+  <form action="{{route('rh.searchHistorico')}}" method="POST" class="form form-inline">
     {!! csrf_field() !!}
-     <label for="tipo">Tipo de Lançamento:</label>
-      <select class="form form-control" id="tipo" name="tipo">
+    <input type="hidden" name="id" id="id" value="{{$efetivo->id}}">
+     <label for="ptipo">Tipo de Lançamento:</label>
+      <select class="form form-control" id="ptipo" name="ptipo">
         <option value="">Selecione </option>
         @foreach( $tiposhistorico as $tipohistorico )
         <option value="{{ $tipohistorico->id }}" ><p> {{ $tipohistorico->nome }} </p></option>
@@ -38,24 +39,20 @@
     
     <table id="tabl-1" class="table table-bordered table-striped">
       <thead>
-      <tr>
-        
+      <tr>        
         <th>Tipo</th>
         <th>Data Inicio</th>
         <th>Data Fim</th>
         <th>Obs</th>
-       
-        <th></th>
       </tr>
       </thead>
       <tbody>
       @forelse($historicos as $historico)
       <tr>
         <td>{{$historico->tipohistorico->nome}}</td>
-        <td>{{$historico->data_inicio}}</td>
-        <td>{{$historico->data_fim}}</td>
+        <td>{{ \Carbon\Carbon::parse($historico->data_inicio)->format('d/m/Y')}}</td>
+        <td>{{ \Carbon\Carbon::parse($historico->data_fim)->format('d/m/Y')}}</td>
         <td>{{$historico->observacao}}</td>
-          
       </tr>
       @empty
       @endforelse 
@@ -66,18 +63,10 @@
           <th>Data Inicio</th>
           <th>Data Fim</th>
           <th>Obs</th>
-      <th></th>
       </tr>
       </tfoot>
     </table>
 <table id="tab2" class="table table-bordered">
-    <thead>
-       <tr>
-           <th></th>
-           <th></th>                         
-      </tr>
-    </thead>
-    <tbody>
     <tr>
        <td> 
         @if (isset($dataForm))

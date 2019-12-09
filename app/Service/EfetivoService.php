@@ -41,6 +41,25 @@ class EfetivoService
      return $aniversariosHoje;
     }
 
+    public function getPrevisaoFeriasCpr($cprId)
+    {
+     // dd($previsaoferias);
+     $mes = date('m');
+     if($mes == 13){
+      $mes = 1;
+     }
+     
+     
+      $previsaoferias = DB::table('pmgeral')
+     ->join('opm', 'pmgeral.opm_id','=','opm.id')
+     ->join('grauhierarquico', 'pmgeral.grauhierarquico_id','=','grauhierarquico.id')
+     ->where('opm.cpr_id','=' ,$cprId)
+     ->whereMonth('dataadmissao','=',date($mes))
+     ->select('nome', 'opm.opm_sigla','dataadmissao','grauhierarquico.sigla')
+     ->orderBy('grauhierarquico_id','desc')
+     ->paginate($this->totalPage);
+     return $previsaoferias;
+    }
    
     public function getEfetivoTotalCpr($cpr)
     {

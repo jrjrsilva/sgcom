@@ -11,7 +11,6 @@
 @stop
 
 @section('content')
-
 <div class="row">
   <div class="col-md-4 col-sm-6 col-12">
          <div class="info-box bg-aqua">
@@ -72,6 +71,23 @@
 <!-- /.info-box-content -->
 </div>
 </div>
+
+<div class="col-md-4 col-sm-6 col-12">
+  <div class="info-box bg-aqua">
+  <span class="info-box-icon"><i class="fa fa-bar-chart"></i></span>
+      <div class="info-box-content">
+      <span class="info-box-text">Situação do Efetivo</span>
+      <span class="info-box-number">Férias: {{ $ferias }}</span>
+      <span class="info-box-number">Junta Médica: {{ $jms}}</span>
+      <span class="info-box-number">Restrição operacional: {{ $restricoes}}</span>
+      <span class="info-box-number">Licença gestante: {{ $gestantes}}</span>
+      <span class="info-box-number">Agregado para reserva: {{ $agregados}}</span>
+    </div>
+<!-- /.info-box-content -->
+</div>
+</div>
+
+
 </div>
 
 <div class="box">

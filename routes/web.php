@@ -96,7 +96,6 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Armamento', 'prefix' => 
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefix' => 'rh'], function(){
     $this->get('listageral','EfetivoController@index')->name('rh.listar');
-    $this->get('aniversariantes','EfetivoController@aniversariantes')->name('rh.aniversariantes');
     $this->any('listageral-search', 'EfetivoController@search')->name('rh.search');
     $this->get('listageral/{id?}/edit','EfetivoController@edit')->name('rh.edit');
     $this->get('listageral/{id?}/detalhe','EfetivoController@detalhe')->name('rh.detalhe');
@@ -104,10 +103,22 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
     $this->get('previsaoefetivo/{id}','EfetivoController@getPrevisao')->name('rh.previsao');
     $this->get('realefetivo/{id}','EfetivoController@getEfetivoReal')->name('rh.efetivoReal');
     $this->get('removerdaopm/{id}', 'EfetivoController@removerDaOpm')->name('rh.removerDaOpm');
+    
+    $this->get('aniversariantes','EfetivoController@aniversariantes')->name('rh.aniversariantes');
     $this->any('pesquisar-aniversario', 'EfetivoController@pesquisaAniversarios')->name('rh.pesquisaAniversarios');
+   
+    $this->get('previsao-ferias','EfetivoController@previsaoFerias')->name('rh.previsaoFerias');
+    
+    $this->any('pesquisa-previsao-ferias', 'EfetivoController@pesquisaPrevisaoFerias')->name('rh.pesquisaPrevisaoFerias');
+   
+   
+
     $this->get('historico/{id}','EfetivoController@historicopolicial')->name('rh.historico');
     $this->get('historiconovo/{id}','EfetivoController@historiconovo')->name('rh.historiconovo');
+    $this->any('historico-search', 'EfetivoController@searchHistorico')->name('rh.searchHistorico');    
     $this->post('salvarhistorico','EfetivoController@salvarhistorico')->name('rh.salvarhistorico');
+
+
 });
 
 
@@ -115,6 +126,7 @@ $this->get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middl
 $this->post('update-perfil', 'Admin\UserController@update')->name('profile.update')->middleware('auth');
 $this->get('picture', 'Admin\UserController@getPicture')->name('picture')->middleware('auth');
 $this->get('obtercep/{cep}', 'Recursoshumanos\EfetivoController@getCep')->name('obtercep')->middleware('auth');
+
 
 
 $this->get('/', 'Site\SGCOMController@index')->name('home');

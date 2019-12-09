@@ -60,7 +60,7 @@
         <div class="row">
             <div class="col-xs-2">
                     <label for="tipo">Tipo de Lançamento:</label>
-                    <select class="form form-control" id="tipo" name="tipo">
+                    <select class="form form-control" id="tipo" name="tipo" required>
                       <option value="">Selecione </option>
                       @foreach( $tiposhistorico as $tipohistorico )
                       <option value="{{ $tipohistorico->id }}" ><p> {{ $tipohistorico->nome }} </p></option>
@@ -84,7 +84,7 @@
                     <label for="data_fim">Data de Termino</label>
                       <input type="date" class="form-control timepicker" placeholder="Selecione a Data"
                        id="data_fim" name="data_fim" 
-                       
+                       required
                        >
                       <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                 </div>
@@ -92,7 +92,7 @@
             <div class="col-xs-5">
                     <label for="obs">Observação</label>
                     <input type="text" class="form-control" placeholder="obs" 
-                     id="obs" name="obs">  
+                     id="obs" name="obs" required>  
             </div>
          
         </div> 

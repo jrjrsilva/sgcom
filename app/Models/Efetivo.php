@@ -125,4 +125,24 @@ class Efetivo extends Model
      return $retorno;
     }
 
+    public function pesquisaFerias(Array $dataForm, $totalPage)
+    {
+        
+     $retorno =
+     $this->join('opm','pmgeral.opm_id','=','opm.id')
+     ->join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
+     ->where('opm.cpr_id','=' ,12)   
+     ->whereMonth('dataadmissao','=',$dataForm['mes'])
+     ->where(function($query) use ($dataForm){
+        if(isset($dataForm['opm'])){
+            $query->where('opm.id','=',$dataForm['opm']);
+        }})
+    ->select('nome', 'opm.opm_sigla','dataadmissao','grauhierarquico.sigla')    
+    ->orderBy('grauhierarquico_id', 'DESC')
+    ->paginate($totalPage);
+    //->toSql();
+    //dd($retorno);
+     return $retorno;
+    }
+
 }

@@ -16,5 +16,20 @@ class HistoricoPolicial extends Model
         return $this->belongsTo(TipoHistorico::class, 'tipo_historico_id');
     }
 
+    public function searchHistorico(Array $dataForm, $totalPage)
+    {
+  //  dd( $dataForm);
+     $retorno =
+     $historicos = HistoricoPolicial::
+     where(function($query) use ($dataForm){
+        if(isset($dataForm['ptipo'])){
+            $query->where('tipo_historico_id','=',$dataForm['ptipo']);
+        }
+    })->where('efetivo_id',$dataForm['id'])
+     ->orderBy('data_inicio','DESC')
+     ->paginate($this->totalPage);
+
+   return $retorno;
+    }
 
 }
