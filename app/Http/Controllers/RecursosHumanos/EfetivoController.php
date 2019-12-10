@@ -529,7 +529,7 @@ class EfetivoController extends Controller
       $this->dadosGerais();
      // dd($aniversarios);
      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=',$cprid)->get();
-      return view('recursoshumanos.previsao-ferias', compact('opms','previsaoFerias'));
+      return view('recursoshumanos.previsao-ferias', compact('opms','previsaoFerias','dataForm'));
     }
 
     public function pesquisaAniversarios(Request $request, Efetivo $efetivo)
