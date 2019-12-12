@@ -9,6 +9,8 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
     $this->post('opm', 'OpmController@searchOpm')->name('opm.search');
     $this->get('opm', 'OpmController@index')->name('admin.opm');
 
+   
+
     $this->get('usuarios', 'UserController@index')->name('admin.usuarios');
     $this->get('usuarios/{id}', 'UserController@status')->name('admin.usuarios.status');
     $this->post('usuarios/salvar', 'UserController@salvar')->name('admin.usuarios.salvar');
@@ -118,9 +120,15 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
     $this->any('historico-search', 'EfetivoController@searchHistorico')->name('rh.searchHistorico');    
     $this->post('salvarhistorico','EfetivoController@salvarhistorico')->name('rh.salvarhistorico');
 
+   
 
 });
 
+
+$this->post('admin/efetivo/salvar', 'Recursoshumanos\EfetivoController@salvarMovimentacao')->name('rh.salvarMovimentacao');
+$this->get('admin/efetivo', 'Recursoshumanos\EfetivoController@policiais')->name('rh.policiais');
+$this->any('admin/efetivo/search', 'Recursoshumanos\EfetivoController@getPolicial')->name('rh.getPolicial');
+$this->get('admin/efetivo/{id?}','Recursoshumanos\EfetivoController@editPolicial')->name('rh.editPolicial');
 
 $this->get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middleware('auth');
 $this->post('update-perfil', 'Admin\UserController@update')->name('profile.update')->middleware('auth');

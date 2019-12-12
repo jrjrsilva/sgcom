@@ -286,6 +286,12 @@ return [
                     'url'  => 'admin/papeis',
                     'can'         => 'papel-list', 
                 ], 
+
+                [
+                    'text' => 'Gestão de Efetivo',
+                    'url'  => 'admin/efetivo',
+                    'can'         => 'papel-list', 
+                ], 
             ],
         ],
        

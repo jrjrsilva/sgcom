@@ -17,6 +17,7 @@ use sgcom\Models\HistoricoPolicial;
 use sgcom\Models\SituacaoEfetivo;
 use sgcom\Models\TipoHistorico;
 use sgcom\Service\EfetivoService;
+use sgcom\User;
 
 class EfetivoController extends Controller
 {
@@ -599,6 +600,58 @@ class EfetivoController extends Controller
       $this->efetivoService->getCep($cep);
 
       return json_encode($retorno);
+    }
+
+    public function policiais()
+    {
+      $this->dadosGerais();
+
+      $policiais = DB::table('pmgeral')
+      ->join('grauhierarquico', 'pmgeral.grauhierarquico_id','=','grauhierarquico.id')
+      ->join('opm', 'pmgeral.opm_id','=','opm.id')
+      ->where('matricula','=',1)
+      ->select('pmgeral.id','opm_sigla','matricula','nome','grauhierarquico.sigla')
+      ->orderBy('pmgeral.grauhierarquico_id', 'DESC')->get();
+
+
+      return view('admin.efetivo.index',compact('policiais'));
+    }
+
+    public function getPolicial(Request $request, Efetivo $efetivo)
+    {
+      $this->dadosGerais();
+      $dataForm = $request->except('_token');
+ 
+      $policiais =  $efetivo->searchUnique($dataForm, $this->totalPage);
+
+      return view('admin.efetivo.index',compact('policiais','dataForm'));
+    }
+
+    public function editPolicial($id)
+    {
+      $efetivo = Efetivo::find($id);
+      if(!$efetivo){
+        abort(404);
+      }
+      $this->dadosGerais();
+      return view('admin.efetivo.form', compact('efetivo'));
+    }
+
+    public function salvarMovimentacao(Request $request)
+    {
+    //  dd($request->all());
+      try{
+        $efetivo = Efetivo::find($request->id);
+        $efetivo->opm_id = $request->opm;
+        $efetivo->grauhierarquico_id = $request->gh;
+        $efetivo->save();
+
+        return redirect()->back()->with('success', 'Atualizado com sucesso!');
+
+       } catch (\Exception $e) {
+        $errors = $e->getMessage();
+        return redirect()->back()->withErrors('errors')->withInput();
+      } 
     }
 
    }
