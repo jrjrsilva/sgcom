@@ -68,27 +68,19 @@ class EfetivoController extends Controller
     public function index()
     {
      $this->dadosGerais();
-
-   /*   $efetivos = Efetivo::join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
-                          ->orderBy('grauHierarquico.precedencia','asc')->paginate($this->totalPage);*/
-       $efetivos = Efetivo::where('opm_id','999')->paginate($this->totalPage);
-     
-       $usr = Auth::user();
-   
-       $opm = $usr->efetivo->opm_id;
+      $efetivos = Efetivo::where('opm_id','999')->paginate($this->totalPage);
+      $usr = Auth::user();
+      $opm = $usr->efetivo->opm_id;
     
-        return view('recursoshumanos.listageral',compact('efetivos','valor'));
+      return view('recursoshumanos.listageral',compact('efetivos'));
     }
 
-    public function retornoRemover($id)
+    public function retornoRemover($opm_id)
     {
      $this->dadosGerais();
+        $efetivo = new Efetivo();
+        $efetivos = $efetivo->porOpm($opm_id, $this->totalPage);
 
-        $efetivos = Efetivo::where('opm_id',$id)
-        ->orderBy('grauhierarquico_id','DESC')
-        ->paginate($this->totalPage);
-     
-      
         return view('recursoshumanos.listageral',compact('efetivos'));
     }
 
@@ -478,10 +470,10 @@ class EfetivoController extends Controller
 
     public function removerDaOpm($id)
     {
-      $usr = Auth::user();
+     /*  $usr = Auth::user();
    
-       $opm_id = $usr->efetivo->opm_id;
-    
+      $opm_id = $usr->efetivo->opm_id;
+     */
       $efetivo = Efetivo::find($id);
         if(!$efetivo){
             abort(404);

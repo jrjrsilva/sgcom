@@ -34,19 +34,18 @@ class Efetivo extends Model
         return $this->belongsTo(SituacaoEfetivo::class,'situacao_efetivo_id');
     }
     
-    public function search(Array $dataForm, $totalPage)
+    public function porOpm($efetivo, $totalPage)
     {
-    //$retorno =
-     return 
-     $this->where(function($query) use ($dataForm){
-        if(isset($dataForm['matricula'])){
-            $query->where('matricula','LIKE','%' .$dataForm['matricula'].'%');
-        }    
-    })
-    ->paginate($totalPage);
+    $retorno =      
+     $this->join('opm','pmgeral.opm_id','=','opm.id')
+     ->join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
+     ->where('opm_id','=',$efetivo)  
+     ->select('pmgeral.id','grauhierarquico.sigla','matricula','opm.opm_sigla','dataadmissao','sexo','nome')
+     ->orderBy('grauhierarquico_id', 'DESC')
+     ->paginate($totalPage);
    // ->toSql();
     //dd($retorno);
-    
+    return $retorno;
     }
 
     public function searchUnique(Array $dataForm, $totalPage)
