@@ -51,14 +51,14 @@
               <div class="col-xs-5">
                   <label for="nome">Nome</label>
               <input type="text" class="form-control" placeholder="Nome" required
-              value="{{  $efetivo->nome or '' }}" id="nome" name="nome"> 
+              value="{{  $efetivo->nome or '' }}" id="nome" name="nome" readonly> 
               </div>
         </div>
         <div class="form-row">
             <div class="col-xs-2">
                 <label for="matricula">Matrícula</label>
             <input type="number" pattern="[0-9]" maxlength=9 class="form-control" placeholder="Informe a matricula" required
-            value="{{  $efetivo->matricula or '' }}" id="matricula" name="matricula"> 
+            value="{{  $efetivo->matricula or '' }}" id="matricula" name="matricula" readonly> 
             </div>
         </div>
         </div>
