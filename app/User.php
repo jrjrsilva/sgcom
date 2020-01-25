@@ -2,16 +2,23 @@
 
 namespace sgcom;
 
+use Illuminate\Auth\Notifications\ResetPassword as NotificationsResetPassword;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use sgcom\Models\Efetivo;
 use sgcom\Models\Papel;
 use sgcom\Models\Permissao;
+use sgcom\Notifications\ResetPassword;
 
 class User extends Authenticatable
 {
     use Notifiable;
+
+    //traduzir email
+    public function sendPasswordResetNotification($token){
+        $this->notify(new ResetPassword($token));
+    }
 
     /**
      * The attributes that are mass assignable.
