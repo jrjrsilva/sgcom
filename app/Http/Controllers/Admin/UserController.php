@@ -92,6 +92,7 @@ class UserController extends Controller
        if($request->hasfile('image') && $request->file('image')->isvalid()){
            
                 $name = $user->efetivo->matricula;
+               
                 // Define um aleatório para o arquivo baseado no timestamps atual
                 //para usar na ocorrencia
                 //$name = uniqid(date('HisYmd'));
@@ -100,7 +101,7 @@ class UserController extends Controller
                    $extenstion = $request->image->extension();
                    $nameFile = "{$name}.{$extenstion}";
 
-                   $upload = $request->image->move(public_path().'/img_perfil',$nameFile);
+                   $upload = $request->image->move('img_perfil',$nameFile);
 
                    $data['image'] = $nameFile;
                    

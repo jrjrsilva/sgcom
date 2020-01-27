@@ -135,6 +135,7 @@ class EfetivoController extends Controller
       if($request->id != null)
         $efetivo = Efetivo::find($request->id);
 
+
         $efetivo->nome                  = $request->nome;
         $efetivo->dataadmissao          = $request->data_admissao;
         $efetivo->datanascimento        = $request->data_nascimento;
@@ -168,7 +169,15 @@ class EfetivoController extends Controller
         $efetivo->cep                   = $request->cep;
         $efetivo->telefone              = $request->telefone;
         $efetivo->email                 = $request->email;
-
+        
+        if($request->hasfile('arquivo') && $request->file('arquivo')->isvalid()){
+        $extension = $request->arquivo->extension();
+        $nameFile = "{$efetivo->matricula}.{$extension}";
+        
+        $path  =  $request->file('arquivo')->move('fotos',$nameFile);
+        $efetivo->foto =  $path;
+        }
+        
         $efetivo->save();
 
         return redirect()->back()->with('success', 'Atualizado com sucesso!');

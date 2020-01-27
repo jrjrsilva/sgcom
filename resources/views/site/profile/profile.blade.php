@@ -36,9 +36,10 @@
         <label for="image">Foto:</label>
       
         @if(auth()->user()->image != null)
-    <img src="{{asset('img_perfil/'.auth()->user()->image)}}" altr=" " style="max-width: 150px;">
-    <img src="{{url('/public/img_perfil/'.auth()->user()->image)}}" alt=" " style="max-width: 150px; max-height: 150px;">
-        @endif
+            <img src="{{url("img_perfil/".auth()->user()->image)}}" height="50" width="50">
+            @else
+            <img src="{{url("fotos/sem_foto.jpg")}}" height="50" width="50">
+         @endif
        
             <input type="file" name="image" id="image" class="form-group">
     </div>

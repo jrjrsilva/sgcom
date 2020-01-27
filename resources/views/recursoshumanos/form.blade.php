@@ -20,7 +20,7 @@
 
  <!--FORMULÁRIO -->                            
 
-    <form role="form" method="POST" action="{{ route('rh.salvar')}}" >
+    <form role="form" method="POST" action="{{ route('rh.salvar')}}"  enctype="multipart/form-data">
     {!! csrf_field() !!}
     <input type="hidden" name="id" id="id" value="{{ $efetivo->id or '' }}">
  <!--DADOS  DO POLICIAL-->   
@@ -61,6 +61,19 @@
             value="{{  $efetivo->matricula or '' }}" id="matricula" name="matricula" readonly> 
             </div>
         </div>
+        <div class="form-row">
+          <div class="custom-file>
+            <label for="arquivo" class="custom-file-label">Foto</label>
+            @if($efetivo->foto != null)
+            <img src="{{ url($efetivo->foto) }}" alt="{{ $efetivo->nome }}"
+            height="200" width="150" >
+          
+           @else
+           <img src="{{url("fotos/sem_foto.jpg")}}" height="200" width="150">
+           @endif
+           <input type="file" class="custom-file-input" id="arquivo" name="arquivo" > 
+          </div>
+      </div>
         </div>
         <br>
        <br>

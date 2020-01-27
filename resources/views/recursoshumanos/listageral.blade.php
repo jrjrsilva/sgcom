@@ -91,7 +91,7 @@
 </div>
 
 <div class="box">
-      <div class="box-header with-border">
+      <div class="box-header with-border" style="display: none;">
         <h3 class="box-title">Gráfico</h3>
         <div class="box-tools pull-right">
           <!-- Collapse Button -->
@@ -100,7 +100,7 @@
           </button>
         </div>
         <!-- /.box-tools -->
-      </div>
+      
       <!-- /.box-header -->
      <div class="box-body">
         <canvas id="idade" ></canvas>
@@ -109,6 +109,7 @@
         <canvas id="pie-chart" width="800" height="450"></canvas>
       </div>
       <!-- /.box-body -->
+    </div>
     </div>
     <!-- /.box -->
 
