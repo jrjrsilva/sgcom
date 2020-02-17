@@ -85,6 +85,13 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'PainelGestao', 'prefix' 
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' => 'inteligencia'], function(){
     $this->get('index','InteligenciaController@index')->name('inteligencia.index');
+    $this->get('crim_excluir/{id}','InteligenciaController@excluir')->name('inteligencia.crim.excluir');
+    $this->get('crim_hist_excluir/{id}','InteligenciaController@excluirHist')->name('inteligencia.crim.hist.excluir');
+    $this->get('crim_edit/{id}','InteligenciaController@edit')->name('inteligencia.crim.edit');
+    $this->get('crim_form','InteligenciaController@form')->name('inteligencia.form');
+    $this->post('crim_salvar','InteligenciaController@salvarCriminoso')->name('inteligencia.crim.salvar');
+    $this->post('crim_processual_salvar','InteligenciaController@salvarProcessualCriminoso')->name('inteligencia.crim.processual.salvar');
+    $this->get('crim_status_processual/{id}','InteligenciaController@buscarStatusProcessual')->name('inteligencia.buscar.status.processual');
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Armamento', 'prefix' => 'armas'], function(){

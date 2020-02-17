@@ -134,6 +134,22 @@
 
 });
 
+$("#data_inicio").blur(function(){
+  var dt_fim = $("#data_inicio").val(); 
+  $("#data_fim").val(dt_fim);
+});
+
+$("#data_fim").blur(function(){
+  var dt_inicio = $("#data_inicio").val();
+  var dt_fim = $("#data_fim").val(); 
+  if(dt_fim < dt_inicio){
+    alert("Data de fim não pode ser menor!");
+    $("#data_iniico").focus();
+  }
+});
+
+
+
 
   </script>
 @stop
