@@ -87,6 +87,39 @@
      <div class="box">
          <div class="box-header">
          Criminosos
+         <div class="btn-toolbar pull-right">
+          <a href="{{route('inteligencia.form')}}" class="btn btn-primary btn-flat"> <i class="fa fa-">Incluir</i></a>
+         </div>
+         <div class="box-header">
+            <form action="{{route('rh.search')}}" method="POST" class="form form-inline">
+              {!! csrf_field() !!}
+              <input type="hidden" id="cprId" name="cprId" value="{{Auth::user()->efetivo->opm->cpr->id}}">
+              <label for="pnome">Nome:</label>    
+              <input  type="text" name="pnome"  id="pnome" class="form-control"
+               placeholder="Informe o nome"/>
+               <label for="pmatricula">Matrícula:</label>    
+              <input  type="number" pattern="[0-9]" maxlength=9 name="pmatricula"  id="pmatricula" class="form-control"
+               placeholder="Informe a Matrícula"/>
+               
+                <label for="pregional">Comando Regional:</label>
+                <select class="form form-control" id="pregional" name="pregional">
+                  <option value="">Selecione o CPR</option>
+                  @foreach( $cprs as $cpr )
+                  <option value="{{ $cpr->id }}" ><p> {{ $cpr->sigla }} </p></option>
+                  @endforeach
+                </select>
+                <label for="popm">OPM:</label>
+                <select class="form form-control" id="opm" name="popm">
+                  <option value="">Selecione a OPM</option>
+                  @foreach( $opms as $opm )
+                  <option value="{{ $opm->id }}" ><p> {{ $opm->opm_sigla }} </p></option>
+                  @endforeach
+                </select>
+              
+              
+                  <button id="btn-pesquisar"  type="submit" class="btn btn-primary" >Pesquisar</button>
+              </form>
+            </div>
          </div>
           <div class="box-body">
               <table id="tb1" class="table table-bordered table-striped">

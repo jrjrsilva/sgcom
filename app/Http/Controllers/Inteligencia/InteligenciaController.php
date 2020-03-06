@@ -6,13 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Illuminate\Support\Facades\Storage;
 use sgcom\Http\Controllers\Controller;
 use sgcom\Models\Aisp;
 use sgcom\Models\Criminoso;
 use sgcom\Models\Faccao;
+use sgcom\Models\GaleriaCriminoso;
 use sgcom\Models\HistoricoCrimiProcessual;
 use sgcom\Models\PosicaoFaccao;
 use sgcom\Models\SituacaoProcessual;
+use File;
+use sgcom\Models\Cpr;
+use sgcom\Models\Opm;
 
 class InteligenciaController extends Controller
 {
@@ -22,6 +27,8 @@ class InteligenciaController extends Controller
 
     public function index()
     {
+      $this->dadosGerais();
+      
       $criminosos = Criminoso::paginate($this->totalPage);
 
       return view('inteligencia.index',compact('criminosos'));
@@ -47,6 +54,19 @@ class InteligenciaController extends Controller
       return view('inteligencia.form',compact('criminoso'));
     }
 
+    public function exHist(Request $request)
+    {
+     // dd($request->all());
+
+      $this->dadosGerais();
+      $historico = HistoricoCrimiProcessual::findOrFail($request->id_excluir);
+
+      $historico->delete();
+      $criminoso = Criminoso::findOrFail($historico->criminoso_id);
+
+     // return view('inteligencia.form',compact('criminoso'));
+      return redirect()->back()->with('success', 'Atualizado com sucesso!');
+    }
 
     public function edit($id)
     {
@@ -58,16 +78,32 @@ class InteligenciaController extends Controller
     public function form()
     {
       $this->dadosGerais();
-      return view('inteligencia.form');
+
+      $criminoso =  new Criminoso();
+
+      return view('inteligencia.form',compact('criminoso'));
     }
 
     public function dadosGerais()
     {
+      $usr = Auth::user();
+      $opmt = $usr->efetivo->opm_id;
+      $cprId = $usr->efetivo->opm->cpr_id;
       $aisps = Aisp::orderBy('descricao', 'asc')->get();
       $faccoes = Faccao::orderBy('descricao', 'asc')->get();
       $posicoes = PosicaoFaccao::orderBy('descricao', 'asc')->get();
       $situacoes = SituacaoProcessual::orderBy('descricao', 'asc')->get();
-      return view()->share(compact('aisps','faccoes','posicoes','situacoes'));
+      $cprs = Cpr::whereIn('id',[4,11,12])->get();
+
+      if($usr->existePapel('Gestor CPR')){
+        $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=',$cprId)->get();
+      }else if($usr->existePapel('Admin')){
+        $opms = Opm::orderBy('opm_sigla', 'asc')->get();
+      }else {
+        $opms = Opm::orderBy('opm_sigla', 'asc')->where('id', '=',$opmt)->get();
+      }
+
+      return view()->share(compact('aisps','faccoes','posicoes','situacoes','opms','cprs'));
     }
 
     public function buscarStatusProcessual($id)
@@ -88,7 +124,12 @@ class InteligenciaController extends Controller
           if($request->id != null)
               $criminoso = Criminoso::findOrFail($request->id);
               
+              $user = Auth()->user();
+              $criminoso->opm_id = $user->efetivo->opm->id;
+              $criminoso->user_id = $user->id;
+              
             $criminoso->nome = $request->nome;
+            $criminoso->sexo = $request->sexo;
             $criminoso->apelido = $request->apelido;
             $criminoso->rg = $request->rg;
             $criminoso->cpf = $request->cpf;
@@ -124,7 +165,7 @@ class InteligenciaController extends Controller
 
     public function salvarProcessualCriminoso(Request $request){
  // dd($request->all());
-      
+        $this->dadosGerais();
       try{
        $criminoso = Criminoso::findOrFail($request->criminoso_id);
         
@@ -136,14 +177,67 @@ class InteligenciaController extends Controller
         $historico->data_registro = now();
         $historico->unidade_prisional = $request->unidade_prisional;
         $historico->user_id = Auth()->user()->id;
-
+//dd($historico);
         $historico->save();
-
-       return redirect()->back()->with('success', 'Atualizado com sucesso!');
+        return view('inteligencia.form',compact('criminoso'));
+      // return redirect()->back()->with('success', 'Atualizado com sucesso!');
 
      } catch (\Exception $e) {
        $errors = $e->getMessage();
        return redirect()->back()->withErrors('errors')->withInput();
      } 
    }
+
+   public function salvarAlbumCriminoso(Request $request){
+   // dd($request->all());
+    try{
+      $file = new GaleriaCriminoso();
+       
+           $file->criminoso_id = $request->crimi_id;
+         
+           $file->descricao = $request->descricao_img;
+         
+         if($request->hasfile('arquivo1') && $request->file('arquivo1')->isvalid()){
+           $extension = $request->arquivo1->extension();
+           $name = uniqid(date('HisYmd'));
+           $nameFile = "{$name}.{$extension}";
+           
+           $path  =  $request->file('arquivo1')->move('fotos_criminosos',$nameFile);
+
+           $file->foto =  $path;
+
+           } 
+       
+
+     $file->save();
+
+     return redirect()->back()->with('success', 'Atualizado com sucesso!');
+
+   } catch (\Exception $e) {
+     $errors = $e->getMessage();
+     return redirect()->back()->withErrors('errors')->withInput();
+   }
+ }
+
+ public function deleteAlbumCriminoso($id)
+ {
+   $galeria = GaleriaCriminoso::findorFail($id);
+   if(isset($galeria)){
+     $arquivo = $galeria->foto;
+     $path = public_path().'/';
+     File::delete($path.$arquivo);
+     $galeria->delete();
+   }
+ return redirect()->back()->with('success', 'Removido com sucesso!');
+ }
+
+ public function downloadAlbumCriminoso($id)
+ {
+   $galeria = GaleriaCriminoso::findorFail($id);
+   if(isset($galeria)){
+     $path = public_path().'/';
+      return response()->download($path.$galeria->foto);
+   }
+  return redirect()->back()->with('success', 'Sucesso!');
+ }
 }

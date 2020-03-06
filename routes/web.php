@@ -87,11 +87,16 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' 
     $this->get('index','InteligenciaController@index')->name('inteligencia.index');
     $this->get('crim_excluir/{id}','InteligenciaController@excluir')->name('inteligencia.crim.excluir');
     $this->get('crim_hist_excluir/{id}','InteligenciaController@excluirHist')->name('inteligencia.crim.hist.excluir');
+    $this->delete('hist_excluir','InteligenciaController@exHist')->name('inteligencia.hist.excluir');
     $this->get('crim_edit/{id}','InteligenciaController@edit')->name('inteligencia.crim.edit');
     $this->get('crim_form','InteligenciaController@form')->name('inteligencia.form');
     $this->post('crim_salvar','InteligenciaController@salvarCriminoso')->name('inteligencia.crim.salvar');
     $this->post('crim_processual_salvar','InteligenciaController@salvarProcessualCriminoso')->name('inteligencia.crim.processual.salvar');
     $this->get('crim_status_processual/{id}','InteligenciaController@buscarStatusProcessual')->name('inteligencia.buscar.status.processual');
+    $this->post('album_salvar','InteligenciaController@salvarAlbumCriminoso')->name('inteligencia.album.salvar');
+    $this->delete('album_delete/{id}','InteligenciaController@deleteAlbumCriminoso')->name('inteligencia.album.delete');
+    $this->get('download/{id}','InteligenciaController@downloadAlbumCriminoso')->name('inteligencia.album.download');
+   
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Armamento', 'prefix' => 'armas'], function(){
@@ -120,14 +125,10 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
     
     $this->any('pesquisa-previsao-ferias', 'EfetivoController@pesquisaPrevisaoFerias')->name('rh.pesquisaPrevisaoFerias');
    
-   
-
     $this->get('historico/{id}','EfetivoController@historicopolicial')->name('rh.historico');
     $this->get('historiconovo/{id}','EfetivoController@historiconovo')->name('rh.historiconovo');
     $this->any('historico-search', 'EfetivoController@searchHistorico')->name('rh.searchHistorico');    
     $this->post('salvarhistorico','EfetivoController@salvarhistorico')->name('rh.salvarhistorico');
-
-   
 
 });
 

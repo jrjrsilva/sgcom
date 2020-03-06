@@ -31,7 +31,7 @@ class Ocorrencia extends Model
     }
 
     function tipoocorrencia() {
-        return $this->belongsTo(TipoOcorrencia::class);
+        return $this->belongsTo(TipoOcorrencia::class,'tipoocorrencia_id');
     }
 
     function aisp() {

@@ -86,6 +86,18 @@
                 </select>
               </div>
 
+              <div class="col-xs-2">
+                <label>Sexo</label>
+           <select class="form-control" id="sexo" name="sexo">
+               <option value="M"  @if($criminoso->sexo == 'M')
+                selected 
+              @endif >Masculino</option>
+               <option value="F"  @if($criminoso->sexo == 'F')
+                selected 
+              @endif >Feminino</option>
+             </select>
+           </div>
+
         </div> 
 
               <br>
@@ -174,16 +186,26 @@
     <button type="submit" class="btn btn-success btn-lg">Salvar</button>
    </div>
 </div>
-             <!--FORMULÁRIO -->
+   <!--FORMULÁRIO -->
+    </div>
+          
+    </form>
 
+    <div>
+      <div class="box-footer">
+        <div class="btn-toolbar pull-left">
+          <button type="button" class="btn btn-primary" 
+          data-toggle="modal" data-target="#exampleModal" 
+          data-whatever="@getbootstrap"
+          style="<?php 
+          if(!isset($criminoso->id)){ 
+             echo 'display: none;';
+           }?>"
+          >Incluir Registro Processual</button>
+         </div>
+      </div>
       
     </div>
-              <div class="box-footer">
-                <div class="btn-toolbar pull-left">
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Registro Processual</button>
-                 </div>
-              </div>
-    </form>
 
     <div class="box-body">
       <table id="tb1" class="table table-bordered table-striped">
@@ -203,7 +225,15 @@
             <td>{{ $historico->enquadramento}}</td>
             <td>
               <a href="{{route('inteligencia.crim.hist.excluir',$historico->id)}}" 
-                      onclick="return confirmExcluirHistorico();" class="btn btn-danger btn-flat"><i class="fa fa-trash-o"></i></a>
+                      onclick="return confirmExcluirHistorico();" 
+                      class="btn btn-danger btn-flat"><i class="fa fa-trash-o"></i></a>
+              <form action="{{route('inteligencia.hist.excluir')}}"
+                method="POST">
+                {!! csrf_field() !!}  
+                <input name="_method" type="hidden" value="DELETE"> 
+                <input type="hidden" name="id_excluir" value="{{$historico->id}}">             
+                
+              </form>
           </td>
           </tr>
           @empty
@@ -217,6 +247,70 @@
     <!-- /.box-body -->
   </div>
 
+ 
+
+  <main role="main"  style="<?php 
+  if(!isset($criminoso->id)){ 
+     echo 'display: none;';
+   }?>">
+ <header>
+  <div class="navbar navbar-dark bg-dark shadow-sm">
+      <a href="#" class="navbar-brand d-flex align-items-center">
+        <strong>Album de fotos</strong>
+      </a>
+  </div>
+</header>
+    <section class="jumbotron text-center" >
+      <div class="container">
+        <form method="POST" action="{{route('inteligencia.album.salvar')}}" enctype="multipart/form-data">
+         <div class="form-group text-left">
+          {!! csrf_field() !!}
+          <input type="hidden" name="crimi_id" id="crimi_id" value="{{ $criminoso->id or '' }}" >
+            <label for="descricao_img">Descrição da imagem</label>
+            <input class="form-control" id="descricao_img" name="descricao_img" required>
+          </div>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="arquivo1" name="arquivo1" required>
+            <label class="custom-file-label" for="arquivo1">Escolha um arquivo</label>
+          </div>
+          <p>
+            <button type="submit" class="btn btn-primary my-2">Enviar</button>
+            <button type="reset" class="btn btn-secondary my-2">Cancelar</button>
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <div class="album py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          @foreach ($criminoso->galeriacriminoso as $galeria)
+              <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                  <img class="card-img-top figure-img img-fluid rounded" src="{{ url($galeria->foto) }}" width="100" height="100">
+                  <div class="card-body">
+                    <p class="card-text">{{$galeria->descricao}}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group">
+                        <!--button type="button" class="btn btn-sm btn-outline-secondary">Download</button-->
+                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{route('inteligencia.album.download',$galeria->id)}}">Download</a>
+                      <form method="post" action="{{route('inteligencia.album.delete',$galeria->id)}}">
+                          {!! csrf_field() !!}
+                          <input type="hidden" name="_method" value="delete">
+                          <button type="submit" class="btn btn-sm btn-outline-danger">Apagar</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @endforeach
+        </div>
+       
+      </div>
+    </div>
+
+  </main>
     <div class="clearfix"></div>
               </div>
           </div>
@@ -311,8 +405,31 @@ $('#situacao_processual').change(function () {
   event.preventDefault();
 }
 
- </script>
-
-
-
+ </script> 
 @stop
+@section('css')
+<style>
+  body { padding: 20px; }
+       .navbar { margin-bottom: 20px; }
+       :root { --jumbotron-padding-y: 10px; }
+       .jumbotron {
+         padding-top: var(--jumbotron-padding-y);
+         padding-bottom: var(--jumbotron-padding-y);
+         margin-bottom: 0;
+         background-color: #fff;
+       }
+       @media (min-width: 768px) {
+         .jumbotron {
+           padding-top: calc(var(--jumbotron-padding-y) * 2);
+           padding-bottom: calc(var(--jumbotron-padding-y) * 2);
+         }
+       }
+       .jumbotron p:last-child { margin-bottom: 0; }
+       .jumbotron-heading { font-weight: 300; }
+       .jumbotron .container { max-width: 40rem; }
+       .btn-card { margin: 4px; }
+       .btn { margin-right: 5px; }
+       footer { padding-top: 3rem; padding-bottom: 3rem; }
+       footer p { margin-bottom: .25rem; }
+   </style>
+@endsection

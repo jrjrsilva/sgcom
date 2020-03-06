@@ -30,6 +30,10 @@ class Criminoso extends Model
         return $this->hasMany(HistoricoCrimiProcessual::class,'criminoso_id');
     }
 
+    function galeriacriminoso() {
+        return $this->hasMany(GaleriaCriminoso::class,'criminoso_id');
+    }
+
     function faccao() {
         return $this->belongsTo(Faccao::class,'faccao_id');
     }

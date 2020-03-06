@@ -195,7 +195,7 @@ return [
             'url'         => 'frota/lista',
             'icon'        => 'truck',
             'label_color' => 'success', 
-            'can'         => 'gf-list',    
+            'can'         => 'frota-list',    
         ],   
 
         [
@@ -211,7 +211,7 @@ return [
             'url'         => 'inteligencia/index',
             'icon'        => 'desktop',
             'label_color' => 'success',   
-            'can'         => 'integencia-list',  
+            'can'         => 'inteligencia-list',  
         ],   
 
         [

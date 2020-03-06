@@ -44,7 +44,16 @@ class EfetivoController extends Controller
       $porSexoCpr = ($this->agrupamentoSexoCpr($cprId));
       $agrupamento = $this->agrupamentoTempoServicoCpr($cprId);
       $agrupamentoIdade = $this->agrupamentoIdadeCpr($cprId);
-      $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=','12')->get();
+
+      if($usr->existePapel('Gestor CPR')){
+        $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=',$cprId)->get();
+      }else if($usr->existePapel('Admin')){
+        $opms = Opm::orderBy('opm_sigla', 'asc')->get();
+      }else {
+        $opms = Opm::orderBy('opm_sigla', 'asc')->where('id', '=',$opmt)->get();
+      }
+        
+      
       $ghs = GrauHierarquico::orderBy('precedencia','asc')->get();
       $secoes = Secao::orderBy('nome','asc')->get();
       $funcoes = Funcao::orderBy('nome','asc')->get();
