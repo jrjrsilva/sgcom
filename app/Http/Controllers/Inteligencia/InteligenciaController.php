@@ -21,17 +21,17 @@ use sgcom\Models\Opm;
 
 class InteligenciaController extends Controller
 {
-  private $totalPage = 15;
+  private $totalPage = 10;
 
   private $criminoso;
 
     public function index()
     {
       $this->dadosGerais();
-      
-      $criminosos = Criminoso::paginate($this->totalPage);
 
-      return view('inteligencia.index',compact('criminosos'));
+      $criminosos = Criminoso::paginate($this->totalPage);
+      
+      return view('inteligencia.criminosos',compact('criminosos'));
     }
 
     public function excluir($id)
@@ -41,7 +41,7 @@ class InteligenciaController extends Controller
       $criminoso->delete();
       $criminosos = Criminoso::paginate($this->totalPage);
 
-      return view('inteligencia.index',compact('criminosos'));
+      return view('inteligencia.criminosos',compact('criminosos'));
     }
 
     public function excluirHist($id)
@@ -93,7 +93,7 @@ class InteligenciaController extends Controller
       $faccoes = Faccao::orderBy('descricao', 'asc')->get();
       $posicoes = PosicaoFaccao::orderBy('descricao', 'asc')->get();
       $situacoes = SituacaoProcessual::orderBy('descricao', 'asc')->get();
-      $cprs = Cpr::whereIn('id',[4,11,12])->get();
+      $cprs = Cpr::whereIn('id',[12])->get();
 
       if($usr->existePapel('Gestor CPR')){
         $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=',$cprId)->get();
@@ -240,4 +240,16 @@ class InteligenciaController extends Controller
    }
   return redirect()->back()->with('success', 'Sucesso!');
  }
+
+
+ public function search(Request $request, Criminoso $criminoso)
+ {
+   $this->dadosGerais();
+   $dataForm = $request->except('_token');
+
+   $criminosos =  $criminoso->search($dataForm, $this->totalPage);
+
+   return view('inteligencia.criminosos',compact('criminosos','dataForm'));
+ }
+
 }

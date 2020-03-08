@@ -84,7 +84,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'PainelGestao', 'prefix' 
   });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' => 'inteligencia'], function(){
-    $this->get('index','InteligenciaController@index')->name('inteligencia.index');
+    $this->get('criminosos','InteligenciaController@index')->name('inteligencia.criminosos');
     $this->get('crim_excluir/{id}','InteligenciaController@excluir')->name('inteligencia.crim.excluir');
     $this->get('crim_hist_excluir/{id}','InteligenciaController@excluirHist')->name('inteligencia.crim.hist.excluir');
     $this->delete('hist_excluir','InteligenciaController@exHist')->name('inteligencia.hist.excluir');
@@ -96,7 +96,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' 
     $this->post('album_salvar','InteligenciaController@salvarAlbumCriminoso')->name('inteligencia.album.salvar');
     $this->delete('album_delete/{id}','InteligenciaController@deleteAlbumCriminoso')->name('inteligencia.album.delete');
     $this->get('download/{id}','InteligenciaController@downloadAlbumCriminoso')->name('inteligencia.album.download');
-   
+    $this->post('crim_search', 'InteligenciaController@search')->name('inteligencia.crim.search');
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Armamento', 'prefix' => 'armas'], function(){
@@ -149,4 +149,5 @@ $this->get('/', 'Site\SGCOMController@index')->name('home');
 $this->get('/rh/matricula/{id}', 'Recursoshumanos\EfetivoController@getMatricula')->name('register.matricula');
 
 $this->get('/cvli/json','Cvli\CvliController@json')->name('cvli.json');
+
 Auth::routes();

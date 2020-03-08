@@ -42,6 +42,35 @@ class Criminoso extends Model
         return $this->belongsTo(Aisp::class);
     }
 
-   
+    public function search(Array $dataForm, $totalPage)
+    {
+
+     $retorno =
+     $this->join('opm','criminoso.opm_id','opm.id')
+      ->where(function($query) use ($dataForm){
+        if(isset($dataForm['pnome'])){
+            $query->where('criminoso.nome','LIKE','%' .$dataForm['pnome'].'%');
+        }
+        if(isset($dataForm['apelido'])){
+            $query->where('apelido','LIKE','%'.$dataForm['apelido'].'%');
+        }  
+        if(isset($dataForm['popm'])){
+            $query->where('opm_id','=',$dataForm['popm']);
+        }
+
+        if(isset($dataForm['faccao'])){
+            $query->where('criminoso.faccao_id','=',$dataForm['faccao']);
+        } 
+      
+        if(isset($dataForm['pregional'])){
+            $query->where('opm.cpr_id','=',$dataForm['pregional']);
+        }
+       
+    })->select('criminoso.id','criminoso.nome','criminoso.apelido','criminoso.foto','criminoso.faccao_id')
+    ->orderBy('criminoso.nome', 'DESC')
+    ->paginate($totalPage);
+
+   return $retorno;
+    }
    
 }

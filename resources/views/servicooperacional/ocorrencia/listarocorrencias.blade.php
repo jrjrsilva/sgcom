@@ -23,7 +23,7 @@
               <div class="progress-bar" style="width: {{ $ocorrencias->total() }}%"></div>
             </div>
             <span class="progress-description">
-              20% das ocorrências de 2018
+              20% das ocorrências de {{date('Y')}}
             </span>
             </div>
           <!-- /.info-box-content -->
@@ -41,7 +41,7 @@
               <div class="progress-bar" style="width: {{$pcvli}}%"></div>
             </div>
             <span class="progress-description">
-            {{number_format($pcvli,2)}}% de 257 em 2018
+            {{number_format($pcvli,2)}}% de 257 em {{date('Y')}}
             </span>
             </div>
           <!-- /.info-box-content -->
@@ -59,7 +59,7 @@
               <div class="progress-bar" style="width: 00%"></div>
             </div>
             <span class="progress-description">
-              {{number_format($pcvp,2)}}% de 2074 em 2018
+              {{number_format($pcvp,2)}}% de 2074 em {{date('Y')}}
             </span>
             </div>
           <!-- /.info-box-content -->
@@ -77,7 +77,7 @@
             <div class="progress-bar" style="width: {{$phomicidio}}%"></div>
             </div>
             <span class="progress-description">
-            {{number_format($phomicidio,2)}}% dos homicidios de 2018
+            {{number_format($phomicidio,2)}}% dos homicidios de {{date('Y')}}
             </span>
             </div>
           <!-- /.info-box-content -->

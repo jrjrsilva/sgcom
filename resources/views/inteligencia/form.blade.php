@@ -5,8 +5,8 @@
 @section('content_header')
     <h1>Inteligência</h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('inteligencia.index')}}">Inteligência</a></li>
-        <li><a href="">criminosos</a></li>
+        <li><a href="">Inteligência</a></li>
+        <li><a href="{{route('inteligencia.index')}}">criminosos</a></li>
     </ol>
 @stop
 

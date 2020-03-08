@@ -62,10 +62,14 @@ class OcorrenciaController extends Controller
 
       $this->authorize('ocorrencia-list');
 
-      $ocorrencias = Ocorrencia::orderBy('data', 'desc')->paginate($this->totalPage);
+      $ocorrencias = Ocorrencia::
+      whereYear('data','=',date('Y'))
+      ->orderBy('data', 'desc')
+      ->paginate($this->totalPage);
       $cvli = DB::table('ocorrencia')
               ->join('tipo_ocorrencia','ocorrencia.tipoocorrencia_id','tipo_ocorrencia.id')
               ->where('tipo_ocorrencia.indice_id', 1)
+              ->whereYear('data','=',date('Y'))
               ->count();
       if($cvli > 0)
         $pcvli = ($cvli * 100)/257;
@@ -74,6 +78,7 @@ class OcorrenciaController extends Controller
       $cvp = DB::table('ocorrencia')
               ->join('tipo_ocorrencia','ocorrencia.tipoocorrencia_id','tipo_ocorrencia.id')
               ->where('tipo_ocorrencia.indice_id', 2)
+              ->whereYear('data','=',date('Y'))
               ->count();
       if($cvp > 0)
         $pcvp = ($cvp * 100)/2074;
@@ -81,6 +86,7 @@ class OcorrenciaController extends Controller
 
       $homicidio = DB::table('ocorrencia')
             ->where('tipoocorrencia_id', 1)
+            ->whereYear('data','=',date('Y'))
             ->count();
       if($homicidio > 0)
       $phomicidio = ($homicidio * 100)/2074;
@@ -305,6 +311,7 @@ class OcorrenciaController extends Controller
       $cvli = DB::table('ocorrencia')
               ->join('tipo_ocorrencia','ocorrencia.tipoocorrencia_id','tipo_ocorrencia.id')
               ->where('tipo_ocorrencia.indice_id', 1)
+              ->whereYear('data','=',date('Y'))
               ->count();
       if($cvli > 0)
         $pcvli = ($cvli * 100)/257;
@@ -313,6 +320,7 @@ class OcorrenciaController extends Controller
       $cvp = DB::table('ocorrencia')
               ->join('tipo_ocorrencia','ocorrencia.tipoocorrencia_id','tipo_ocorrencia.id')
               ->where('tipo_ocorrencia.indice_id', 2)
+              ->whereYear('data','=',date('Y'))
               ->count();
       if($cvp > 0)
         $pcvp = ($cvp * 100)/2074;
@@ -320,6 +328,7 @@ class OcorrenciaController extends Controller
 
       $homicidio = DB::table('ocorrencia')
             ->where('tipoocorrencia_id', 1)
+            ->whereYear('data','=',date('Y'))
             ->count();
       if($homicidio > 0)
       $phomicidio = ($homicidio * 100)/2074;

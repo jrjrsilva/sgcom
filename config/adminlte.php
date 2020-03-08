@@ -208,7 +208,7 @@ return [
 
         [
             'text'        => 'Inteligência Policial',
-            'url'         => 'inteligencia/index',
+            'url'         => 'inteligencia/criminosos',
             'icon'        => 'desktop',
             'label_color' => 'success',   
             'can'         => 'inteligencia-list',  
