@@ -6,7 +6,7 @@
     <h1>Inteligência</h1>
     <ol class="breadcrumb">
         <li><a href="">Inteligência</a></li>
-        <li><a href="{{route('inteligencia.index')}}">criminosos</a></li>
+        <li><a href="{{route('inteligencia.criminosos')}}">criminosos</a></li>
     </ol>
 @stop
 
@@ -46,7 +46,7 @@
 
               <div class="col-xs-8">
                    <label>Nome</label>
-                <input type="text" class="form-control" placeholder="Nome" 
+                <input type="text" class="form-control" placeholder="Nome" required
                 value="{{  $criminoso->nome or '' }}" id="nome" name="nome">
               </div> 
         </div>
@@ -88,7 +88,7 @@
 
               <div class="col-xs-2">
                 <label>Sexo</label>
-           <select class="form-control" id="sexo" name="sexo">
+           <select class="form-control" id="sexo" name="sexo" required>
                <option value="M"  @if($criminoso->sexo == 'M')
                 selected 
               @endif >Masculino</option>
@@ -144,13 +144,13 @@
            </div>
               <div class="col-xs-6">
                    <label>Área de atuação</label>
-                    <input type="text" class="form-control" placeholder="area_atuacao" 
+                    <input type="text" class="form-control" placeholder="area_atuacao" required
                     value="{{  $criminoso->area_atuacao or ''  }}" id="area_atuacao" name="area_atuacao">                        
                 </div>
 
                 <div class="col-xs-3">
                     <label>AISP</label>
-               <select class="form-control" id="aisp" name="aisp">
+               <select class="form-control" id="aisp" name="aisp" required>
                    <option value="">Selecione a AISP</option>
                    @foreach( $aisps as $aisp )
                    <option value="{{ $aisp->id or '' }}" 
