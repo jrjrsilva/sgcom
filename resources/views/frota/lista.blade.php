@@ -108,6 +108,7 @@
                         <th>Prefixo</th>
                         <th>Modelo</th>
                         <th>Situação</th>
+                        <th>KM Atual</th>
                         <th>OPM</th>
                         <th>Ano de Fabricação</th>
                         <th></th>
@@ -119,10 +120,14 @@
                         <td>{{$viatura->prefixo}}</td>
                         <td>{{$viatura->modeloveiculo->descricao}}</td>
                         <td>{{$viatura->situacaoviatura->descricao}}</td>
+                        <td> {{number_format($viatura->km,0,'.','.')}}</td>
                         <td>{{$viatura->opm->opm_sigla}}</td>
                         <td> {{$viatura->ano_fabricacao}}</td>
                         
                         <td>
+                          <a href="{{route('frota.edit.historico',$viatura->id)}}" class="btn btn-primary btn-flat">Lançar Historico</a>
+                          <a href="{{route('frota.edit.revisao',$viatura->id)}}" class="btn btn-primary btn-flat">Lançar Revisão</a>
+                          <a href="{{route('frota.edit.km',$viatura->id)}}" class="btn btn-primary btn-flat">Lançar KM</a>
                           <a href="{{route('frota.edit',$viatura->id)}}" class="btn btn-primary btn-flat"> <i class="fa fa-edit"></i></a>
                         </td>
                       </tr>
@@ -134,6 +139,7 @@
                             <th>Prefixo</th>
                             <th>Modelo</th>
                             <th>Situação</th>
+                            <th>KM Atual</th>
                             <th>OPM</th>
                             <th>Ano de Fabricação</th>
                       <th></th>
@@ -170,9 +176,17 @@
                 </div>
                 <!-- /.box -->
               </div>
+
+                          
+              
+
       @stop
 
 
 @section('js')
-   
+<script>
+
+
+
+</script>
 @stop

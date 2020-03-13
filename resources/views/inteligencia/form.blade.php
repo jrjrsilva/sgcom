@@ -204,7 +204,6 @@
           >Incluir Registro Processual</button>
          </div>
       </div>
-      
     </div>
 
     <div class="box-body">

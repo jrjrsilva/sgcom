@@ -50,7 +50,9 @@ class Viatura extends Model
        if(isset($dataForm['popm'])){
             $query->where('opm_id','=',$dataForm['popm']);
         }  
-    })->orderBy('prefixo', 'asc')
+    })
+    ->where('situacao_viatura_id','<>',1)
+    ->orderBy('km', 'desc')
     ->paginate($totalPage);
     //->toSql();
    // dd($retorno);

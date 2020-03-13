@@ -65,8 +65,14 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home
 $this->group(['middleware' => ['auth'], 'namespace' => 'Frotas', 'prefix' => 'frota'], function(){
     $this->get('index','FrotaController@index')->name('frota.index');
     $this->get('lista','FrotaController@lista')->name('frota.lista');
-    $this->any('pesquisar','FrotaController@search')->name('frota.search');
+    $this->post('pesquisar','FrotaController@search')->name('frota.search');
     $this->get('edit/{id}','FrotaController@edit')->name('frota.edit');
+    $this->get('edit-km/{id}','FrotaController@editKM')->name('frota.edit.km');
+    $this->post('salvarKM','FrotaController@salvarKM')->name('frota.salvar.km');
+    $this->get('edit-revisao/{id}','FrotaController@editRevisao')->name('frota.edit.revisao');
+    $this->post('salvarRevisao','FrotaController@salvarRevisao')->name('frota.salvar.revisao');
+    $this->get('edit-historico/{id}','FrotaController@editHistorico')->name('frota.edit.historico');
+    $this->post('salvarHistorico','FrotaController@salvarHistorico')->name('frota.salvar.historico');
     $this->post('salvar','FrotaController@salvar')->name('frota.salvar');
 });
 
