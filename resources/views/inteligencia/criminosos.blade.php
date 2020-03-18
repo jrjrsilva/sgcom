@@ -93,13 +93,22 @@
          <div class="box-header">
             <form action="{{route('inteligencia.crim.search')}}" method="POST" class="form form-inline">
               {!! csrf_field() !!}
-              <input type="hidden" id="cprId" name="cprId" value="{{Auth::user()->efetivo->opm->cpr->id}}">
+             
               <label for="pnome">Nome:</label>    
               <input  type="text" name="pnome"  id="pnome" class="form-control"
                placeholder="Informe o nome"/>
                <label for="apelido">Apelido:</label>    
               <input  type="text" name="apelido"  id="apelido" class="form-control"
                placeholder="Informe o apelido"/>
+
+               <label for="faccao">Facção:</label>
+               <select class="form form-control" id="faccao" name="faccao">
+                 <option value="">Selecione a Facção</option>
+                 @foreach( $faccoes as $faccao )
+                 <option value="{{ $faccao->id }}" ><p> {{ $faccao->nome }} </p></option>
+                 @endforeach
+               </select>
+
                @can('gestor-cpr')
                 <label for="pregional">Comando Regional:</label>
                 <select class="form form-control" id="pregional" name="pregional">
@@ -130,7 +139,7 @@
                   <th>Nome</th>
                   <th>Apelido</th>
                   <th>Facção</th>
-                  
+                  <th>OPM</th>
                   <th></th>
                 </tr>
                 </thead>
@@ -144,13 +153,18 @@
                      <img src="{{url("fotos/sem_foto.jpg")}}" height="150" width="100">
                      @endif</td>
                     <td>{{$criminoso->nome}}</td>
-                    <td>{{ $criminoso->apelido}}</td>
-                    <td>{{ $criminoso->faccao->nome}}</td>
+                    <td>{{$criminoso->apelido}}</td>
+                    <td>{{$criminoso->faccao->nome}}</td>
+                    <td>{{$criminoso->opm->opm_sigla}}</td>
                     <td>
-                        <a href="{{route('inteligencia.crim.edit',$criminoso->id)}}" class="btn btn-primary btn-flat"> <i class="fa fa-edit"></i></a>
-                        <a href="{{route('inteligencia.crim.excluir',$criminoso->id)}}" 
-                                onclick="return confirmExcluircriminoso();" class="btn btn-danger btn-flat"><i class="fa fa-trash-o"></i></a>
-                    </td>
+                      @can('inteligencia-list')
+                      @if($criminoso->opm_id == Auth::user()->efetivo->opm_id or Auth::user()->ehAdmin() )
+                      <a href="{{route('inteligencia.crim.edit',$criminoso->id)}}" class="btn btn-primary btn-flat"> <i class="fa fa-edit"></i></a>
+                      <a href="{{route('inteligencia.crim.excluir',$criminoso->id)}}" 
+                              onclick="return confirmExcluircriminoso();" class="btn btn-danger btn-flat"><i class="fa fa-trash-o"></i></a>
+                    @endif
+                    @endcan
+                      </td>
                   </tr>
                   @empty
                   @endforelse 
@@ -161,6 +175,7 @@
                   <th>Nome</th>
                   <th>Apelido</th>
                   <th>Facção</th>
+                  <th>OPM</th>
                   <th></th>
                 </tr>
                 

@@ -79,7 +79,10 @@ class Efetivo extends Model
         if(isset($dataForm['pcidade'])){
             $query->where('cidade_estado','=',$dataForm['pcidade']);
         } 
-    })->select('pmgeral.id','grauhierarquico.sigla','matricula','opm.opm_sigla','dataadmissao','sexo','nome')
+    })
+  // ->where('opm_id','=',Auth::user()->efetivo->opm->id)
+    ->whereOr('opm_id','=','3099991')
+    ->select('pmgeral.id','grauhierarquico.sigla','matricula','opm.opm_sigla','dataadmissao','sexo','nome')
     ->orderBy('grauhierarquico_id', 'DESC')
     ->paginate($totalPage);
 

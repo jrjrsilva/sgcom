@@ -51,7 +51,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Servicooperacional', 'pr
     $this->get('ocorrencia','OcorrenciaController@index')->name('servico.ocorrencia');
     $this->post('ocorrencia-salvar','OcorrenciaController@salvar')->name('servico.ocorrencia.salvar');
     $this->get('ocorrencia/{id?}/excluir','OcorrenciaController@excluir')->name('servico.ocorrencia.excluir');
-    $this->post('ocorrencia-pesquisar', 'OcorrenciaController@search')->name('servico.ocorrencia.search');
+    $this->any('ocorrencia-pesquisar', 'OcorrenciaController@search')->name('servico.ocorrencia.search');
 
     $this->get('escala','OcorrenciaController@escala')->name('servico.escala.index');
     $this->get('produtividade','OcorrenciaController@produtividade')->name('servico.produtividade.index');
@@ -102,7 +102,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' 
     $this->post('album_salvar','InteligenciaController@salvarAlbumCriminoso')->name('inteligencia.album.salvar');
     $this->delete('album_delete/{id}','InteligenciaController@deleteAlbumCriminoso')->name('inteligencia.album.delete');
     $this->get('download/{id}','InteligenciaController@downloadAlbumCriminoso')->name('inteligencia.album.download');
-    $this->post('crim_search', 'InteligenciaController@search')->name('inteligencia.crim.search');
+    $this->any('crim_search', 'InteligenciaController@search')->name('inteligencia.crim.search');
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Armamento', 'prefix' => 'armas'], function(){

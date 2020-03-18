@@ -29,7 +29,8 @@ class InteligenciaController extends Controller
     {
       $this->dadosGerais();
 
-      $criminosos = Criminoso::paginate($this->totalPage);
+       $usr = Auth::user();
+      $criminosos = Criminoso::where('opm_id','=',$usr->efetivo->opm_id)->paginate($this->totalPage);
       
       return view('inteligencia.criminosos',compact('criminosos'));
     }
@@ -128,7 +129,7 @@ class InteligenciaController extends Controller
               $criminoso->opm_id = $user->efetivo->opm->id;
               $criminoso->user_id = $user->id;
               
-            $criminoso->nome = $request->nome;
+            $criminoso->nome = trim(strtoupper($request->nome));
             $criminoso->sexo = $request->sexo;
             $criminoso->apelido = $request->apelido;
             $criminoso->rg = $request->rg;

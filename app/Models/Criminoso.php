@@ -15,9 +15,7 @@ class Criminoso extends Model
     protected $guarded = ['id','created_at','updated_at'];
 
     protected $dates = ['deleted_at'];
-    
-
-    
+        
     function posicaofaccao() {
         return $this->belongsTo(PosicaoFaccao::class,'posicao_faccao_id');
     }
@@ -40,6 +38,10 @@ class Criminoso extends Model
 
     function aisp() {
         return $this->belongsTo(Aisp::class);
+    }
+
+    function opm() {
+        return $this->belongsTo(Opm::class);
     }
 
     public function search(Array $dataForm, $totalPage)
@@ -66,7 +68,7 @@ class Criminoso extends Model
             $query->where('opm.cpr_id','=',$dataForm['pregional']);
         }
        
-    })->select('criminoso.id','criminoso.nome','criminoso.apelido','criminoso.foto','criminoso.faccao_id')
+    })->select('criminoso.id','criminoso.nome','criminoso.apelido','criminoso.foto','criminoso.faccao_id','criminoso.opm_id')
     ->orderBy('criminoso.nome', 'DESC')
     ->paginate($totalPage);
 

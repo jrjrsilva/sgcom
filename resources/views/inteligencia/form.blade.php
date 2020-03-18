@@ -45,7 +45,7 @@
               </div> 
 
               <div class="col-xs-8">
-                   <label>Nome</label>
+                   <label>Nome*</label>
                 <input type="text" class="form-control" placeholder="Nome" required
                 value="{{  $criminoso->nome or '' }}" id="nome" name="nome">
               </div> 
@@ -71,10 +71,10 @@
        </div> 
 
               <div class="col-xs-2">
-                   <label>Facção</label>
-              <select class="form-control" id="faccao" name="faccao">
-                  <option value="">Selecione a Facção</option>
-                  @foreach( $faccoes as $faccao )
+                   <label>Facção*</label>
+              <select class="form-control" id="faccao" name="faccao" required>
+                  <option value="">Selecione</option>
+                 @foreach( $faccoes as $faccao )
                   <option value="{{ $faccao->id or '' }}" 
                       @isset($criminoso->faccao->id)
                       @if($criminoso->faccao->id == $faccao->id)
@@ -87,7 +87,7 @@
               </div>
 
               <div class="col-xs-2">
-                <label>Sexo</label>
+                <label>Sexo*</label>
            <select class="form-control" id="sexo" name="sexo" required>
                <option value="M"  @if($criminoso->sexo == 'M')
                 selected 
@@ -104,8 +104,8 @@
 
         <div class="row">
             <div class="col-xs-2">
-                <label>Posição</label>
-           <select class="form-control" id="posicao" name="posicao">
+                <label>Posição*</label>
+           <select class="form-control" id="posicao" name="posicao" required>
                <option value="">Selecione a Posição</option>
                @foreach( $posicoes as $posicao )
                <option value="{{ $posicao->id or '' }}" 
@@ -143,13 +143,13 @@
         
            </div>
               <div class="col-xs-6">
-                   <label>Área de atuação</label>
+                   <label>Área de atuação*</label>
                     <input type="text" class="form-control" placeholder="area_atuacao" required
                     value="{{  $criminoso->area_atuacao or ''  }}" id="area_atuacao" name="area_atuacao">                        
                 </div>
 
                 <div class="col-xs-3">
-                    <label>AISP</label>
+                    <label>AISP*</label>
                <select class="form-control" id="aisp" name="aisp" required>
                    <option value="">Selecione a AISP</option>
                    @foreach( $aisps as $aisp )
@@ -330,7 +330,7 @@
             <input type="hidden" name="criminoso_id" value="{{$criminoso->id or '' }}">
             <div class="row">
             <div class="col-xs-4">
-                <label>Situação processual</label>
+                <label>Situação processual*</label>
            <select class="form-control" id="situacao_processual" name="situacao_processual" required>
                <option value="">Selecione</option>
                @foreach( $situacoes as $situacao )
@@ -341,7 +341,7 @@
            </div>
             
            <div class="col-xs-4">
-              <label>Status</label>
+              <label>Status*</label>
                 <select class="form-control" id="status_processual" name="status_processual" required>
                 <option value="">Selecione</option>
                  </select>
@@ -358,7 +358,7 @@
 
        <div class="row">
           <div class="col-xs-10">
-            <label for="enquadramento" class="control-label">Enquadramento</label>
+            <label for="enquadramento" class="control-label">Enquadramento*</label>
             <textarea class="form-control" id="enquadramento" name="enquadramento" required></textarea>
           </div>
         </div>
