@@ -120,6 +120,7 @@
             <form action="{{route('rh.search')}}" method="POST" class="form form-inline">
               {!! csrf_field() !!}
               <input type="hidden" id="cprId" name="cprId" value="{{Auth::user()->efetivo->opm->cpr->id}}">
+             <div class="row">
               <label for="pnome">Nome:</label>    
               <input  type="text" name="pnome"  id="pnome" class="form-control"
                placeholder="Informe o nome"/>
@@ -133,6 +134,8 @@
                   <option value="{{ $gh->id }}" ><p> {{ $gh->sigla }} </p></option>
                   @endforeach
                 </select>
+             </div> <br>
+             <div class="row">
                 <label for="pregional">Comando Regional:</label>
                 <select class="form form-control" id="pregional" name="pregional">
                   <option value="">Selecione o CPR</option>
@@ -154,6 +157,8 @@
                   <option value="{{ $funcao->id }}" ><p> {{ $funcao->nome }} </p></option>
                   @endforeach
                 </select>
+              </div><br>
+              <div class="row">
                 <label for="psecao">Seção:</label>
                 <select class="form form-control" id="psecao" name="psecao">
                   <option value="">Selecione a Seção</option>
@@ -171,8 +176,10 @@
                   <button id="btn-pesquisar"  type="submit" class="btn btn-primary" >Pesquisar</button>
               </form>
             </div>
+          </div>
             
             <!-- /.box-header -->
+            <div class="table-responsive">
             <div class="box-body">
               <table id="tabl-1" class="table table-bordered table-striped">
                 <thead>
@@ -200,9 +207,9 @@
                   <td>{{$efetivo->sexo}}</td>
                   <td>{{ \Carbon\Carbon::parse($efetivo->dataadmissao)->format('d/m/Y')}}</td>
                   <td>
-                    <a href="{{route('rh.historico',$efetivo->id)}}" class="btn btn-primary">Histórico</a>
-                    <a href="{{route('rh.edit',$efetivo->id)}}" class="btn btn-primary">Editar</a>
-                    <a href="{{route('rh.removerDaOpm',$efetivo->id)}}" class="btn btn-danger">Remover da OPM</a>
+                    <a href="{{route('rh.historico',$efetivo->id)}}" class="btn btn-info"><i class="glyphicon glyphicon-list-alt"></i></a>
+                    <a href="{{route('rh.edit',$efetivo->id)}}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                    <a href="{{route('rh.removerDaOpm',$efetivo->id)}}" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
                   </td>
                 </tr>
                 @empty
@@ -222,13 +229,7 @@
                 </tfoot>
               </table>
           <table id="tab2" class="table table-bordered">
-              <thead>
-                 <tr>
-                     <th></th>
-                     <th></th>                         
-                </tr>
-              </thead>
-              <tbody>
+            <tbody>
               <tr>
                  <td> 
                   @if (isset($dataForm))
@@ -242,13 +243,12 @@
               </tr>
              </tbody>
         </table> 
-            
-
             </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
         </div>
+      </div>
 @stop
 
 @section('js')
