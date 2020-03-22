@@ -36,6 +36,14 @@ class Criminoso extends Model
         return $this->belongsTo(Faccao::class,'faccao_id');
     }
 
+    function tipoatuacao() {
+        return $this->belongsTo(TipoAtuacaoCriminoso::class,'tipo_atuacao_criminoso_id');
+    }
+
+    function modusoperandi() {
+        return $this->belongsTo(ModusOperandi::class,'modus_operandi_id');
+    }
+
     function aisp() {
         return $this->belongsTo(Aisp::class);
     }

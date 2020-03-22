@@ -17,7 +17,9 @@ use sgcom\Models\PosicaoFaccao;
 use sgcom\Models\SituacaoProcessual;
 use File;
 use sgcom\Models\Cpr;
+use sgcom\Models\ModusOperandi;
 use sgcom\Models\Opm;
+use sgcom\Models\TipoAtuacaoCriminoso;
 
 class InteligenciaController extends Controller
 {
@@ -95,6 +97,8 @@ class InteligenciaController extends Controller
       $posicoes = PosicaoFaccao::orderBy('descricao', 'asc')->get();
       $situacoes = SituacaoProcessual::orderBy('descricao', 'asc')->get();
       $cprs = Cpr::whereIn('id',[12])->get();
+      $modusoperandis = ModusOperandi::orderBy('nome')->get();
+      $tipoatuacoes = TipoAtuacaoCriminoso::orderBy('nome')->get();
 
       if($usr->existePapel('Gestor CPR')){
         $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=',$cprId)->get();
@@ -104,7 +108,7 @@ class InteligenciaController extends Controller
         $opms = Opm::orderBy('opm_sigla', 'asc')->where('id', '=',$opmt)->get();
       }
 
-      return view()->share(compact('aisps','faccoes','posicoes','situacoes','opms','cprs'));
+      return view()->share(compact('aisps','faccoes','posicoes','situacoes','opms','cprs','modusoperandis','tipoatuacoes'));
     }
 
     public function buscarStatusProcessual($id)
@@ -129,19 +133,23 @@ class InteligenciaController extends Controller
               $criminoso->opm_id = $user->efetivo->opm->id;
               $criminoso->user_id = $user->id;
               
-            $criminoso->nome = trim(strtoupper($request->nome));
+            $criminoso->nome = trim(mb_strtoupper($request->nome,'UTF-8'));
             $criminoso->sexo = $request->sexo;
-            $criminoso->apelido = $request->apelido;
+            $criminoso->apelido = trim(mb_strtoupper($request->apelido,'UTF-8'));
             $criminoso->rg = $request->rg;
             $criminoso->cpf = $request->cpf;
             $criminoso->faccao_id = $request->faccao;
             $criminoso->posicao_faccao_id = $request->posicao;
-            $criminoso->naturalidade = $request->naturalidade;
-            $criminoso->endereco = $request->endereco;
-            $criminoso->bairro = $request->bairro;
-            $criminoso->area_atuacao = $request->area_atuacao;
+            $criminoso->naturalidade = trim(mb_strtoupper($request->naturalidade,'UTF-8'));
+            $criminoso->endereco = trim(mb_strtoupper($request->endereco,'UTF-8'));
+            $criminoso->bairro = trim(mb_strtoupper($request->bairro,'UTF-8'));
+            $criminoso->area_atuacao = trim(mb_strtoupper($request->area_atuacao,'UTF-8'));
             $criminoso->aisp_id = $request->aisp;
             $criminoso->barralho_crime = $request->barralho;
+            $criminoso->nome_mae = trim(mb_strtoupper($request->nome_mae,'UTF-8'));
+            $criminoso->data_nascimento = $request->data_nascimento;
+            $criminoso->tipo_atuacao_criminoso_id = $request->tipoatuacao;
+            $criminoso->modus_operandi_id = $request->modusoperandi;
 
             if($request->hasfile('arquivo') && $request->file('arquivo')->isvalid()){
               $extension = $request->arquivo->extension();
@@ -155,11 +163,18 @@ class InteligenciaController extends Controller
 
         $criminoso->save();
 
-        return redirect()->back()->with('success', 'Atualizado com sucesso!');
-
+        if($request->id == null){
+          return redirect()
+          ->route('inteligencia.form')
+          ->with('success', 'Atualizado com sucesso!');  
+        }else{
+        return redirect()
+        ->route('inteligencia.crim.edit',$request->id)
+        ->with('success', 'Atualizado com sucesso!');
+        }
       } catch (\Exception $e) {
-        $errors = $e->getMessage();
-        return redirect()->back()->withErrors('errors')->withInput();
+       // $errors = $e->getMessage();
+        return redirect()->back()->with('erro!','Formato não permitido de imagem');
       }
     }
     
@@ -192,6 +207,8 @@ class InteligenciaController extends Controller
    public function salvarAlbumCriminoso(Request $request){
    // dd($request->all());
     try{
+      $tipos = ['jpeg','jpg','png'];
+     
       $file = new GaleriaCriminoso();
        
            $file->criminoso_id = $request->crimi_id;
@@ -199,24 +216,33 @@ class InteligenciaController extends Controller
            $file->descricao = $request->descricao_img;
          
          if($request->hasfile('arquivo1') && $request->file('arquivo1')->isvalid()){
-           $extension = $request->arquivo1->extension();
-           $name = uniqid(date('HisYmd'));
-           $nameFile = "{$name}.{$extension}";
+          $extension = $request->arquivo1->extension();
+          $tamanho = $request->arquivo1->size();
+          $limite = 1024 * 1024 * 2;
            
-           $path  =  $request->file('arquivo1')->move('fotos_criminosos',$nameFile);
+          for($i=0;$i<=count($tipos);$i++)
+          { 
+          if($tipos[$i] == $extension && $tamanho <= $limite)
+          {
+            $name = uniqid(date('HisYmd'));
+            $nameFile = "{$name}.{$extension}";
+            
+            $path  =  $request->file('arquivo1')->move('fotos_criminosos',$nameFile);
+ 
+            $file->foto =  $path;
 
-           $file->foto =  $path;
+            $file->save();
 
-           } 
-       
-
-     $file->save();
-
-     return redirect()->back()->with('success', 'Atualizado com sucesso!');
-
+            return $this->edit($request->crimi_id);
+          }
+          }
+      } 
+   
    } catch (\Exception $e) {
-     $errors = $e->getMessage();
-     return redirect()->back()->withErrors('errors')->withInput();
+     $e->getMessage();
+     return redirect() 
+     ->route('inteligencia.crim.edit',$request->crimi_id)
+     ->with('errors','Formato/Tamanho não permitido!');
    }
  }
 
@@ -229,7 +255,8 @@ class InteligenciaController extends Controller
      File::delete($path.$arquivo);
      $galeria->delete();
    }
- return redirect()->back()->with('success', 'Removido com sucesso!');
+ return  $this->edit($galeria->criminoso_id);
+
  }
 
  public function downloadAlbumCriminoso($id)

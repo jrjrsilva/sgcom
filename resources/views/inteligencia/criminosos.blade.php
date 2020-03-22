@@ -23,7 +23,7 @@
               <div class="progress-bar" style="width: %"></div>
             </div>
             <span class="progress-description">
-              20% das ocorrências de {{ date('Y') }}
+              % das ocorrências de {{ date('Y') }}
             </span>
             </div>
           <!-- /.info-box-content -->
@@ -41,7 +41,7 @@
               <div class="progress-bar" style="width: %"></div>
             </div>
             <span class="progress-description">
-            % de 257 em {{ date('Y') }}
+            % em {{ date('Y') }}
             </span>
             </div>
           <!-- /.info-box-content -->
@@ -132,8 +132,9 @@
               </form>
             </div>
          </div>
+         <div class="table-responsive">
           <div class="box-body">
-              <table id="tb1" class="table table-bordered table-striped">
+              <table id="tb1" class="table table-sm table-bordered table-striped table-hover">
                 <thead>
                 <tr><th>Foto</th>
                   <th>Nome</th>
@@ -169,6 +170,7 @@
                   @empty
                   @endforelse 
                </tbody>
+              
                 <tfoot>
                 <tr>
                   <th>Foto</th>
@@ -181,6 +183,8 @@
                 
                 </tfoot>
               </table>
+            </div>
+            
               <table id="tab2" class="table table-bordered">
                  <tbody>
                   <tr>

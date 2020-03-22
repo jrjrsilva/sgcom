@@ -10,30 +10,21 @@
     </ol>
 @stop
 
-@section('content')
-
-   
+@section('content')   
     <div class="box">
-
     <section class="content">
-
-
  <!--FORMULÁRIO -->                            
-
     <form role="form" method="POST" action="{{ route('inteligencia.crim.salvar')}}" enctype="multipart/form-data">
     {!! csrf_field() !!}
     <input type="hidden" name="id" id="id" value="{{ $criminoso->id or '' }}">
- 
 <!-- Criminoso -->
-
 <div class="box box-success">
         <div class="box-header with-border">
           <h3 class="box-title">Criminoso</h3>
+          @include('site.includes.alerts')
         </div><br>
-
-                
         <div class="row">
-              <div class="col-xs-3">
+              <div class="col-md-3 col-12">
                    <label>Foto</label>
                    @if($criminoso->foto != null)
                    <img src="{{ url($criminoso->foto) }}" alt="{{ $criminoso->nome }}"
@@ -43,34 +34,33 @@
                   @endif
                   <input type="file" class="custom-file-input" id="arquivo" name="arquivo" >
               </div> 
-
-              <div class="col-xs-8">
-                   <label>Nome*</label>
+              <br>
+              <div class="col-md-6 col-12">
+                <label>Nome*</label>
                 <input type="text" class="form-control" placeholder="Nome" required
                 value="{{  $criminoso->nome or '' }}" id="nome" name="nome">
               </div> 
         </div>
         <br>
-              <div class="row">
-              <div class="col-xs-2">
+          <div class="row">
+            <div class="col-md-2 col-12">
                 <label>Apelido</label>
              <input type="text" class="form-control" placeholder="Apelido" 
              value="{{  $criminoso->apelido or '' }}" id="apelido" name="apelido">
            </div> 
 
-           <div class="col-xs-2">
+           <div class="col-md-2">
             <label>RG</label>
          <input type="text" class="form-control" placeholder="rg" 
          value="{{  $criminoso->rg or '' }}" id="rg" name="rg">
         </div> 
 
-        <div class="col-xs-2">
+        <div class="col-md-2">
             <label>CPF</label>
          <input type="text" class="form-control" placeholder="CPF" 
          value="{{  $criminoso->cpf or '' }}" id="cpf" name="cpf">
        </div> 
-
-              <div class="col-xs-2">
+        <div class="col-md-2">
                    <label>Facção*</label>
               <select class="form-control" id="faccao" name="faccao" required>
                   <option value="">Selecione</option>
@@ -86,24 +76,8 @@
                 </select>
               </div>
 
-              <div class="col-xs-2">
-                <label>Sexo*</label>
-           <select class="form-control" id="sexo" name="sexo" required>
-               <option value="M"  @if($criminoso->sexo == 'M')
-                selected 
-              @endif >Masculino</option>
-               <option value="F"  @if($criminoso->sexo == 'F')
-                selected 
-              @endif >Feminino</option>
-             </select>
-           </div>
-
-        </div> 
-
-              <br>
-
-        <div class="row">
-            <div class="col-xs-2">
+         
+              <div class="col-md-2">
                 <label>Posição*</label>
            <select class="form-control" id="posicao" name="posicao" required>
                <option value="">Selecione a Posição</option>
@@ -118,68 +92,129 @@
                @endforeach
              </select>
            </div>
-              <div class="col-xs-6">
+            
+              </div>
+              <br>
+              <div class="row">
+           <div class="col-md-6">
+            <label>Área de atuação*</label>
+             <input type="text" class="form-control" placeholder="area_atuacao" required maxlength="145"
+             value="{{  $criminoso->area_atuacao or ''  }}" id="area_atuacao" name="area_atuacao">                        
+         </div>
+              
+         <div class="col-md-2">
+          <label>Tipo de Atuação</label>
+     <select class="form-control" id="tipoatuacao" name="tipoatuacao" >
+         <option value="">Selecione</option>
+        @foreach( $tipoatuacoes as $tipoatuacao )
+         <option value="{{ $tipoatuacao->id or '' }}" 
+             @isset($criminoso->tipoatuacao->id)
+             @if($criminoso->tipoatuacao->id == $tipoatuacao->id)
+             selected 
+           @endif 
+         @endisset
+           ><p> {{ $tipoatuacao->nome }} </p></option>
+         @endforeach
+       </select>
+     </div>
+
+
+     <div class="col-md-2">
+       <label>Modus Operandi</label>
+  <select class="form-control" id="modusoperandi" name="modusoperandi" >
+      <option value="">Selecione</option>
+      @foreach( $modusoperandis as $modusoperandi )
+      <option value="{{ $modusoperandi->id or '' }}" 
+          @isset($criminoso->modusoperandi->id)
+          @if($criminoso->modusoperandi->id == $modusoperandi->id)
+          selected 
+        @endif 
+      @endisset
+        ><p> {{ $modusoperandi->nome }} </p></option>
+      @endforeach
+    </select>
+  </div>
+   
+
+        </div> 
+
+              <br>
+              <div class="row">
+                <div class="col-md-3">
+                  <label>AISP*</label>
+             <select class="form-control" id="aisp" name="aisp" required>
+                 <option value="">Selecione a AISP</option>
+                 @foreach( $aisps as $aisp )
+                 <option value="{{ $aisp->id or '' }}" 
+                     @isset($criminoso->aisp->id)
+                     @if($criminoso->aisp->id == $aisp->id)
+                     selected 
+                   @endif 
+                 @endisset
+                   ><p> {{ $aisp->descricao }} </p></option>
+                 @endforeach
+               </select>
+             </div>
+             <div class="col-md-1">
+              <label>Barralho?</label>
+         <select class="form-control" id="barralho" name="barralho">
+             <option value="Não"  @if($criminoso->barralho_crime == 'Não')
+              selected 
+            @endif >Não</option>
+             <option value="Sim"  @if($criminoso->barralho_crime == 'Sim')
+              selected 
+            @endif >Sim</option>
+           </select>
+         </div>
+              </div>
+              <br>
+        <div class="row">
+        <div class="col-md-6">
                    <label>Endereço</label>
                     <input type="text" class="form-control" placeholder="Endereço" 
                     value="{{  $criminoso->endereco or ''  }}" id="endereco" name="endereco">                        
                 </div>
 
-                <div class="col-xs-3">
+                <div class="col-md-3">
                      <label>Bairro</label>
                     <input type="text" class="form-control" placeholder="Bairro" 
                     value="{{  $criminoso->bairro or '' }}"id="bairro" name="bairro">
-                    
                 </div>
-                
-            
-
-        </div> <br>
-
+        </div> 
+        <br>
         <div class="row">
-            <div class="col-xs-2">
+            <div class="col-md-2">
                 <label>Naturalidade</label>
                 <input type="text" class="form-control" placeholder="Naturalidade" 
                 value="{{  $criminoso->naturalidade or ''  }}" id="naturalidade" name="naturalidade">                        
         
            </div>
-              <div class="col-xs-6">
-                   <label>Área de atuação*</label>
-                    <input type="text" class="form-control" placeholder="area_atuacao" required
-                    value="{{  $criminoso->area_atuacao or ''  }}" id="area_atuacao" name="area_atuacao">                        
-                </div>
-
-                <div class="col-xs-3">
-                    <label>AISP*</label>
-               <select class="form-control" id="aisp" name="aisp" required>
-                   <option value="">Selecione a AISP</option>
-                   @foreach( $aisps as $aisp )
-                   <option value="{{ $aisp->id or '' }}" 
-                       @isset($criminoso->aisp->id)
-                       @if($criminoso->aisp->id == $aisp->id)
-                       selected 
-                     @endif 
-                   @endisset
-                     ><p> {{ $aisp->descricao }} </p></option>
-                   @endforeach
-                 </select>
-               </div>
-            </div>
-
+           <div class="col-md-2">
+            <label>Sexo*</label>
+       <select class="form-control" id="sexo" name="sexo" required>
+           <option value="M"  @if($criminoso->sexo == 'M')
+            selected 
+          @endif >Masculino</option>
+           <option value="F"  @if($criminoso->sexo == 'F')
+            selected 
+          @endif >Feminino</option>
+         </select>
+       </div>
+      </div>
       <br>
-
         <div class="row">
-            <div class="col-xs-2">
-                    <label>Barralho do crime</label>
-               <select class="form-control" id="barralho" name="barralho">
-                   <option value="Não"  @if($criminoso->barralho_crime == 'Não')
-                    selected 
-                  @endif >Não</option>
-                   <option value="Sim"  @if($criminoso->barralho_crime == 'Sim')
-                    selected 
-                  @endif >Sim</option>
-                 </select>
-               </div>
-            </div>
+           <div class="col-md-6">
+                <label>Nome da Mãe</label>
+             <input type="text" class="form-control" placeholder="Nome da Mãe"
+             value="{{  $criminoso->nome_mae or '' }}" id="nome_mae" name="nome_mae">
+           </div>
+           
+           <div class="col-md-2">
+            <label>Data de Nascimento</label>
+            <input type="date" class="form-control" 
+             value="{{  $criminoso->data_nascimento or '' }}" id="data_nascimento" name="data_nascimento">
+            </div> 
+        </div>
  <br>
  <div class="box-footer">
    <div class="btn-toolbar pull-right">
@@ -188,15 +223,13 @@
 </div>
    <!--FORMULÁRIO -->
     </div>
-          
     </form>
-
     <div>
       <div class="box-footer">
         <div class="btn-toolbar pull-left">
           <button type="button" class="btn btn-primary" 
-          data-toggle="modal" data-target="#exampleModal" 
-          data-whatever="@getbootstrap"
+          data-toggle="modal" data-target="#Modal" 
+         
           style="<?php 
           if(!isset($criminoso->id)){ 
              echo 'display: none;';
@@ -250,8 +283,7 @@
 
   <main role="main"  style="<?php 
   if(!isset($criminoso->id)){ 
-     echo 'display: none;';
-   }?>">
+     echo 'display: none;'; }?>">
  <header>
   <div class="navbar navbar-dark bg-dark shadow-sm">
       <a href="#" class="navbar-brand d-flex align-items-center">
@@ -265,7 +297,7 @@
          <div class="form-group text-left">
           {!! csrf_field() !!}
           <input type="hidden" name="crimi_id" id="crimi_id" value="{{ $criminoso->id or '' }}" >
-            <label for="descricao_img">Descrição da imagem</label>
+            <label for="descricao_img">Descrição da imagem*</label>
             <input class="form-control" id="descricao_img" name="descricao_img" required>
           </div>
           <div class="custom-file">
@@ -285,18 +317,17 @@
         <div class="row">
           @foreach ($criminoso->galeriacriminoso as $galeria)
               <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                  <img class="card-img-top figure-img img-fluid rounded" src="{{ url($galeria->foto) }}" width="100" height="100">
+                <div  class="card mb-4 shadow-sm">
+                  <img class="card-img-top figure-img img-fluid rounded " src="{{ url($galeria->foto) }}" width="100" height="100">
                   <div class="card-body">
                     <p class="card-text">{{$galeria->descricao}}</p>
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center ">
                       <div class="btn-group">
-                        <!--button type="button" class="btn btn-sm btn-outline-secondary">Download</button-->
-                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{route('inteligencia.album.download',$galeria->id)}}">Download</a>
+                       <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.album.download',$galeria->id)}}">Download</a>
                       <form method="post" action="{{route('inteligencia.album.delete',$galeria->id)}}">
                           {!! csrf_field() !!}
                           <input type="hidden" name="_method" value="delete">
-                          <button type="submit" class="btn btn-sm btn-outline-danger">Apagar</button>
+                          <button type="submit" class="btn btn-sm btn-danger">Apagar</button>
                         </form>
                       </div>
                     </div>
@@ -317,7 +348,7 @@
   </div>
  </section>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -382,8 +413,8 @@
     $('#cpf').mask("999.999.999-99");
  });
 
- $('#exampleModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
+ $('#Modal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) 
    var modal = $(this)
  
 });
@@ -408,13 +439,14 @@ $('#situacao_processual').change(function () {
 @stop
 @section('css')
 <style>
+
   body { padding: 20px; }
        .navbar { margin-bottom: 20px; }
        :root { --jumbotron-padding-y: 10px; }
        .jumbotron {
          padding-top: var(--jumbotron-padding-y);
          padding-bottom: var(--jumbotron-padding-y);
-         margin-bottom: 0;
+         margin-bottom: 10;
          background-color: #fff;
        }
        @media (min-width: 768px) {
@@ -423,7 +455,7 @@ $('#situacao_processual').change(function () {
            padding-bottom: calc(var(--jumbotron-padding-y) * 2);
          }
        }
-       .jumbotron p:last-child { margin-bottom: 0; }
+       .jumbotron p:last-child { margin-bottom: 10; }
        .jumbotron-heading { font-weight: 300; }
        .jumbotron .container { max-width: 40rem; }
        .btn-card { margin: 4px; }

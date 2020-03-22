@@ -255,7 +255,7 @@ return [
         [
             'text'    => 'Tabelas Básicas',
             'icon'    => 'share',
-            'can'     =>'Admin',
+            //'can'     =>'Admin',
             'submenu' => [ 
                
                 [
@@ -290,7 +290,7 @@ return [
                 [
                     'text' => 'Gestão de Efetivo',
                     'url'  => 'admin/efetivo',
-                    'can'         => 'papel-list', 
+                    'can'         => 'efetivo-edit', 
                 ], 
             ],
         ],
