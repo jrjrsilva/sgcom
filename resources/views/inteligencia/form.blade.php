@@ -155,7 +155,7 @@
                  @endforeach
                </select>
              </div>
-             <div class="col-md-1">
+             <div class="col-md-2">
               <label>Barralho?</label>
          <select class="form-control" id="barralho" name="barralho">
              <option value="Não"  @if($criminoso->barralho_crime == 'Não')
@@ -239,8 +239,10 @@
       </div>
     </div>
 
-    <div class="box-body">
-      <table id="tb1" class="table table-bordered table-striped">
+
+    <div class="table-responsive">
+
+  <table id="tb1" class="table table-bordered table-striped table-hover">
         <thead>
         <tr>
           <th>Tipo</th>
@@ -439,7 +441,13 @@ $('#situacao_processual').change(function () {
 @stop
 @section('css')
 <style>
-
+.table-striped > tbody > tr{
+  background-color: #ccc;
+}
+.table-hover > tbody > tr:hover{
+  background-color: #333;
+  color: #fff;
+}
   body { padding: 20px; }
        .navbar { margin-bottom: 20px; }
        :root { --jumbotron-padding-y: 10px; }
