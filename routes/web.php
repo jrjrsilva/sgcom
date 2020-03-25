@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+
 $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'admin'], function(){
     $this->post('aisp', 'AispController@searchAisp')->name('aisp.search');
     $this->get('aisp', 'AispController@index')->name('admin.aisp');
@@ -155,5 +157,8 @@ $this->get('/', 'Site\SGCOMController@index')->name('home');
 $this->get('/rh/matricula/{id}', 'Recursoshumanos\EfetivoController@getMatricula')->name('register.matricula');
 
 $this->get('/cvli/json','Cvli\CvliController@json')->name('cvli.json');
+
+
+$this->get('/efetivo/secoes/{id}','Recursoshumanos\EfetivoController@getSecoes')->name('rh.getSecoes');
 
 Auth::routes();

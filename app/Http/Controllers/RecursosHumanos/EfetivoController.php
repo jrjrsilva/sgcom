@@ -664,4 +664,29 @@ class EfetivoController extends Controller
       } 
     }
 
+
+    public function getSecoes($id)
+    {
+      $ret = DB::table('opm')->where('id','=', $id)->get();
+      
+       if($ret[0]->tipo_secao == 2){
+     
+        $secoes =  DB::table('secao')
+       ->whereIn('tipo',[1,2])
+       ->get(['id', 'nome']);
+       return response()->json($secoes);
+
+      
+      } else if($ret[0]->tipo_secao == 3){
+        
+        $secoes =  DB::table('secao')
+        ->whereIn('tipo',[1,3])
+        ->get(['id', 'nome']);
+        return response()->json($secoes);
+      } 
+       
+
+
+    }
+
    }

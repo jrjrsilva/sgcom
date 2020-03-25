@@ -24,11 +24,12 @@
     <form role="form" method="POST" action="{{ route('frota.salvar')}}" >
     {!! csrf_field() !!}
     <input type="hidden" name="id" id="id" value="{{ $viatura->id or '' }}">
+    <input type="hidden" name="idmodelo" id="idmodelo" value="{{ $viatura->modelo_veiculo_id or '' }}">
  <!--DADOS -->   
 
       <div class="box box-primary">
          <div class="row">
-              <div class="col-xs-3"> 
+              <div class="col-md-3"> 
                 <label>OPM</label>  
                 <select class="form-control" id="opm" name="opm" required >
                   <option value="">Selecione a OPM</option>
@@ -43,7 +44,7 @@
                 </select>
               </div> 
             
-             <div class="col-xs-3"> 
+             <div class="col-md-3"> 
                 <label>Emprego</label>  
                 <select class="form-control" id="emprego" name="emprego" required >
                   <option value="">Selecione o Emprego</option>
@@ -62,7 +63,7 @@
                 </select>
               </div> 
             
-            <div class="col-xs-3"> 
+            <div class="col-md-3"> 
                 <label>Propriedade da Viatura</label>  
                 <select class="form-control" id="propriedade" name="propriedade" required >
                   <option value="">Selecione a Propriedade</option>
@@ -83,20 +84,20 @@
             </div>
             <br>
               <div class="row">
-              <div class="col-xs-2"> 
+              <div class="col-md-2"> 
                 <label>Placa</label>
                 <input type="text" class="form-control" placeholder="Placa da VTR" 
                   id="placa" name="placa" required maxlength="8" value="{{$viatura->placa or ''}}"
                 style="text-transform: uppercase;">
               </div> 
 
-              <div class="col-xs-2">
+              <div class="col-md-2">
                 <label>Prefixo</label>
                 <input type="text" class="form-control" placeholder="Prefixo da VTR" value="{{$viatura->prefixo or ''}}"
                   id="prefixo" name="prefixo" maxlength="6" data-mask="0.0000" data-mask-selectonfocus="true">
               </div>
 
-              <div class="col-xs-2"> 
+              <div class="col-md-2"> 
                 <label>Plotagem</label>  
                 <select class="form-control" id="plotagem" name="plotagem" required >
                   <option value="">Selecione o estado</option>
@@ -115,7 +116,7 @@
                 </select>
               </div> 
 
-              <div class="col-xs-2">
+              <div class="col-md-2">
                 <label>Cor</label>  
                 <select class="form-control" id="cor" required name="cor">
                     <option value="">Selecione a cor</option>
@@ -137,11 +138,11 @@
 
     <div class="row">
 
-      <div class="col-xs-2">
+      <div class="col-md-2">
               <label>Marca:</label>
                  <select class="form-control" id="marcaveiculo" name="marcaveiculo" 
                   required class="marcaveiculo">
-                    <option value="">Selecione a Marca da VTR</option>
+                    <option value="">Selecione</option>
                     @foreach( $marcaveiculos as $marcaveiculo )
                     <option value="{{$marcaveiculo->id or '' }}" 
                         @isset($viatura->marcaveiculo->id)
@@ -154,12 +155,12 @@
                     </select>
       </div>
      
-    <div class="col-xs-2">
+    <div class="col-md-2">
      
           <label>Modelo:</label>
           <select class="form-control" id="modeloveiculo" 
           required name="modeloveiculo">
-            <option value="">Selecione o Modelo da VTR</option>
+            <option value="">Selecione</option>
             @foreach( $modeloveiculos as $modeloveiculo )
             <option value="{{$modeloveiculo->id or '' }}" 
                 @isset($viatura->modeloveiculo->id)
@@ -174,13 +175,13 @@
 
     </div>
 
-    <div class="col-xs-2">
+    <div class="col-md-2">
             <label>KM:</label>
             <input type="number" class="form-control " 
             required placeholder="KM da VTR" maxlength="6"
             value="{{  $viatura->km or '' }}" id="km" name="km" />
     </div> 
-    <div class="col-xs-2">
+    <div class="col-md-2">
           <label>CHASSI:</label>
           <input type="text" class="form-control "  required
           style="text-transform: uppercase;"
@@ -191,13 +192,13 @@
     </div>
     <br>
     <div class="row">
-    <div class="col-xs-2">
+    <div class="col-md-2">
         <label>Renavam:</label>
         <input type="text"  class="form-control " 
         required placeholder="renavam do veículo" maxlength="10"
         value="{{  $viatura->renavam or '' }}" id="renavam" name="renavam" />
 </div> 
-<div class="col-xs-2">
+<div class="col-md-2">
       <label>Patrimônio:</label>
       <input type="text" class="form-control " 
       required placeholder="tipo" maxlength="15" 
@@ -205,7 +206,7 @@
 </div>
 
 
-<div class="col-xs-2">
+<div class="col-md-2">
     <label>Combustível</label>  
     <select class="form-control" id="combustivel" 
         required name="combustivel">
@@ -223,7 +224,7 @@
   </div>
 
   
-  <div class="col-xs-2">
+  <div class="col-md-2">
     <label>Situação</label>  
     <select class="form-control" id="situacao" required name="situacao">
         <option value="">Selecione a Situação</option>
@@ -241,19 +242,19 @@
 </div>
 <br>
 <div class="row">
-   <div class="col-xs-2">
+   <div class="col-md-2">
         <label>Ano Modelo</label>
         <input type="text" class="form-control" required
          maxlength="4" minlength="4" placeholder="Informe o ano do modelo" 
          value="{{$viatura->ano_modelo or '' }}"id="anomodelo" name="anomodelo">
     </div>
-    <div class="col-xs-2">
+    <div class="col-md-2">
      <label>Ano Fabricação</label>
        <input type="text" class="form-control" required
         maxlength="4" minlength="4" placeholder="Informe o ano de fabricação" 
         value="{{$viatura->ano_fabricacao or ''}}" id="anofabricacao" name="anofabricacao">
       </div>
-      <div class="col-xs-2">
+      <div class="col-md-2">
                 <label>Codigo dos Pneus</label>  
                 <select class="form-control" id="tipopneu" name="tipopneu" required>
                     <option value="">Selecione o tipo</option>
@@ -273,7 +274,7 @@
             </div>
             <br>
             <div class="row">
-              <div class="col-xs-2">
+              <div class="col-md-2">
                 <label>Presídio</label>  
                 <select class="form-control" id="presidio" required name="presidio">
                     <option value="">Selecione</option>
@@ -287,7 +288,7 @@
                     @endisset
                   </select>
               </div>
-        <div class="col-xs-2">
+        <div class="col-md-2">
                 <label>Bateria</label>  
                 <select class="form-control" id="bateria" name="bateria" required>
                     <option value="">Selecione</option>
@@ -303,7 +304,7 @@
 
                   </select>
               </div>
-              <div class="col-xs-2">
+              <div class="col-md-2">
                 <label>Revisão</label>
                   A cada: <input type="number" class="form-control" required
                    maxlength="5" minlength="4" placeholder="Informe o valor" 
@@ -334,7 +335,7 @@
    
     <div class="box-body">  
       <div class="row">
-      <div class="col-xs-6">
+      <div class="col-md-6">
       <table id="tb2" class="table table-bordered table-striped w-auto">
         <caption>Revisões</caption>
       <thead>
@@ -358,7 +359,7 @@
      </tbody>
     </table>
       </div>
-     <div class="col-xs-6">
+     <div class="col-md-6">
      <table id="tb3" class="table table-bordered table-striped">
        <caption>Histórico da viatura</caption>
       <thead>
@@ -395,13 +396,21 @@
 @section('js')
 <script>
  $(document).ready(function(){
-  $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
+  var id_marca = $('#marcaveiculo').val();
+  recarregar(id_marca);
+ 
 });
+
+function recarregar(id){
+ var id_modelo = $('#idmodelo').val();
+        $.get('/admin/veiculo/modelos/'+id, function (modelos) {
+            $('select[name=modeloveiculo]').empty();
+            $.each(modelos, function (key, value) {
+                $('select[name=modeloveiculo]').append('<option value=' + value.id + '>' + value.descricao + '</option>');
+            });
+            $('#modeloveiculo').val(id_modelo);
+        });
+};
 
 $('#marcaveiculo').change(function () {
         var id_veiculo = $(this).val();

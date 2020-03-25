@@ -52,7 +52,9 @@ class FrotaController extends Controller
     public function index(Viatura $viatura)
       {
         $this->dadosGerais();
-        return view('frota.index',compact('viatura'));
+        $revisoes = [];
+        $historicos = [];
+        return view('frota.index',compact('viatura','revisoes','historicos'));
       }
   
     public function lista()

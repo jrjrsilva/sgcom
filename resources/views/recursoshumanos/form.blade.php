@@ -23,6 +23,7 @@
     <form role="form" method="POST" action="{{ route('rh.salvar')}}"  enctype="multipart/form-data">
     {!! csrf_field() !!}
     <input type="hidden" name="id" id="id" value="{{ $efetivo->id or '' }}">
+    <input type="hidden" name="idsecao" id="idsecao" value="{{ $efetivo->secao_id or '' }}">
  <!--DADOS  DO POLICIAL-->   
 
       <div class="box box-primary">
@@ -33,7 +34,7 @@
         
         <div class="row">
         <div class="form-row">
-            <div class="col-xs-2"> 
+            <div class="col-md-2"> 
                 <label for="gh">Grau Hierarquico</label>
               <select class="form-control" id="gh" name="gh" required >
                 <option value="">Selecione</option>
@@ -48,14 +49,14 @@
               </select>
             </div> 
 
-              <div class="col-xs-5">
+              <div class="col-md-5">
                   <label for="nome">Nome</label>
               <input type="text" class="form-control" placeholder="Nome" required
               value="{{  $efetivo->nome or '' }}" id="nome" name="nome" readonly> 
               </div>
         </div>
         <div class="form-row">
-            <div class="col-xs-2">
+            <div class="col-md-2">
                 <label for="matricula">Matrícula</label>
             <input type="number" pattern="[0-9]" maxlength=9 class="form-control" placeholder="Informe a matricula" required
             value="{{  $efetivo->matricula or '' }}" id="matricula" name="matricula" readonly> 
@@ -80,7 +81,7 @@
 
         <div class="row">
 
-              <div class="col-xs-2">
+              <div class="col-md-2">
                 <div class="input-group">
                         <label for="data_nascimento">Data de Nascimento</label>
                       <input type="date" class="form-control timepicker" placeholder="Selecione a Data"
@@ -92,7 +93,7 @@
 
               </div>
 
-              <div class="col-xs-2">
+              <div class="col-md-2">
                 <div class="input-group">
                     <label for="data_admissao">Data de Admissão</label>
                       <input type="date" class="form-control timepicker" placeholder="Selecione a Data"
@@ -103,7 +104,7 @@
                 </div>
               </div>         
             
-              <div class="col-xs-1">
+              <div class="col-md-1">
                   <label for="sexo">Sexo</label>
                 <select class="form-control" id="sexo" name="sexo">
                     <option value="">Selecione</option>
@@ -116,7 +117,7 @@
                   </select>
               </div>
 
-              <div class="col-xs-1">
+              <div class="col-md-1">
                   <label for="fatorrh">Fator RH</label>
                 <select class="form-control" id="fatorrh" name="fatorrh">
                     <option value="">Selecione</option>
@@ -129,7 +130,7 @@
                   </select>
               </div>
 
-              <div class="col-xs-2">
+              <div class="col-md-2">
                   <label for="tiposangue">Tipo de Sangue</label>
                 <select class="form-control" id="tiposangue" name="tiposangue">
                     <option value="">Selecione</option>
@@ -151,13 +152,13 @@
         </div> 
         <br>
 <div class="row">
-    <div class="col-xs-2">
+    <div class="col-md-2">
         <label for="cnh">Número CNH</label>
       <input type="text" class="form-control" id="cnh"
        name="cnh" maxlength="11" value="{{$efetivo->cnh}}">
     </div>
 
-  <div class="col-xs-2">
+  <div class="col-md-2">
     <label for="categoriacnh">Categoria CNH</label>
   <select class="form-control" id="categoriacnh" name="categoriacnh">
       <option value="">Selecione</option>
@@ -191,7 +192,7 @@
     </select>
 </div>
 
-<div class="col-xs-2">
+<div class="col-md-2">
     <div class="input-group">
         <label for="validadecnh">Data de Validade</label>
           <input type="date" class="form-control timepicker" placeholder="Selecione a Data"
@@ -201,7 +202,7 @@
     </div>
   </div>
 
-<div class="col-xs-2">
+<div class="col-md-2">
   <label for="ehmotorista">É Motorista?</label>
 <select class="form-control" id="ehmotorista" name="ehmotorista">
     <option value="">Selecione</option>
@@ -214,7 +215,7 @@
   </select>
 </div>
 
-<div class="col-xs-2">
+<div class="col-md-2">
   <label for="motoristatipo">Motorista Tipo</label>
 <select class="form-control" id="motoristatipo" name="motoristatipo">
     <option value="">Selecione</option>
@@ -228,42 +229,42 @@
 </div>
 </div> <br>
 <div class="row">
-    <div class="col-xs-2">
+    <div class="col-md-2">
         <label for="cep">CEP</label>
       <input type="text" class="form-control" id="cep" onblur="buscarCep()"
        name="cep" maxlength="10" value="{{$efetivo->cep or ''}}">
     </div>
-    <div class="col-xs-5">
+    <div class="col-md-5">
         <label for="endereco">Endereço</label>
       <input type="text" class="form-control" id="endereco"
        name="endereco" maxlength="200" value="{{$efetivo->endereco or ''}}">
     </div>
-    <div class="col-xs-1">
+    <div class="col-md-1">
         <label for="\..">Número</label>
       <input type="text" class="form-control" id="numero"
        name="numero" maxlength="60" value="{{$efetivo->numero or ''}}">
     </div>
-    <div class="col-xs-3">
+    <div class="col-md-3">
         <label for="bairro">Bairro</label>
       <input type="text" class="form-control" id="bairro"
        name="bairro" maxlength="60" value="{{$efetivo->bairro or ''}}">
     </div>
-    <div class="col-xs-3">
+    <div class="col-md-3">
         <label for="complemento">Complemento</label>
       <input type="text" class="form-control" id="complemento"
        name="complemento" maxlength="60" value="{{$efetivo->complemento or ''}}">
     </div>
-    <div class="col-xs-2">
+    <div class="col-md-2">
         <label for="cidade_estado">Cidade</label>
       <input type="text" class="form-control" id="cidade_estado"
        name="cidade_estado" maxlength="60" value="{{$efetivo->cidade_estado or ''}}">
     </div>
-    <div class="col-xs-2">
+    <div class="col-md-2">
         <label for="telefone">Telefone</label>
       <input type="text" class="form-control" id="telefone"
        name="telefone" maxlength="14" value="{{$efetivo->telefone or ''}}">
     </div>
-    <div class="col-xs-4">
+    <div class="col-md-4">
         <label for="email">E-mail</label>
       <input type="text" class="form-control" id="email"
        name="email" maxlength="120" value="{{$efetivo->email or ''}}">
@@ -279,7 +280,7 @@
   
   <br>
   <div class="row">
-        <div class="col-xs-2"> 
+        <div class="col-md-2"> 
             <label for="opm">OPM</label>
           <select class="form-control" id="opm" name="opm" required >
             <option value="">Selecione a OPM</option>
@@ -294,21 +295,13 @@
           </select>
         </div> 
 
-        <div class="col-xs-4"> 
+        <div class="col-md-4"> 
             <label for="secao">Seção</label>
           <select class="form-control" id="secao" name="secao" required >
             <option value="">Selecione</option>
-            @foreach( $secoes as $secao )
-            <option value="{{ $secao->id or ''}}" 
-              @isset($efetivo->secao->id)
-                @if($efetivo->secao->id == $secao->id)
-                  selected 
-                @endif 
-              @endisset ><p> {{ $secao->nome }} </p></option>
-            @endforeach
           </select>
         </div> 
-        <div class="col-xs-2"> 
+        <div class="col-md-2"> 
             <label for="funcao">Função</label>
           <select class="form-control" id="funcao" name="funcao" required >
             <option value="">Selecione</option>
@@ -322,7 +315,7 @@
             @endforeach
           </select>
         </div>  
-        <div class="col-xs-2"> 
+        <div class="col-md-2"> 
           <label for="situacao">Situação</label>
           <select class="form-control" id="situacao" name="situacao" required >
             <option value="">Selecione</option>
@@ -346,7 +339,7 @@
           </div>          
           <br>
           <div class="row">
-                <div class="col-xs-2"> 
+                <div class="col-md-2"> 
                     <label for="formacao">Formação</label>
                     <select class="form-control" id="formacao" name="formacao" >
                     <option value="">Selecione</option>
@@ -356,6 +349,9 @@
                     <option value="Médio"  @if($efetivo->formacao_academica == 'Médio')
                         selected 
                      @endif >Médio</option>
+                     <option value="Superior"  @if($efetivo->formacao_academica == 'Superior')
+                      selected 
+                   @endif >Superior</option>
                      <option value="Pós Graduado"  @if($efetivo->formacao_academica == 'Pós Graduado')
                       selected 
                     @endif >Pós Graduado</option>
@@ -368,7 +364,7 @@
                   </select>
                 </div> 
         
-                <div class="col-xs-2"> 
+                <div class="col-md-2"> 
                     <label for="areaconhecimento">Área de conhecimento</label>
                     <select class="form-control" id="areaconhecimento" name="areaconhecimento" >
                       <option value="">Selecione</option>
@@ -393,14 +389,14 @@
                   </select>
                 </div> 
 
-                <div class="col-xs-5">
+                <div class="col-md-5">
                   <label for="cursoacademico">Informe o curso</label>
               <input type="text" class="form-control" placeholder="Curso Acadêmico" maxlength="60"
               value="{{  $efetivo->curso_academico or '' }}" id="cursoacademico" name="cursoacademico"> 
               </div>
 
                 
-                <div class="col-xs-2"> 
+                <div class="col-md-2"> 
                     <label for="anoconclusao">Ano de Conclusão</label>
                   <input type="number" class="form-control" id="anoconclusao" name="anoconclusao" value="{{$efetivo->ano_conclusao or ''}}" >
                 </div> 
@@ -435,12 +431,8 @@
 @section('js')
 <script>
  $(document).ready(function(){
-  $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-});
-
+  var id_opm = $('#opm').val();
+  recarregarSecao(id_opm);
 });
 
 function buscarCep()
@@ -467,5 +459,25 @@ function buscarCep()
 
 }
 
+$('#opm').change(function () {
+  var id_opm = $(this).val();
+        $.get('/efetivo/secoes/'+id_opm, function (secoes) {
+            $('select[name=secao]').empty();
+            $.each(secoes, function (key, value) {
+                $('select[name=secao]').append('<option value=' + value.id + '>' + value.nome + '</option>');
+            });
+        });
+    });
+
+function recarregarSecao(id){
+  var id_secao = $('#idsecao').val();
+        $.get('/efetivo/secoes/'+id, function (secoes) {
+            $('select[name=secao]').empty();
+            $.each(secoes, function (key, value) {
+                $('select[name=secao]').append('<option value=' + value.id + '>' + value.nome + '</option>');
+            });
+            $('#secao').val(id_secao);
+        });
+}
   </script>
 @stop

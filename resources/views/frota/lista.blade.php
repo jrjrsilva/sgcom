@@ -100,6 +100,7 @@
                   </div>
                   
                   <!-- /.box-header -->
+                  <div class="table-responsive">
                   <div class="box-body">
                     <table id="example1" class="table table-bordered table-striped">
                       <thead>
@@ -148,13 +149,7 @@
                     </table>
                   
                     <table id="tab2" class="table table-bordered">
-                      <thead>
-                         <tr>
-                             <th></th>
-                             <th></th>                         
-                        </tr>
-                      </thead>
-                      <tbody>
+                     <tbody>
                       <tr>
                          <td> 
                           @if (isset($dataForm))
@@ -169,11 +164,12 @@
                      </tbody>
                 </table>
                   
-                  
+              </div>
                    
                   </div>
                   <!-- /.box-body -->
                 </div>
+            
                 <!-- /.box -->
               </div>
 
