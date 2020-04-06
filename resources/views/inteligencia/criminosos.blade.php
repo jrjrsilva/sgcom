@@ -159,6 +159,7 @@
                     <td>{{$criminoso->opm->opm_sigla}}</td>
                     <td>
                       @can('inteligencia-list')
+                      <a href="{{route('inteligencia.crim.view',$criminoso->id)}}" class="btn btn-primary btn-flat"> <i class="fa fa-eye"></i></a>
                       @if($criminoso->opm_id == Auth::user()->efetivo->opm_id or Auth::user()->ehAdmin() )
                       <a href="{{route('inteligencia.crim.edit',$criminoso->id)}}" class="btn btn-primary btn-flat"> <i class="fa fa-edit"></i></a>
                       <a href="{{route('inteligencia.crim.excluir',$criminoso->id)}}" 

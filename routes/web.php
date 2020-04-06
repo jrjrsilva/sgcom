@@ -97,6 +97,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' 
     $this->get('crim_hist_excluir/{id}','InteligenciaController@excluirHist')->name('inteligencia.crim.hist.excluir');
     $this->delete('hist_excluir','InteligenciaController@exHist')->name('inteligencia.hist.excluir');
     $this->get('crim_edit/{id}','InteligenciaController@edit')->name('inteligencia.crim.edit');
+    $this->get('crim_view/{id}','InteligenciaController@view')->name('inteligencia.crim.view');
     $this->get('crim_form','InteligenciaController@form')->name('inteligencia.form');
     $this->post('crim_salvar','InteligenciaController@salvarCriminoso')->name('inteligencia.crim.salvar');
     $this->post('crim_processual_salvar','InteligenciaController@salvarProcessualCriminoso')->name('inteligencia.crim.processual.salvar');

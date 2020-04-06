@@ -82,6 +82,14 @@ class InteligenciaController extends Controller
      return view('inteligencia.form',compact('criminoso'));
     }
 
+    public function view($id)
+    {
+      $this->dadosGerais();
+      $criminoso = Criminoso::findOrFail($id);
+     
+     return view('inteligencia.formView',compact('criminoso'));
+    }
+
     public function form()
     {
       $this->dadosGerais();
@@ -356,7 +364,7 @@ return  $this->edit($doc->criminoso_id);
    $this->dadosGerais();
    $dataForm = $request->except('_token');
 
-   $criminosos =  $criminoso->search($dataForm, $this->totalPage)->orderBy('nome');
+   $criminosos =  $criminoso->search($dataForm, $this->totalPage);
 
    return view('inteligencia.criminosos',compact('criminosos','dataForm'));
  }
