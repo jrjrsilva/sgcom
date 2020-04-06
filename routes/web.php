@@ -102,9 +102,13 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' 
     $this->post('crim_processual_salvar','InteligenciaController@salvarProcessualCriminoso')->name('inteligencia.crim.processual.salvar');
     $this->get('crim_status_processual/{id}','InteligenciaController@buscarStatusProcessual')->name('inteligencia.buscar.status.processual');
     $this->post('album_salvar','InteligenciaController@salvarAlbumCriminoso')->name('inteligencia.album.salvar');
-    $this->delete('album_delete/{id}','InteligenciaController@deleteAlbumCriminoso')->name('inteligencia.album.delete');
+    $this->delete('album_delete','InteligenciaController@deleteAlbumCriminoso')->name('inteligencia.album.delete');
     $this->get('download/{id}','InteligenciaController@downloadAlbumCriminoso')->name('inteligencia.album.download');
     $this->any('crim_search', 'InteligenciaController@search')->name('inteligencia.crim.search');
+
+    $this->post('doc_salvar','InteligenciaController@salvarDocCriminoso')->name('inteligencia.doc.salvar');
+    $this->delete('doc_delete/{id}','InteligenciaController@deleteDocCriminoso')->name('inteligencia.doc.delete');
+  
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Armamento', 'prefix' => 'armas'], function(){

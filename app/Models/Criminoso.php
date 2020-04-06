@@ -32,6 +32,10 @@ class Criminoso extends Model
         return $this->hasMany(GaleriaCriminoso::class,'criminoso_id');
     }
 
+    function documentoscriminoso() {
+        return $this->hasMany(DocumentosCriminoso::class,'criminoso_id');
+    }
+
     function faccao() {
         return $this->belongsTo(Faccao::class,'faccao_id');
     }
@@ -77,7 +81,7 @@ class Criminoso extends Model
         }
        
     })->select('criminoso.id','criminoso.nome','criminoso.apelido','criminoso.foto','criminoso.faccao_id','criminoso.opm_id')
-    ->orderBy('criminoso.nome', 'DESC')
+    ->orderBy('criminoso.nome', 'ASC')
     ->paginate($totalPage);
 
    return $retorno;

@@ -37,7 +37,7 @@
               <br>
               <div class="col-md-6 col-12">
                 <label>Nome*</label>
-                <input type="text" class="form-control" placeholder="Nome" 
+                <input type="text" class="form-control" placeholder="Nome" required
                 value="{{  $criminoso->nome or '' }}" id="nome" name="nome">
               </div> 
         </div>
@@ -57,7 +57,7 @@
 
         <div class="col-md-2">
             <label>CPF</label>
-         <input type="cpf" class="form-control" placeholder="CPF" 
+         <input type="text" class="form-control" placeholder="CPF" 
          value="{{  $criminoso->cpf or '' }}" id="cpf" name="cpf">
        </div> 
         <div class="col-md-2">
@@ -98,8 +98,8 @@
               <div class="row">
            <div class="col-md-6">
             <label>Área de atuação*</label>
-             <textarea class="form-control" placeholder="area de atuacao" rows="2"
-             id="area_atuacao" name="area_atuacao">{{  $criminoso->area_atuacao or ''  }}</textarea>                        
+             <input type="text" class="form-control" placeholder="area_atuacao" required maxlength="145"
+             value="{{  $criminoso->area_atuacao or ''  }}" id="area_atuacao" name="area_atuacao">                        
          </div>
               
          <div class="col-md-2">
@@ -240,8 +240,7 @@
     </div>
 
 
-    <div class="table-responsive">
-
+  <div class="table-responsive">
   <table id="tb1" class="table table-bordered table-striped table-hover">
         <thead>
         <tr>
@@ -280,7 +279,9 @@
    
     <!-- /.box-body -->
   </div>
-<!--galeria de fotos -->
+
+ 
+
   <main role="main"  style="<?php 
   if(!isset($criminoso->id)){ 
      echo 'display: none;'; }?>">
@@ -301,8 +302,8 @@
             <input class="form-control" id="descricao_img" name="descricao_img" required>
           </div>
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="foto_da_galeria" name="foto_da_galeria" required>
-            <label class="custom-file-label" for="foto_da_galeria">Escolha um arquivo</label>
+            <input type="file" class="custom-file-input" id="arquivo1" name="arquivo1" required>
+            <label class="custom-file-label" for="arquivo1">Escolha um arquivo</label>
           </div>
           <p>
             <button type="submit" class="btn btn-primary my-2">Enviar</button>
@@ -324,10 +325,9 @@
                     <div class="d-flex justify-content-between align-items-center ">
                       <div class="btn-group">
                        <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.album.download',$galeria->id)}}">Download</a>
-                      <form method="post" action="{{route('inteligencia.album.delete')}}">
+                      <form method="post" action="{{route('inteligencia.album.delete',$galeria->id)}}">
                           {!! csrf_field() !!}
                           <input type="hidden" name="_method" value="delete">
-                          <input type="hidden" name="galeria_id" value="{{$galeria->id}}" >
                           <button type="submit" class="btn btn-sm btn-danger">Apagar</button>
                         </form>
                       </div>
@@ -339,6 +339,66 @@
         </div>
        
       </div>
+      <!-- Fim galeria Imagem -->
+      <!-- Início Documentos-->
+      <main role="main"  style="<?php 
+      if(!isset($criminoso->id)){ 
+         echo 'display: none;'; }?>">
+     <header>
+      <div class="navbar navbar-dark bg-dark shadow-sm">
+          <a href="#" class="navbar-brand d-flex align-items-center">
+            <strong>Documentos</strong>
+          </a>
+      </div>
+    </header>
+        <section class="jumbotron text-center" >
+          <div class="container">
+            <form method="POST" action="{{route('inteligencia.album.salvar')}}" enctype="multipart/form-data">
+             <div class="form-group text-left">
+              {!! csrf_field() !!}
+              <input type="hidden" name="crimi_id" id="crimi_id" value="{{ $criminoso->id or '' }}" >
+                <label for="descricao_img">Descrição do documento*</label>
+                <input class="form-control" id="descricao_doc" name="descricao_doc" required>
+              </div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="arquivo2" name="arquivo2" required>
+                <label class="custom-file-label" for="arquivo2">Escolha um arquivo</label>
+              </div>
+              <p>
+                <button type="submit" class="btn btn-primary my-2">Enviar</button>
+                <button type="reset" class="btn btn-secondary my-2">Cancelar</button>
+              </p>
+            </form>
+          </div>
+        </section>
+    
+        <div class="album py-5 bg-light">
+          <div class="container">
+            <div class="row">
+              @foreach ($criminoso->documentoscriminoso as $documento)
+                  <div class="col-md-4">
+                    <div  class="card mb-4 shadow-sm">
+                      <img class="card-img-top figure-img img-fluid rounded " src="{{ url($documento->documento) }}" width="100" height="100">
+                      <div class="card-body">
+                        <p class="card-text">{{$documento->descricao}}</p>
+                        <div class="d-flex justify-content-between align-items-center ">
+                          <div class="btn-group">
+                           <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.album.download',$documento->id)}}">Download</a>
+                          <form method="post" action="{{route('inteligencia.album.delete',$documento->id)}}">
+                              {!! csrf_field() !!}
+                              <input type="hidden" name="_method" value="delete">
+                              <button type="submit" class="btn btn-sm btn-danger">Apagar</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  @endforeach
+            </div>
+           
+          </div>
+      <!-- Fim Documentos-->
     </div>
 
   </main>

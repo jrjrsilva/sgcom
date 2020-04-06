@@ -17,6 +17,7 @@ use sgcom\Models\PosicaoFaccao;
 use sgcom\Models\SituacaoProcessual;
 use File;
 use sgcom\Models\Cpr;
+use sgcom\Models\DocumentosCriminoso;
 use sgcom\Models\ModusOperandi;
 use sgcom\Models\Opm;
 use sgcom\Models\TipoAtuacaoCriminoso;
@@ -32,7 +33,9 @@ class InteligenciaController extends Controller
       $this->dadosGerais();
 
        $usr = Auth::user();
-      $criminosos = Criminoso::where('opm_id','=',$usr->efetivo->opm_id)->paginate($this->totalPage);
+      $criminosos = Criminoso::where('opm_id','=',$usr->efetivo->opm_id)
+      ->orderBy('nome')
+      ->paginate($this->totalPage);
       
       return view('inteligencia.criminosos',compact('criminosos'));
     }
@@ -42,7 +45,7 @@ class InteligenciaController extends Controller
       $this->dadosGerais();
       $criminoso = Criminoso::findOrFail($id);
       $criminoso->delete();
-      $criminosos = Criminoso::paginate($this->totalPage);
+      $criminosos = Criminoso::paginate($this->totalPage)->orderBy('nome');
 
       return view('inteligencia.criminosos',compact('criminosos'));
     }
@@ -75,6 +78,7 @@ class InteligenciaController extends Controller
     {
       $this->dadosGerais();
       $criminoso = Criminoso::findOrFail($id);
+     
      return view('inteligencia.form',compact('criminoso'));
     }
 
@@ -124,6 +128,19 @@ class InteligenciaController extends Controller
 
     public function salvarCriminoso(Request $request){
        // dd($request->all());
+
+       $mensagens = [
+        'required' => ':attribute &eacute; obrigat&oacute;rio!',
+        'foto.mimes' => 'Tipo não permitido!',
+        'foto.max'   => 'A foto deve ter no máxmo 2MB'
+        ];
+
+      $this->validate($request,
+      [
+        'area_atuacao'  => 'required',
+        'foto'          => 'mimes:jpeg,jpg,png|max:2048',
+      ],$mensagens);
+
        try{
          $criminoso = new Criminoso();
           if($request->id != null)
@@ -151,12 +168,12 @@ class InteligenciaController extends Controller
             $criminoso->tipo_atuacao_criminoso_id = $request->tipoatuacao;
             $criminoso->modus_operandi_id = $request->modusoperandi;
 
-            if($request->hasfile('arquivo') && $request->file('arquivo')->isvalid()){
+            if($request->hasfile('foto') && $request->file('foto')->isvalid()){
               $extension = $request->arquivo->extension();
               $name = uniqid(date('HisYmd'));
               $nameFile = "{$name}.{$extension}";
               
-              $path  =  $request->file('arquivo')->move('fotos_criminosos',$nameFile);
+              $path  =  $request->file('foto')->move('fotos_criminosos',$nameFile);
               $criminoso->foto =  $path;
               }
           
@@ -206,57 +223,66 @@ class InteligenciaController extends Controller
 
    public function salvarAlbumCriminoso(Request $request){
    // dd($request->all());
+    $messages = [
+      'required'              => ':attribute &eacute; obrigat&oacute;rio!',
+      'foto_da_galeria.mimes' => 'Tipo não permitido!',
+      'foto_da_galeria.max'   => 'A foto deve ter no máxmo 2MB'
+      ];
+
+    $this->validate($request,
+    [
+      'descricao_img'     => 'required|min:5',    
+      'foto_da_galeria'   => 'required|mimes:jpeg,jpg,png|max:2048',
+    ],$messages);
+
     try{
-      $tipos = ['jpeg','jpg','png'];
-     
       $file = new GaleriaCriminoso();
        
            $file->criminoso_id = $request->crimi_id;
          
            $file->descricao = $request->descricao_img;
+          
+         if($request->hasfile('foto_da_galeria') && $request->file('foto_da_galeria')->isvalid()){
+          $extension = $request->foto_da_galeria->extension();
+         // $tamanho = filesize($request->foto_da_galeria);
          
-         if($request->hasfile('arquivo1') && $request->file('arquivo1')->isvalid()){
-          $extension = $request->arquivo1->extension();
-          $tamanho = $request->arquivo1->size();
-          $limite = 1024 * 1024 * 2;
-           
-          for($i=0;$i<=count($tipos);$i++)
-          { 
-          if($tipos[$i] == $extension && $tamanho <= $limite)
-          {
+         
+        /*    for($i=0;$i<=count($tipos);$i++)
+          {  
+          if($tamanho <= $limite)
+          { */
             $name = uniqid(date('HisYmd'));
             $nameFile = "{$name}.{$extension}";
             
-            $path  =  $request->file('arquivo1')->move('fotos_criminosos',$nameFile);
+            $path  =  $request->file('foto_da_galeria')->move('fotos_criminosos',$nameFile);
  
             $file->foto =  $path;
 
             $file->save();
 
             return $this->edit($request->crimi_id);
-          }
-          }
+          /* }
+          } */
       } 
    
    } catch (\Exception $e) {
      $e->getMessage();
      return redirect() 
-     ->route('inteligencia.crim.edit',$request->crimi_id)
-     ->with('errors','Formato/Tamanho não permitido!');
+     ->route('inteligencia.crim.edit',$request->crimi_id)->withInput();
    }
  }
 
- public function deleteAlbumCriminoso($id)
+ public function deleteAlbumCriminoso(Request $request)
  {
-   $galeria = GaleriaCriminoso::findorFail($id);
+   $galeria = GaleriaCriminoso::findorFail($request->galeria_id);
    if(isset($galeria)){
      $arquivo = $galeria->foto;
      $path = public_path().'/';
      File::delete($path.$arquivo);
      $galeria->delete();
    }
- return  $this->edit($galeria->criminoso_id);
-
+  return redirect() 
+ ->route('inteligencia.crim.edit',$galeria->criminoso_id);
  }
 
  public function downloadAlbumCriminoso($id)
@@ -269,13 +295,68 @@ class InteligenciaController extends Controller
   return redirect()->back()->with('success', 'Sucesso!');
  }
 
+ public function salvarDocCriminoso(Request $request){
+  // dd($request->all());
+   try{
+     $tipos = ['pdf'];
+    
+     $file = new DocumentosCriminoso();
+      
+          $file->criminoso_id = $request->crimi_id;
+        
+          $file->descricao = $request->descricao_doc;
+        
+        if($request->hasfile('arquivo2') && $request->file('arquivo2')->isvalid()){
+         $extension = $request->arquivo2->extension();
+         $tamanho = $request->arquivo2->size();
+         $limite = 2048;
+          
+         for($i=0;$i<=count($tipos);$i++)
+         { 
+         if($tipos[$i] == $extension && $tamanho <= $limite)
+         {
+           $name = uniqid(date('HisYmd'));
+           $nameFile = "{$name}.{$extension}";
+           
+           $path  =  $request->file('arquivo2')->move('docs_criminosos',$nameFile);
+
+           $file->foto =  $path;
+
+           $file->save();
+
+           return $this->edit($request->crimi_id);
+         }
+         }
+     } 
+  
+  } catch (\Exception $e) {
+    $e->getMessage();
+    return redirect() 
+    ->route('inteligencia.crim.edit',$request->crimi_id)
+    ->with('errors','Formato/Tamanho não permitido!');
+  }
+}
+
+public function deleteDocCriminoso($id)
+{
+  $doc = DocumentosCriminoso::findorFail($id);
+  if(isset($doc)){
+    $arquivo = $doc->documento;
+    $path = public_path().'/';
+    File::delete($path.$arquivo);
+    $doc->delete();
+  }
+return  $this->edit($doc->criminoso_id);
+
+}
+
 
  public function search(Request $request, Criminoso $criminoso)
  {
    $this->dadosGerais();
    $dataForm = $request->except('_token');
 
-   $criminosos =  $criminoso->search($dataForm, $this->totalPage);
+   $criminosos =  $criminoso->search($dataForm, $this->totalPage)->orderBy('nome');
 
    return view('inteligencia.criminosos',compact('criminosos','dataForm'));
  }
