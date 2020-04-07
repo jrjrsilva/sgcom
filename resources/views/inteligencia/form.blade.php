@@ -326,13 +326,14 @@
                   <div class="card-body">                   
                     <div class="d-flex justify-content-between align-items-center ">
                       <div class="btn-group">
-                       <p class="card-text">{{$galeria->descricao}}
-                       <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.album.download',$galeria->id)}}"><i class="fa fa-download fa-2x"></i></a>
                        <form method="post" action="{{route('inteligencia.album.delete')}}">
+                        <p class="card-text">{{$galeria->descricao}}
+                          <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.album.download',$galeria->id)}}"><i class="fa fa-download fa-2x"></i></a>
+                         
                           {!! csrf_field() !!}
                           <input type="hidden" name="_method" value="delete">
                           <input type="hidden" name="galeria_id" value="{{$galeria->id}}" >
-                          <button type="submit" class="btn btn-sm btn-danger">Apagar</button>
+                          <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                         </form>
                       </p>
                       </div>
@@ -386,16 +387,19 @@
                  <div class="col-md-4">
                    <div  class="card mb-4 shadow-sm">
                      <div class="card-body">
-                       <div class="d-flex justify-content-between align-items-center ">
+                       <div class="d-flex justify-content-between align-items-center">
                          <div class="btn-group">
-                          <p class="card-text">{{$documento->descricao}}
-                          <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.doc.download',$documento->id)}}"><i class="fa fa-download fa-2x"></i></a>
-                         <form method="post" action="{{route('inteligencia.doc.delete')}}">
+                             <form method="post" action="{{route('inteligencia.doc.delete')}}">
+                              <p class="card-text">{{$documento->descricao}}
+                                <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.doc.download',$documento->id)}}"><i class="fa fa-download fa-2x"></i></a>
+                              
                              {!! csrf_field() !!}
                              <input type="hidden" name="_method" value="delete">
                              <input type="hidden" name="documento_id" value="{{$documento->id}}" >
-                             <button type="submit" class="btn btn-sm btn-danger">Apagar</button>
-                           </form></p>
+                             <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                           
+                            </form>
+                            </p>
                          </div>
                        </div>
                      </div>
