@@ -138,15 +138,17 @@ class InteligenciaController extends Controller
        // dd($request->all());
 
        $mensagens = [
-        'required' => ':attribute &eacute; obrigat&oacute;rio!',
-        'foto.mimes' => 'Tipo não permitido!',
-        'foto.max'   => 'A foto deve ter no máxmo 2MB'
+        'required'    => ':attribute &eacute; obrigat&oacute;rio!',
+        'foto.mimes'  => 'Tipo não permitido!',
+        'foto.max'    => 'A foto deve ter no máxmo 2MB',
+        'nome.min'    => 'Nome deve ter no mínimo 5 caracteres'
         ];
 
       $this->validate($request,
       [
         'area_atuacao'  => 'required',
         'foto'          => 'mimes:jpeg,jpg,png|max:2048',
+        'nome'          => 'min:5'
       ],$mensagens);
 
        try{
@@ -252,13 +254,7 @@ class InteligenciaController extends Controller
           
          if($request->hasfile('foto_da_galeria') && $request->file('foto_da_galeria')->isvalid()){
           $extension = $request->foto_da_galeria->extension();
-         // $tamanho = filesize($request->foto_da_galeria);
-         
-         
-        /*    for($i=0;$i<=count($tipos);$i++)
-          {  
-          if($tamanho <= $limite)
-          { */
+       
             $name = uniqid(date('HisYmd'));
             $nameFile = "{$name}.{$extension}";
             
@@ -269,8 +265,7 @@ class InteligenciaController extends Controller
             $file->save();
 
             return $this->edit($request->crimi_id);
-          /* }
-          } */
+       
       } 
    
    } catch (\Exception $e) {
@@ -305,58 +300,71 @@ class InteligenciaController extends Controller
 
  public function salvarDocCriminoso(Request $request){
   // dd($request->all());
-   try{
-     $tipos = ['pdf'];
-    
-     $file = new DocumentosCriminoso();
-      
-          $file->criminoso_id = $request->crimi_id;
+  $messages = [
+    'required'              => ':attribute &eacute; obrigat&oacute;rio!',
+    'documento.mimes' => 'Apenas PDF são permitidos!',
+    'documento.max'   => 'O pdf deve ter no máxmo 2MB'
+    ];
+
+  $this->validate($request,
+  [
+    'descricao_documento'     => 'required|min:5',    
+    'documento'               => 'required|mimes:pdf|max:2048',
+  ],$messages);
+
+  try{
+    $file = new DocumentosCriminoso();
+     
+         $file->criminoso_id = $request->crimi_id;
+       
+         $file->descricao = $request->descricao_documento;
         
-          $file->descricao = $request->descricao_doc;
-        
-        if($request->hasfile('arquivo2') && $request->file('arquivo2')->isvalid()){
-         $extension = $request->arquivo2->extension();
-         $tamanho = $request->arquivo2->size();
-         $limite = 2048;
+       if($request->hasfile('documento') && $request->file('documento')->isvalid()){
+        $extension = $request->documento->extension();
+     
+          $name = uniqid(date('HisYmd'));
+          $nameFile = "{$name}.{$extension}";
           
-         for($i=0;$i<=count($tipos);$i++)
-         { 
-         if($tipos[$i] == $extension && $tamanho <= $limite)
-         {
-           $name = uniqid(date('HisYmd'));
-           $nameFile = "{$name}.{$extension}";
-           
-           $path  =  $request->file('arquivo2')->move('docs_criminosos',$nameFile);
+          $path  =  $request->file('documento')->move('documentos_criminosos',$nameFile);
 
-           $file->foto =  $path;
+          $file->documento =  $path;
 
-           $file->save();
+          $file->save();
 
-           return $this->edit($request->crimi_id);
-         }
-         }
-     } 
-  
-  } catch (\Exception $e) {
-    $e->getMessage();
-    return redirect() 
-    ->route('inteligencia.crim.edit',$request->crimi_id)
-    ->with('errors','Formato/Tamanho não permitido!');
-  }
+          return redirect() 
+          ->route('inteligencia.crim.edit',$request->crimi_id)->withInput();
+    } 
+ 
+ } catch (\Exception $e) {
+   $e->getMessage();
+   return redirect() 
+   ->route('inteligencia.crim.edit',$request->crimi_id)->withInput();
+ }
 }
 
-public function deleteDocCriminoso($id)
+public function deleteDocCriminoso(Request $request)
 {
-  $doc = DocumentosCriminoso::findorFail($id);
+  $doc = DocumentosCriminoso::findorFail($request->documento_id);
   if(isset($doc)){
     $arquivo = $doc->documento;
     $path = public_path().'/';
     File::delete($path.$arquivo);
     $doc->delete();
   }
-return  $this->edit($doc->criminoso_id);
+return redirect() 
+->route('inteligencia.crim.edit',$doc->criminoso_id)->withInput();  
 
 }
+
+public function downloadDocCriminoso($id)
+ {
+   $doc = DocumentosCriminoso::findorFail($id);
+   if(isset($doc)){
+     $path = public_path().'/';
+      return response()->download($path.$doc->documento);
+   }
+  return redirect()->back()->with('success', 'Sucesso!');
+ }
 
 
  public function search(Request $request, Criminoso $criminoso)

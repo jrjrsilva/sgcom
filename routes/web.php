@@ -108,8 +108,9 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' 
     $this->any('crim_search', 'InteligenciaController@search')->name('inteligencia.crim.search');
 
     $this->post('doc_salvar','InteligenciaController@salvarDocCriminoso')->name('inteligencia.doc.salvar');
-    $this->delete('doc_delete/{id}','InteligenciaController@deleteDocCriminoso')->name('inteligencia.doc.delete');
-  
+    $this->delete('doc_delete','InteligenciaController@deleteDocCriminoso')->name('inteligencia.doc.delete');
+    $this->get('doc_download/{id}','InteligenciaController@downloadDocCriminoso')->name('inteligencia.doc.download');
+ 
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Armamento', 'prefix' => 'armas'], function(){

@@ -290,8 +290,12 @@
         <strong>Album de fotos</strong>
       </a>
   </div>
+
+
+
+
 </header>
-    <section class="jumbotron text-center" >
+<section class="jumbotron text-center" >
       <div class="container">
         <form method="POST" action="{{route('inteligencia.album.salvar')}}" enctype="multipart/form-data">
          <div class="form-group text-left">
@@ -319,28 +323,89 @@
               <div class="col-md-4">
                 <div  class="card mb-4 shadow-sm">
                   <img class="card-img-top figure-img img-fluid rounded " src="{{ url($galeria->foto) }}" width="100" height="100">
-                  <div class="card-body">
-                    <p class="card-text">{{$galeria->descricao}}</p>
+                  <div class="card-body">                   
                     <div class="d-flex justify-content-between align-items-center ">
                       <div class="btn-group">
-                       <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.album.download',$galeria->id)}}">Download</a>
-                      <form method="post" action="{{route('inteligencia.album.delete')}}">
+                       <p class="card-text">{{$galeria->descricao}}
+                       <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.album.download',$galeria->id)}}"><i class="fa fa-download fa-2x"></i></a>
+                       <form method="post" action="{{route('inteligencia.album.delete')}}">
                           {!! csrf_field() !!}
                           <input type="hidden" name="_method" value="delete">
                           <input type="hidden" name="galeria_id" value="{{$galeria->id}}" >
                           <button type="submit" class="btn btn-sm btn-danger">Apagar</button>
                         </form>
+                      </p>
                       </div>
+                     
                     </div>
                   </div>
                 </div>
               </div>
               @endforeach
         </div>
-       
+        <br>
       </div>
     </div>
-
+  </main>
+     <!-- Início Documentos-->
+     <main role="main"  style="<?php 
+     if(!isset($criminoso->id)){ 
+        echo 'display: none;'; }?>">
+    <header>
+     <div class="navbar navbar-dark bg-dark shadow-sm">
+         <a href="#" class="navbar-brand d-flex align-items-center">
+           <strong>Documentos</strong>
+         </a>
+     </div>
+   </header>
+       <section class="jumbotron text-center" >
+         <div class="container">
+           <form method="POST" action="{{route('inteligencia.doc.salvar')}}" enctype="multipart/form-data">
+            <div class="form-group text-left">
+             {!! csrf_field() !!}
+             <input type="hidden" name="crimi_id" id="crimi_id" value="{{ $criminoso->id or '' }}" >
+               <label for="descricao_documento">Descrição do documento*</label>
+               <input class="form-control" id="descricao_documento" name="descricao_documento" required>
+             </div>
+             <div class="custom-file">
+               <input type="file" class="custom-file-input" id="documento" name="documento" required>
+               <label class="custom-file-label" for="documento">Escolha um arquivo</label>
+             </div>
+             <p>
+               <button type="submit" class="btn btn-primary my-2">Enviar</button>
+               <button type="reset" class="btn btn-secondary my-2">Cancelar</button>
+             </p>
+           </form>
+         </div>
+       </section>
+   
+       <div class="album py-5 bg-light">
+         <div class="container">
+           <div class="row">
+             @foreach ($criminoso->documentoscriminoso as $documento)
+                 <div class="col-md-4">
+                   <div  class="card mb-4 shadow-sm">
+                     <div class="card-body">
+                       <div class="d-flex justify-content-between align-items-center ">
+                         <div class="btn-group">
+                          <p class="card-text">{{$documento->descricao}}
+                          <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.doc.download',$documento->id)}}"><i class="fa fa-download fa-2x"></i></a>
+                         <form method="post" action="{{route('inteligencia.doc.delete')}}">
+                             {!! csrf_field() !!}
+                             <input type="hidden" name="_method" value="delete">
+                             <input type="hidden" name="documento_id" value="{{$documento->id}}" >
+                             <button type="submit" class="btn btn-sm btn-danger">Apagar</button>
+                           </form></p>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+                 @endforeach
+           </div>
+          
+         </div>
+     <!-- Fim Documentos-->
   </main>
     <div class="clearfix"></div>
               </div>
