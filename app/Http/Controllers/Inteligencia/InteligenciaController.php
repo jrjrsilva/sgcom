@@ -179,7 +179,7 @@ class InteligenciaController extends Controller
             $criminoso->modus_operandi_id = $request->modusoperandi;
 
             if($request->hasfile('foto') && $request->file('foto')->isvalid()){
-              $extension = $request->arquivo->extension();
+              $extension = $request->foto->extension();
               $name = uniqid(date('HisYmd'));
               $nameFile = "{$name}.{$extension}";
               
@@ -377,4 +377,20 @@ public function downloadDocCriminoso($id)
    return view('inteligencia.criminosos',compact('criminosos','dataForm'));
  }
 
+ public function baralho()
+    {
+      $this->dadosGerais();
+
+       $usr = Auth::user();
+      $criminosos = Criminoso::where('opm_id','=',$usr->efetivo->opm_id)
+      ->where('barralho_crime','=','Sim')
+      ->orderBy('nome')
+      ->paginate($this->totalPage);
+      
+      return view('inteligencia.baralho',compact('criminosos'));
+    }
+
+
+
 }
+

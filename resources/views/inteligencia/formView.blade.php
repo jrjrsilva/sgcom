@@ -106,7 +106,7 @@
               value="{{ $criminoso->aisp->descricao }}">
              </div>
              <div class="col-md-2">
-              <label>Barralho?</label>
+              <label>Baralho?</label>
          <input type="text" class="form-control" id="barralho" name="barralho" readonly
              value="{{$criminoso->barralho_crime}}"
              >
@@ -198,6 +198,7 @@
    
     <!-- /.box-body -->
   </div>
+
 <!--galeria de fotos -->
   <main role="main"  style="<?php 
   if(!isset($criminoso->id)){ 
@@ -217,11 +218,13 @@
                 <div  class="card mb-4 shadow-sm">
                   <img class="card-img-top figure-img img-fluid rounded " src="{{ url($galeria->foto) }}" width="100" height="100">
                   <div class="card-body">
-                    <p class="card-text">{{$galeria->descricao}}</p>
+                    
                     <div class="d-flex justify-content-between align-items-center ">
                       <div class="btn-group">
-                       <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.album.download',$galeria->id)}}">Download</a>
-                    </div>
+                        <p class="card-text">{{$galeria->descricao}}
+                       <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.album.download',$galeria->id)}}"><i class="fa fa-download fa-2x"></i></a>
+                       </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -233,6 +236,45 @@
     </div>
 
   </main>
+
+  <!-- Fim Galeria de fotos-->
+  <!-- Inicio Documentos-->
+  <main role="main"  style="<?php 
+  if(!isset($criminoso->id)){ 
+     echo 'display: none;'; }?>">
+ <header>
+  <div class="navbar navbar-dark bg-dark shadow-sm">
+     
+        <strong>Documentos</strong>
+      
+  </div>
+</header>
+   <div class="album py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          @foreach ($criminoso->documentoscriminoso as $documento)
+              <div class="col-md-4">
+                <div  class="card mb-4 shadow-sm">
+                   <div class="card-body">
+                   
+                    <div class="d-flex justify-content-between align-items-center ">
+                      <div class="btn-group">
+                        <p class="card-text">{{$documento->descricao}}
+                        <a type="button" class="btn btn-sm btn-secondary" href="{{route('inteligencia.doc.download',$documento->id)}}"><i class="fa fa-download fa-2x"></i></a>
+                      </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @endforeach
+        </div>
+       
+      </div>
+    </div>
+
+  </main>
+  <!--Fim documentos -->
     <div class="clearfix"></div>
               </div>
           </div>

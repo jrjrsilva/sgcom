@@ -110,6 +110,8 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' 
     $this->post('doc_salvar','InteligenciaController@salvarDocCriminoso')->name('inteligencia.doc.salvar');
     $this->delete('doc_delete','InteligenciaController@deleteDocCriminoso')->name('inteligencia.doc.delete');
     $this->get('doc_download/{id}','InteligenciaController@downloadDocCriminoso')->name('inteligencia.doc.download');
+    $this->get('baralho','InteligenciaController@baralho')->name('inteligencia.baralho');
+    
  
 });
 

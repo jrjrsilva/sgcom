@@ -204,15 +204,28 @@ return [
             'icon'        => 'bullseye',
             'label_color' => 'success',
             'can'         => 'armamento-list',     
-        ],   
+        ], 
 
         [
-            'text'        => 'Inteligência Policial',
-            'url'         => 'inteligencia/criminosos',
-            'icon'        => 'desktop',
-            'label_color' => 'success',   
-            'can'         => 'inteligencia-list',  
-        ],   
+            'text'          => 'Inteligência Policial',
+            'icon'          => 'user-secret',
+            'submenu'       =>[
+                [
+                   'text'       => 'Baralho do Crime',
+                   'icon'       => 'camera',
+                   'url'         => 'inteligencia/baralho',
+                ],
+               
+                [
+                    'text'        => 'Criminosos',
+                    'url'         => 'inteligencia/criminosos',
+                    'icon'        => 'desktop',
+                    'label_color' => 'success',   
+                    'can'         => 'inteligencia-list', 
+                ]
+            ]
+        ],
+ 
 
         [
             'text'        => 'CVLI',

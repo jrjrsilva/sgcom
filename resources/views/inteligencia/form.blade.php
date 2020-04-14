@@ -156,7 +156,7 @@
                </select>
              </div>
              <div class="col-md-2">
-              <label>Barralho?</label>
+              <label>Baralho?</label>
          <select class="form-control" id="barralho" name="barralho">
              <option value="Não"  @if($criminoso->barralho_crime == 'Não')
               selected 
