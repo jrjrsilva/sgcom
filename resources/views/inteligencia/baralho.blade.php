@@ -20,7 +20,7 @@
 <!-- Criminoso -->
 <div class="box box-success">
         <div class="box-header with-border">
-          <h3 class="box-title">Baralho do Crime</h3>
+          <h3 class="box-title">Fotos dos Criminosos</h3>
         </div><br>
         
 <!--galeria de fotos -->
@@ -31,9 +31,13 @@
           @foreach ($criminosos  as $galeria)
               <div class="col-md-4">
                 <div  class="card mb-4 shadow-sm">
-                  <img class="card-img-top figure-img img-fluid rounded " src="{{ url($galeria->foto) }}" width="150" height="180">
                   <div class="card-body">
-                    
+                    @if($galeria->foto != null)
+                    <img src="{{ url($galeria->foto) }}" 
+                    height="200" width="150" >                 
+                   @else
+                   <img src="{{url("fotos/sem_foto.jpg")}}" height="200" width="150">
+                   @endif                    
                     <div class="d-flex justify-content-between align-items-center ">
                       <div class="btn-group">
                         <p class="card-text">{{$galeria->nome}}</p>

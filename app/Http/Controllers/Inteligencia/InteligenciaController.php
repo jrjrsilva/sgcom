@@ -381,9 +381,8 @@ public function downloadDocCriminoso($id)
     {
       $this->dadosGerais();
 
-       $usr = Auth::user();
+      $usr = Auth::user();
       $criminosos = Criminoso::where('opm_id','=',$usr->efetivo->opm_id)
-      ->where('barralho_crime','=','Sim')
       ->orderBy('nome')
       ->paginate($this->totalPage);
       

@@ -211,7 +211,7 @@ return [
             'icon'          => 'user-secret',
             'submenu'       =>[
                 [
-                   'text'       => 'Baralho do Crime',
+                   'text'       => 'Galeria dos Criminosos',
                    'icon'       => 'camera',
                    'url'         => 'inteligencia/baralho',
                 ],
