@@ -6,7 +6,7 @@
     <h1>Gestão de Armas</h1>
     <ol class="breadcrumb">
         <li><a href="{{route('armas.lista')}}">Gestão de Armas</a></li>
-        <li><a href="">Cadastro</a></li>
+        <li><a href="">Atualização</a></li>
     </ol>
 @stop
 
@@ -66,7 +66,7 @@
       </div>
     <div class="col-xs-4">     
           <label>Situação:</label>
-          <select class="form-control" id="opm" name="opm" required >
+          <select class="form-control" id="situacaoarma" name="situacaoarma" required >
             <option value="">Selecione a Situacao</option>
             @foreach( $situacaoarmas as $situacaoarma )
             <option value="{{ $situacaoarma->id or ''}}" 
@@ -78,7 +78,14 @@
             @endforeach
           </select>
 </div>
-
+    </div>
+   <div class="box-footer">
+                <div class="btn-toolbar pull-right">
+                 
+                  <button type="submit" class="btn btn-success btn-lg">Salvar</button>
+                 </div>
+              </div>
+  </div></form>
     </section>
 @stop
 

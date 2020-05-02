@@ -118,7 +118,7 @@
                   @endforeach
                 </select>
                 @endcan
-               
+               <br>
                  <label for="popm">OPM:</label>
                 <select class="form form-control" id="opm" name="popm">
                   <option value="">Selecione a OPM</option>

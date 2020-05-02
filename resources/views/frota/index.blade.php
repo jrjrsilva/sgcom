@@ -6,7 +6,7 @@
     <h1>Gestão de Frota</h1>
     <ol class="breadcrumb">
         <li><a href="{{route('frota.lista')}}">Gestão de frota</a></li>
-        <li><a href="">Cadastro</a></li>
+        <li><a href="{{route('frota.index')}}">Cadastro</a></li>
     </ol>
 @stop
 
@@ -30,7 +30,7 @@
       <div class="box box-primary">
          <div class="row">
               <div class="col-md-3"> 
-                <label>OPM</label>  
+                <label>OPM*</label>  
                 <select class="form-control" id="opm" name="opm" required >
                   <option value="">Selecione a OPM</option>
                   @foreach( $opms as $opm )
@@ -45,7 +45,7 @@
               </div> 
             
              <div class="col-md-3"> 
-                <label>Emprego</label>  
+                <label>Emprego*</label>  
                 <select class="form-control" id="emprego" name="emprego" required >
                   <option value="">Selecione o Emprego</option>
                   @isset($viatura)
@@ -64,7 +64,7 @@
               </div> 
             
             <div class="col-md-3"> 
-                <label>Propriedade da Viatura</label>  
+                <label>Propriedade da Viatura*</label>  
                 <select class="form-control" id="propriedade" name="propriedade" required >
                   <option value="">Selecione a Propriedade</option>
                   @isset($viatura)
@@ -85,7 +85,7 @@
             <br>
               <div class="row">
               <div class="col-md-2"> 
-                <label>Placa</label>
+                <label>Placa*</label>
                 <input type="text" class="form-control" placeholder="Placa da VTR" 
                   id="placa" name="placa" required maxlength="8" value="{{$viatura->placa or ''}}"
                 style="text-transform: uppercase;">
@@ -98,7 +98,7 @@
               </div>
 
               <div class="col-md-2"> 
-                <label>Plotagem</label>  
+                <label>Plotagem*</label>  
                 <select class="form-control" id="plotagem" name="plotagem" required >
                   <option value="">Selecione o estado</option>
                   @isset($viatura)
@@ -117,7 +117,7 @@
               </div> 
 
               <div class="col-md-2">
-                <label>Cor</label>  
+                <label>Cor*</label>  
                 <select class="form-control" id="cor" required name="cor">
                     <option value="">Selecione a cor</option>
                    @isset($viatura)
@@ -139,7 +139,8 @@
     <div class="row">
 
       <div class="col-md-2">
-              <label>Marca:</label>
+              <label>Marca:*
+              </label>
                  <select class="form-control" id="marcaveiculo" name="marcaveiculo" 
                   required class="marcaveiculo">
                     <option value="">Selecione</option>
@@ -157,7 +158,7 @@
      
     <div class="col-md-2">
      
-          <label>Modelo:</label>
+          <label>Modelo:*</label>
           <select class="form-control" id="modeloveiculo" 
           required name="modeloveiculo">
             <option value="">Selecione</option>
@@ -176,14 +177,14 @@
     </div>
 
     <div class="col-md-2">
-            <label>KM:</label>
+            <label>KM:*</label>
             <input type="number" class="form-control " 
             required placeholder="KM da VTR" maxlength="6"
             value="{{  $viatura->km or '' }}" id="km" name="km" />
     </div> 
     <div class="col-md-2">
           <label>CHASSI:</label>
-          <input type="text" class="form-control "  required
+          <input type="text" class="form-control "  
           style="text-transform: uppercase;"
             placeholder="Chassi" maxlength="15" 
             value="{{  $viatura->chassi or '' }}" id="chassi" name="chassi" />
@@ -195,19 +196,19 @@
     <div class="col-md-2">
         <label>Renavam:</label>
         <input type="text"  class="form-control " 
-        required placeholder="renavam do veículo" maxlength="10"
+         placeholder="renavam do veículo" maxlength="10"
         value="{{  $viatura->renavam or '' }}" id="renavam" name="renavam" />
 </div> 
 <div class="col-md-2">
       <label>Patrimônio:</label>
       <input type="text" class="form-control " 
-      required placeholder="tipo" maxlength="15" 
+       placeholder="tipo" maxlength="15" 
         value="{{  $viatura->patrimonio or '' }}" id="patrimonio" name="patrimonio" />
 </div>
 
 
 <div class="col-md-2">
-    <label>Combustível</label>  
+    <label>Combustível*</label>  
     <select class="form-control" id="combustivel" 
         required name="combustivel">
         <option value="">Selecione o Combustível</option>
@@ -225,7 +226,7 @@
 
   
   <div class="col-md-2">
-    <label>Situação</label>  
+    <label>Situação*</label>  
     <select class="form-control" id="situacao" required name="situacao">
         <option value="">Selecione a Situação</option>
         @foreach( $situacaoviaturas as $situacaoviatura )
@@ -243,19 +244,19 @@
 <br>
 <div class="row">
    <div class="col-md-2">
-        <label>Ano Modelo</label>
+        <label>Ano Modelo*</label>
         <input type="text" class="form-control" required
          maxlength="4" minlength="4" placeholder="Informe o ano do modelo" 
          value="{{$viatura->ano_modelo or '' }}"id="anomodelo" name="anomodelo">
     </div>
     <div class="col-md-2">
-     <label>Ano Fabricação</label>
+     <label>Ano Fabricação*</label>
        <input type="text" class="form-control" required
         maxlength="4" minlength="4" placeholder="Informe o ano de fabricação" 
         value="{{$viatura->ano_fabricacao or ''}}" id="anofabricacao" name="anofabricacao">
       </div>
       <div class="col-md-2">
-                <label>Codigo dos Pneus</label>  
+                <label>Codigo dos Pneus*</label>  
                 <select class="form-control" id="tipopneu" name="tipopneu" required>
                     <option value="">Selecione o tipo</option>
                     @foreach( $tipopneus as $tipopneu )
@@ -275,7 +276,7 @@
             <br>
             <div class="row">
               <div class="col-md-2">
-                <label>Presídio</label>  
+                <label>Presídio*</label>  
                 <select class="form-control" id="presidio" required name="presidio">
                     <option value="">Selecione</option>
                    @isset($viatura)
@@ -289,7 +290,7 @@
                   </select>
               </div>
         <div class="col-md-2">
-                <label>Bateria</label>  
+                <label>Bateria*</label>  
                 <select class="form-control" id="bateria" name="bateria" required>
                     <option value="">Selecione</option>
                     @foreach( $baterias as $bateria )
@@ -305,7 +306,7 @@
                   </select>
               </div>
               <div class="col-md-2">
-                <label>Revisão</label>
+                <label>Revisão*</label>
                   A cada: <input type="number" class="form-control" required
                    maxlength="5" minlength="4" placeholder="Informe o valor" 
                    value="{{$viatura->km_por_revisao or ''}}" id="kmrevisao" name="kmrevisao">

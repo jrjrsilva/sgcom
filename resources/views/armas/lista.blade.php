@@ -17,8 +17,8 @@
             <div class="info-box bg-aqua">
             <span class="info-box-icon"><i class="fa fa-bar-chart"></i></span>
                 <div class="info-box-content">
-                <span class="info-box-text">Armas </span>
-                <span class="info-box-number">{{ $armas->total() }}</span>
+                <span class="info-box-text">Total de Armas da Unidade</span>
+                <span class="info-box-number">{{ $armasTotalOPM }}</span>
             <!-- The progress section is optional -->
             <div class="progress">
               <div class="progress-bar" style="width: 20%"></div>
@@ -133,8 +133,9 @@
                   </div>
                   
                   <!-- /.box-header -->
-                  <div class="box-body">
-                    <table id="example1" class="table table-bordered table-striped">
+                  <div class="table-responsive">
+                  <div class="box-body ">
+                    <table id="example1" class="table table-bordered table-striped table-responsive">
                       <thead>
                       <tr>
                         
@@ -144,7 +145,6 @@
                         <th>OPM</th>
                         <th>Situação</th>
                         <th>Marca</th>
-                        <th>Modelo</th>
                         <th></th>
                       </tr>
                       </thead>
@@ -157,7 +157,6 @@
                         <td>{{$arma->opm->opm_sigla}}</td>
                         <td>{{$arma->situacaoarma->nome}}</td>
                         <td>{{$arma->marcaarma->nome}}</td>
-                        <td>{{$arma->modeloarma->nome}}</td>
                         <td>
                           <a href="{{route('armas.edit',$arma->id)}}" class="btn btn-primary btn-flat"> <i class="fa fa-edit"></i></a>
                         </td>
@@ -173,19 +172,12 @@
                         <th>OPM</th>
                         <th>Situação</th>
                         <th>Marca</th>
-                        <th>Modelo</th>
+                      
                       <th></th>
                       </tr>
                       </tfoot>
                     </table>
                     <table id="tab2" class="table table-bordered">
-                      <thead>
-                         <tr>
-                             <th></th>
-                             <th></th>
-                             
-                        </tr>
-                      </thead>
                       <tbody>
                       <tr>
                          <td>
@@ -207,6 +199,7 @@
                     
                   </div>
                   <!-- /.box-body -->
+                  </div>
                 </div>
                 <!-- /.box -->
               </div>

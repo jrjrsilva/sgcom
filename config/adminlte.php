@@ -18,8 +18,8 @@ return [
     'title_prefix' => 'Sistema de Gestão de Comando do CPRC/A',
 
     'title_postfix' => '',
-    
-    
+
+
     /*
     |--------------------------------------------------------------------------
     | Logo
@@ -109,7 +109,7 @@ return [
     */
 
     'menu' => [
-        
+
         [
             'text'        => 'Home',
             'url'         => 'home',
@@ -121,22 +121,22 @@ return [
             'text'        => 'Painel de Gestão',
             'url'         => 'painel/index',
             'icon'        => 'bar-chart-o',
-            'label_color' => 'success', 
-            'can'         => 'gestor-cmd'   
-        ],   
-        
+            'label_color' => 'success',
+            'can'         => 'gestor-cmd'
+        ],
+
         [
             'text'        => 'Serviço Operacional',
             'url'         => '#',
             'icon'        => 'clipboard',
-            'label_color' => 'success',    
+            'label_color' => 'success',
             'can'  => 'ocorrencia-list',
-            'submenu' => [ 
+            'submenu' => [
                 [
                     'text' => 'Escala Operacional',
                     'url'  => 'servico/escala',
                     'icon' => 'tasks',
-                ],  
+                ],
 
                 [
                     'text' => 'Ocorrências',
@@ -149,28 +149,27 @@ return [
                     'url'  => 'servico/listarocorrencias',
                     'icon' => 'dashboard',
                     'can'  => 'ocorrencia-list',
-                ]
-                ,  
+                ],
                 [
                     'text' => 'Produtividade',
                     'url'  => 'servico/produtividade',
                     'icon' => 'sticky-note',
-                ],  
+                ],
             ]
-        ],   
+        ],
 
         [
             'text'        => 'Gestão de Pessoal',
             'icon'        => 'users',
             'label_color' => 'success',
-            'can'         => 'rh-list',    
+            'can'         => 'rh-list',
 
-            'submenu' => [ 
+            'submenu' => [
                 [
                     'text' => 'Aniversariantes',
                     'url'  => 'rh/aniversariantes',
                     'icon' => 'tasks',
-                ],  
+                ],
 
                 [
                     'text' => 'Efetivo',
@@ -185,63 +184,70 @@ return [
                     'icon' => 'pencil-square-o',
                     'can'  => 'rh-list',
                 ],
-              
-            ],   
 
-        ],   
+                [
+                    'text' => 'Resumo Efetivo',
+                    'url'  => 'rh/resumoEfetivo',
+                    'icon' => 'pencil-square-o',
+                    'can'  => 'rh-list',
+                ],
+
+            ],
+
+        ],
 
         [
             'text'        => 'Gestão de Frotas',
             'url'         => 'frota/lista',
             'icon'        => 'truck',
-            'label_color' => 'success', 
-            'can'         => 'frota-list',    
-        ],   
+            'label_color' => 'success',
+            'can'         => 'frota-list',
+        ],
 
         [
             'text'        => 'Armamento',
             'url'         => 'armas/lista',
             'icon'        => 'bullseye',
             'label_color' => 'success',
-            'can'         => 'armamento-list',     
-        ], 
+            'can'         => 'armamento-list',
+        ],
 
         [
             'text'          => 'Inteligência Policial',
             'icon'          => 'user-secret',
-            'submenu'       =>[
+            'submenu'       => [
                 [
-                   'text'       => 'Galeria dos Criminosos',
-                   'icon'       => 'camera',
-                   'url'         => 'inteligencia/baralho',
+                    'text'       => 'Galeria dos Criminosos',
+                    'icon'       => 'camera',
+                    'url'         => 'inteligencia/baralho',
                 ],
-               
+
                 [
                     'text'        => 'Criminosos',
                     'url'         => 'inteligencia/criminosos',
                     'icon'        => 'desktop',
-                    'label_color' => 'success',   
-                    'can'         => 'inteligencia-list', 
+                    'label_color' => 'success',
+                    'can'         => 'inteligencia-list',
                 ]
             ]
         ],
- 
+
 
         [
             'text'        => 'CVLI',
             'url'         => 'cvli/index',
             'icon'        => 'odnoklassniki',
             'label_color' => 'danger',
-            'can'         => 'cvli-list',     
-        ],   
-        
+            'can'         => 'cvli-list',
+        ],
+
         [
             'text'        => 'CVP',
             'url'         => 'cvp/index',
             'icon'        => 'exclamation-circle',
-            'label_color' => 'success', 
-            'can'         => 'cvp-list',    
-        ],   
+            'label_color' => 'success',
+            'can'         => 'cvp-list',
+        ],
 
         'Configurações',
 
@@ -263,51 +269,51 @@ return [
             'icon' => 'calendar',
         ],
 
-      
-     
+
+
         [
             'text'    => 'Tabelas Básicas',
             'icon'    => 'share',
             //'can'     =>'Admin',
-            'submenu' => [ 
-               
+            'submenu' => [
+
                 [
                     'text' => 'Usuários',
                     'url'  => 'admin/usuarios',
                     'icon' => 'user',
-                    'can'         => 'usr-list', 
+                    'can'         => 'usr-list',
                 ],
-             
+
                 [
                     'text' => 'AISP',
                     'url'  => 'admin/aisp',
-                    'can'         => 'aisp-list', 
-                ], 
+                    'can'         => 'aisp-list',
+                ],
 
                 [
                     'text' => 'CPR',
                     'url'  => 'admin/cpr',
-                    'can'         => 'cpr-list', 
-                ],   
+                    'can'         => 'cpr-list',
+                ],
                 [
                     'text' => 'OPM',
                     'url'  => 'admin/opm',
-                    'can'         => 'opm-list', 
+                    'can'         => 'opm-list',
                 ],
                 [
                     'text' => 'Papeis',
                     'url'  => 'admin/papeis',
-                    'can'         => 'papel-list', 
-                ], 
+                    'can'         => 'papel-list',
+                ],
 
                 [
                     'text' => 'Gestão de Efetivo',
                     'url'  => 'admin/efetivo',
-                    'can'         => 'efetivo-edit', 
-                ], 
+                    'can'         => 'efetivo-edit',
+                ],
             ],
         ],
-       
+
     ],
 
     /*

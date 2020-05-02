@@ -377,6 +377,16 @@ public function downloadDocCriminoso($id)
    return view('inteligencia.criminosos',compact('criminosos','dataForm'));
  }
 
+ public function searchGaleria(Request $request, Criminoso $criminoso)
+ {
+   $this->dadosGerais();
+   $dataForm = $request->except('_token');
+
+   $criminosos =  $criminoso->search($dataForm, $this->totalPage);
+
+   return view('inteligencia.baralho',compact('criminosos','dataForm'));
+ }
+
  public function baralho()
     {
       $this->dadosGerais();
