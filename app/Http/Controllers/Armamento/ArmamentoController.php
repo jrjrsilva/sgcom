@@ -102,7 +102,7 @@ class ArmamentoController extends Controller
     if ($retorno)
       return redirect()->route('armas.lista')->with('success', 'arma atualizada');
 
-    return redirect()->back()->with('error', 'Falha ao atualizar!');
+    return redirect()->route('armas.lista')->with('error', 'Falha ao atualizar!');
   }
 
   public function edit($id)
@@ -117,6 +117,21 @@ class ArmamentoController extends Controller
     return view('armas.index', compact('arma'));
   }
 
+  public function view($id)
+  {
+
+    $this->dadosGerais();
+    $arma = Arma::find($id);
+    if (!$arma) {
+      abort(404);
+    }
+    $historicos =  DB::select('select hv.data, hv.observacao,thv.nome from historico_arma hv
+       , tipo_historico_arma thv where hv.tipo_historico_arma_id = thv.id and arma_id = ? order by data desc', [$arma->id]);
+
+
+    return view('armas.form_view', compact('arma', 'historicos'));
+  }
+
   public function search(Request $request, Arma $arma)
   {
     // dd($request->all());
@@ -127,5 +142,46 @@ class ArmamentoController extends Controller
     $this->dadosGerais();
 
     return view('armas.lista', compact('armas', 'dataForm'));
+  }
+
+  public function editHistorico($id)
+  {
+    $this->dadosGerais();
+
+    $arma = Arma::findOrFail($id);
+    $tipos = DB::select('select id, nome from tipo_historico_arma');
+
+    return view('armas.form_historico', compact('arma', 'tipos'));
+  }
+
+  public function salvarHistorico(Request $request)
+  {
+    //dd($request->all());
+    $arma = new Arma();
+    $usr = Auth::user();
+    try {
+      if ($request->id != null) {
+        $arma = Arma::findOrFail($request->id);
+
+        $st_ant = 'Situação anterior: ' . $arma->situacaoarma->nome . ' - ';
+
+        DB::insert(
+          'insert into historico_arma (arma_id, data, observacao,tipo_historico_arma_id,user_id) values (?,?,?,?,?)',
+          [$request->id, $request->data, $st_ant . $request->observacao, $request->tipo, $usr->id]
+        );
+
+        DB::update(
+          'update arma set situacao = ? where id = ?',
+          [$request->situacaoarma, $request->id]
+        );
+
+
+        return redirect()->route('armas.lista')->with('success', 'Histórico atualizado');
+      }
+    } catch (\Exception $e) {
+      $errors = $e->getMessage();
+
+      return redirect()->route('armas.lista')->with('error', 'Falha ao inserir!');
+    }
   }
 }

@@ -114,11 +114,13 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Inteligencia', 'prefix' 
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Armamento', 'prefix' => 'armas'], function () {
     $this->get('lista', 'ArmamentoController@lista')->name('armas.lista');
-
+    $this->get('view/{id}', 'ArmamentoController@view')->name('armas.view');
     $this->get('index', 'ArmamentoController@index')->name('armas.index');
     $this->any('pesquisar', 'ArmamentoController@search')->name('armas.search');
     $this->get('edit/{id}', 'ArmamentoController@edit')->name('armas.edit');
     $this->post('salvar', 'ArmamentoController@salvar')->name('armas.salvar');
+    $this->get('edit-historico/{id}', 'ArmamentoController@editHistorico')->name('armas.edit.historico');
+    $this->post('salvarHistorico', 'ArmamentoController@salvarHistorico')->name('armas.salvar.historico');
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefix' => 'rh'], function () {

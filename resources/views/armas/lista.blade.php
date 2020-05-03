@@ -158,7 +158,8 @@
                         <td>{{$arma->situacaoarma->nome}}</td>
                         <td>{{$arma->marcaarma->nome}}</td>
                         <td>
-                          <a href="{{route('armas.edit',$arma->id)}}" class="btn btn-primary btn-flat"> <i class="fa fa-edit"></i></a>
+                          <a href="{{route('armas.view',$arma->id)}}" class="btn btn-primary btn-flat"> <i class="fa fa-eye"></i></a>
+                          <a href="{{route('armas.edit.historico',$arma->id)}}" class="btn btn-primary btn-flat"> <i class="fa fa-edit"></i></a>
                         </td>
                       </tr>
                       @empty
