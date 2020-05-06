@@ -18,7 +18,7 @@
             <span class="info-box-icon"><i class="fa fa-automobile"></i></span>
                 <div class="info-box-content">
                 <span class="info-box-text">Total de Viaturas</span>
-                <span class="info-box-number">0{{ $viaturas->total() }}</span>
+                <span class="info-box-number">{{ $total }}</span>
             <!-- The progress section is optional -->
             <div class="progress">
               <div class="progress-bar" style="width: 100%"></div>
@@ -35,7 +35,7 @@
       <div class="info-box bg-green">
           <span class="info-box-icon"><i class="fa fa-automobile"></i></span>
               <div class="info-box-content">
-              <span class="info-box-text">Viaturas Operantes</span>
+              <span class="info-box-text">Viaturas Disponíveis</span>
               <span class="info-box-number">{{ $operantes }}</span>
           <!-- The progress section is optional -->
           <div class="progress">
@@ -52,7 +52,7 @@
         <div class="info-box bg-red">
             <span class="info-box-icon"><i class="fa fa-automobile"></i></span>
                 <div class="info-box-content">
-                <span class="info-box-text">Viaturas Baixadas</span>
+                <span class="info-box-text">Viaturas Indisponíveis</span>
                 <span class="info-box-number">{{ $baixadas }}</span>
             <!-- The progress section is optional -->
             <div class="progress">

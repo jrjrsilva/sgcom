@@ -215,6 +215,7 @@ return [
         [
             'text'          => 'Inteligência Policial',
             'icon'          => 'user-secret',
+            'can'         => 'inteligencia-list',
             'submenu'       => [
                 [
                     'text'       => 'Galeria dos Criminosos',
@@ -227,7 +228,7 @@ return [
                     'url'         => 'inteligencia/criminosos',
                     'icon'        => 'desktop',
                     'label_color' => 'success',
-                    'can'         => 'inteligencia-list',
+
                 ]
             ]
         ],
@@ -274,7 +275,7 @@ return [
         [
             'text'    => 'Tabelas Básicas',
             'icon'    => 'share',
-            //'can'     =>'Admin',
+            'can'     => 'Admin',
             'submenu' => [
 
                 [

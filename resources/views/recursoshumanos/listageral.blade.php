@@ -72,50 +72,11 @@
 </div>
 </div>
 
-<div class="col-md-4 col-sm-6 col-12">
-  <div class="info-box bg-aqua">
-  <span class="info-box-icon"><i class="fa fa-bar-chart"></i></span>
-      <div class="info-box-content">
-      <span class="info-box-text">Situação do Efetivo</span>
-      <span class="info-box-number">Férias: {{ $ferias }}</span>
-      <span class="info-box-number">Junta Médica: {{ $jms}}</span>
-      <span class="info-box-number">Restrição operacional: {{ $restricoes}}</span>
-      <span class="info-box-number">Licença gestante: {{ $gestantes}}</span>
-      <span class="info-box-number">Agregado para reserva: {{ $agregados}}</span>
-    </div>
-<!-- /.info-box-content -->
-</div>
-</div>
+
 
 
 </div>
-
-<div class="box">
-      <div class="box-header with-border" style="display: none;">
-        <h3 class="box-title">Gráfico</h3>
-        <div class="box-tools pull-right">
-          <!-- Collapse Button -->
-          <button type="button" class="btn btn-box-tool" data-widget="collapse">
-            <i class="fa fa-minus"></i>
-          </button>
-        </div>
-        <!-- /.box-tools -->
-      
-      <!-- /.box-header -->
-     <div class="box-body">
-        <canvas id="idade" ></canvas>
-        <canvas id="tempo" ></canvas>
-        <canvas id="grafico"></canvas>
-        <canvas id="pie-chart" width="800" height="450"></canvas>
-      </div>
-      <!-- /.box-body -->
-    </div>
-    </div>
-    <!-- /.box -->
-
-    
-
-      <div class="box">
+    <div class="box">
             <div class="box-header">
             <form action="{{route('rh.search')}}" method="POST" class="form form-inline">
               {!! csrf_field() !!}
@@ -272,133 +233,7 @@ $("#btn-pesquisar").click(function(){
              $("#form").submit();
          }
   });
-
-
-
-$(document).ready(function(){
- new Chart(document.getElementById("pie-chart"), {
-    type: 'pie',
-    data: {
-      labels: ['Até 35 Anos de idade', 'Entre 36 e 45 anos de idade', 'Entre 46 e 55 anos de idade', 'Acima de 56 anos de idade'],
-      datasets: [{
-        label: "",
-        backgroundColor: [ 'rgba(255, 99, 132, 0.9)',
-                    'rgba(54, 162, 235, 0.9)',
-                    'rgba(255, 206, 86, 0.9)',
-                    'rgba(75, 192, 192, 0.9)',
-],
-        data:  {{$agrupamentoIdade}}
-      }]
-    },
-    options: {
-      title: {
-        display: true,
-        text: 'Distribuição do efetivo por idade'
-      }
-    }
-});
-
-});
 </script>
-<script>
-    var ctx = document.getElementById('idade').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'polarArea',
-        data: {
-            labels: ['Até 35 Anos de idade', 'Entre 36 e 45 anos de idade', 'Entre 46 e 55 anos de idade', 'Acima de 56 anos de idade'],
-            datasets: [{
-                label: 'Quantidade de policiais',
-                data:  {{$agrupamentoIdade}},
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-    </script>
-
-<script>
-    var ctx = document.getElementById('tempo').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'polarArea',
-        data: {
-            labels: ['Até 20 Anos', 'Entre 21 e 24 anos', 'Entre 25 e 29 anos', 'Acima de 30'],
-            datasets: [{
-                label: 'Quantidade de policiais',
-                data:  {{$agrupamento}},
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-    </script>
- <script>
-  
-
-      var dataPrevisto =  {{$previsao}};
-      var dataRealEfetivo = {{$realEfetivo}}
-       let grafico = document.getElementById('grafico').getContext('2d');
-       let chart = new Chart(grafico, {
-        type: 'bar',
-        data: {
-        labels: ['CEL', 'TEN CEL', 'MAJ', 'CAP', 'TEN', 'SUB TEN','SGT','CB','SD'],
-                    
-        datasets: [{
-                label: 'Previsto',
-                data: dataPrevisto,
-                backgroundColor: "rgba(255, 0, 0, 0.9)",
-                borderColor: "#0000ff"
-            },
-            {
-                label: 'Disponível',
-                data: dataRealEfetivo,
-                backgroundColor: "rgba(0, 255, 0, 0.3)",
-                borderColor: "#002200"
-            }
-        ]
-    }
-       });
-   
- </script> 
 
 @stop
 

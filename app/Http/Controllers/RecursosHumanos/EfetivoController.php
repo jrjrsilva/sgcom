@@ -34,25 +34,28 @@ class EfetivoController extends Controller
   public function dadosGerais()
   {
     $usr = Auth::user();
-    $opmt = $usr->efetivo->opm_id;
+    $opmId = $usr->efetivo->opm_id;
     $cprId = $usr->efetivo->opm->cpr_id;
-    $opmTotal = $this->getEfetivoTotalOpm($opmt);
+    $opmTotal = $this->getEfetivoTotalOpm($opmId);
     $cprTotal = $this->getEfetivoTotalCpr($cprId);
-    $previsao = $this->getPrevisaoGH($opmt);
-    $realEfetivo = $this->getEfetivoRealGH($opmt);
+    $previsao = $this->getPrevisaoGH($opmId);
+    $realEfetivo = $this->getEfetivoRealGH($opmId);
+    $realEfetivoCpr = $this->getEfetivoRealGHCpr($cprId);
     $previsaoTotalCpr = $this->getPrevisaoTotalCpr($cprId);
-    $previsaoTotalOpm = $this->getPrevisaoTotalOpm($opmt);
-    $porSexo = ($this->agrupamentoSexo($opmt));
+    $previsaoTotalOpm = $this->getPrevisaoTotalOpm($opmId);
+    $porSexo = ($this->agrupamentoSexo($opmId));
     $porSexoCpr = ($this->agrupamentoSexoCpr($cprId));
     $agrupamento = $this->agrupamentoTempoServicoCpr($cprId);
     $agrupamentoIdade = $this->agrupamentoIdadeCpr($cprId);
+    $agrupamentoOpm = $this->agrupamentoTempoServicoOpm($opmId);
+    $agrupamentoIdadeOpm = $this->agrupamentoIdadeOpm($opmId);
 
     if ($usr->existePapel('Gestor CPR')) {
       $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=', $cprId)->get();
     } else if ($usr->existePapel('Admin')) {
       $opms = Opm::orderBy('opm_sigla', 'asc')->get();
     } else {
-      $opms = Opm::orderBy('opm_sigla', 'asc')->where('id', '=', $opmt)->get();
+      $opms = Opm::orderBy('opm_sigla', 'asc')->where('id', '=', $opmId)->get();
     }
 
 
@@ -64,15 +67,18 @@ class EfetivoController extends Controller
     $bairros = Efetivo::select(DB::raw('distinct(bairro)'))->where('bairro', '<>', 'null')->get();
     $cidades = Efetivo::select(DB::raw('distinct(cidade_estado)'))->where('cidade_estado', '<>', 'null')->get();
 
-    $ferias = Efetivo::where('situacao_efetivo_id', '=', 3)->count();
-    $jms = Efetivo::where('situacao_efetivo_id', '=', 6)->count();
-    $agregados = Efetivo::where('situacao_efetivo_id', '=', 5)->count();
-    $restricoes = Efetivo::where('situacao_efetivo_id', '=', 2)->count();
-    $gestantes = Efetivo::where('situacao_efetivo_id', '=', 4)->count();
+    $ferias = Efetivo::where('situacao_efetivo_id', '=', 3)->where('opm_id', '=', $opmId)->count();
+    $jms = Efetivo::where('situacao_efetivo_id', '=', 6)->where('opm_id', '=', $opmId)->count();
+    $agregados = Efetivo::where('situacao_efetivo_id', '=', 5)->where('opm_id', '=', $opmId)->count();
+    $adm_com = Efetivo::where('situacao_efetivo_id', '=', 2)->where('opm_id', '=', $opmId)->count();
+    $adm_sem = Efetivo::where('situacao_efetivo_id', '=', 7)->where('opm_id', '=', $opmId)->count();
+    $gestantes = Efetivo::where('situacao_efetivo_id', '=', 4)->where('opm_id', '=', $opmId)->count();
 
     return view()->share(compact(
       'agrupamentoIdade',
       'agrupamento',
+      'agrupamentoIdadeOpm',
+      'agrupamentoOpm',
       'opmTotal',
       'cprTotal',
       'previsao',
@@ -93,7 +99,9 @@ class EfetivoController extends Controller
       'cidades',
       'ferias',
       'gestantes',
-      'restricoes'
+      'adm_com',
+      'adm_sem',
+      'realEfetivoCpr'
     ));
   }
 
@@ -111,11 +119,26 @@ class EfetivoController extends Controller
   public function resumoEfetivo()
   {
     $this->dadosGerais();
-    $efetivos = Efetivo::where('opm_id', '999')->paginate($this->totalPage);
+    $efetivos = [];
     $usr = Auth::user();
-    $opm = $usr->efetivo->opm_id;
+    $opmId = $usr->efetivo->opm_id;
 
-    return view('recursoshumanos.resumoEfetivo', compact('efetivos'));
+    $efet_situacao = DB::table('pmgeral')
+      ->where('pmgeral.opm_id', $opmId)
+      ->join('situacao_efetivo', 'pmgeral.situacao_efetivo_id', '=', 'situacao_efetivo.id')
+      ->select(DB::raw('situacao_efetivo.nome, count(*) as total'))
+      ->groupBy('situacao_efetivo.nome')
+      ->get();
+
+    $efet_funcao = DB::table('pmgeral')
+      ->where('pmgeral.opm_id', $opmId)
+      ->join('funcao', 'pmgeral.funcao_id', '=', 'funcao.id')
+      ->select(DB::raw('funcao.nome, count(*) as total'))
+      ->groupBy('funcao.nome')
+      ->get();
+
+    //dd($efet_situacao);
+    return view('recursoshumanos.resumoEfetivo', compact('efetivos', 'efet_situacao', 'efet_funcao'));
   }
 
   public function retornoRemover($opm_id)
@@ -291,6 +314,58 @@ class EfetivoController extends Controller
     return $retorno;
   }
 
+  public function getPrevisaoGHCpr($cpr)
+  {
+    $cel = DB::table('distribuicao_efetivo')
+      ->where('opm_id', $opm)
+      ->where('grauhierarquico_id', 3470)
+      ->sum('total');
+
+    $tencel = DB::table('distribuicao_efetivo')
+      ->where('opm_id', $opm)
+      ->where('grauhierarquico_id', 3460)
+      ->sum('total');
+
+    $maj = DB::table('distribuicao_efetivo')
+      ->where('opm_id', $opm)
+      ->where('grauhierarquico_id', 3450)
+      ->sum('total');
+
+    $cap = DB::table('distribuicao_efetivo')
+      ->where('opm_id', $opm)
+      ->where('grauhierarquico_id', 3440)
+      ->sum('total');
+
+    $ten = DB::table('distribuicao_efetivo')
+      ->where('opm_id', $opm)
+      ->where('grauhierarquico_id', 3430)
+      ->sum('total');
+
+    $subten = DB::table('distribuicao_efetivo')
+      ->where('opm_id', $opm)
+      ->where('grauhierarquico_id', 3400)
+      ->sum('total');
+
+    $sgt = DB::table('distribuicao_efetivo')
+      ->where('opm_id', $opm)
+      ->where('grauhierarquico_id', 3390)
+      ->sum('total');
+
+    $cb = DB::table('distribuicao_efetivo')
+      ->where('opm_id', $opm)
+      ->where('grauhierarquico_id', 3340)
+      ->sum('total');
+
+    $sd = DB::table('distribuicao_efetivo')
+      ->where('opm_id', $opm)
+      ->where('grauhierarquico_id', 3330)
+      ->sum('total');
+
+    $retorno = '[' . $cel . ',' . $tencel . ',' . $maj . ',' . $cap . ',' . $ten . ',' . $subten . ',' . $sgt . ',' . $cb . ',' . $sd . ']';
+    return $retorno;
+  }
+
+
   public function getPrevisaoTotalCpr($cpr)
   {
     $prev = DB::table('distribuicao_efetivo')
@@ -360,6 +435,67 @@ class EfetivoController extends Controller
   }
 
 
+  public function getEfetivoRealGHCpr($cpr)
+  {
+    $cel = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->where('opm.cpr_id', $cpr)
+      ->where('grauhierarquico_id', 3470)
+      ->count();
+
+    $tencel = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->where('opm.cpr_id', $cpr)
+      ->where('grauhierarquico_id', 3460)
+      ->count();
+
+    $maj = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->where('opm.cpr_id', $cpr)
+      ->where('grauhierarquico_id', 3450)
+      ->count();
+
+    $cap = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->where('opm.cpr_id', $cpr)
+      ->where('grauhierarquico_id', 3440)
+      ->count();
+
+    $ten = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->where('opm.cpr_id', $cpr)
+      ->where('grauhierarquico_id', 3430)
+      ->count();
+
+    $subten = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->where('opm.cpr_id', $cpr)
+      ->where('grauhierarquico_id', 3400)
+      ->count();
+
+    $sgt = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->where('opm.cpr_id', $cpr)
+      ->where('grauhierarquico_id', 3390)
+      ->count();
+
+    $cb = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->where('opm.cpr_id', $cpr)
+      ->where('grauhierarquico_id', 3340)
+      ->count();
+
+    $sd = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->where('opm.cpr_id', $cpr)
+      ->where('grauhierarquico_id', 3330)
+      ->count();
+
+    $retorno = '[' . $cel . ',' . $tencel . ',' . $maj . ',' . $cap . ',' . $ten . ',' . $subten . ',' . $sgt . ',' . $cb . ',' . $sd . ']';
+    return $retorno;
+  }
+
+
   public function getEfetivoTotalCpr($cpr)
   {
     $efetivoCpr = Efetivo::join('opm', 'opm_id', '=', 'opm.id')
@@ -413,11 +549,11 @@ class EfetivoController extends Controller
   /*
      Agrupamento por Sexo OPM
     */
-  public function agrupamentoSexo($opmt)
+  public function agrupamentoSexo($opmId)
   {
     return $porSexo = DB::table('pmgeral')
       ->select(DB::raw('count(case when sexo =  "F" then 0 end) as F, count(case when sexo = "M"  then 0 end) as M '))
-      ->where('opm_id', '=', $opmt)
+      ->where('opm_id', '=', $opmId)
       ->get();
   }
 
@@ -430,6 +566,94 @@ class EfetivoController extends Controller
        count(case when sexo = "M" then 0 end) as M '))
       ->where('opm.cpr_id', '=', $cprId)
       ->get();
+  }
+
+  public function agrupamentoTempoServicoOpm($opmId)
+  {
+    $m_30 = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE())) as M_30
+        '))
+      ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) >= 30')
+      ->where('opm.id', '=', $opmId)
+      ->count();
+
+    $m_25_29 = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE())) as M_25_29
+        '))
+      ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) >= 25')
+      ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) <= 29')
+      ->where('opm.id', '=', $opmId)
+      ->count();
+
+    $m_20_24 = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE())) as M_20_24
+        '))
+      ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) >= 20')
+      ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) <= 24')
+      ->where('opm.id', '=', $opmId)
+      ->count();
+
+    $m_20 = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE())) as M_20
+        '))
+      ->whereRaw('TIMESTAMPDIFF(YEAR , dataadmissao,CURDATE()) <= 20')
+      ->where('opm.id', '=', $opmId)
+      ->count();
+
+    $retorno = '[' . $m_20 . ',' . $m_20_24 . ',' . $m_25_29 . ',' . $m_30 . ']';
+    return $retorno;
+  }
+
+  public function agrupamentoIdadeOpm($opmId)
+  {
+    $m_30 = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , datanascimento,CURDATE())) as M_30
+        '))
+      ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) >= 56')
+      ->where('opm.id', '=', $opmId)
+      ->count();
+
+    $m_25_29 = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , datanascimento,CURDATE())) as M_25_29
+        '))
+      ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) >= 46')
+      ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) <= 55')
+      ->where('opm.id', '=', $opmId)
+      ->count();
+
+    $m_20_24 = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , datanascimento,CURDATE())) as M_20_24
+        '))
+      ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) >= 36')
+      ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) <= 45')
+      ->where('opm.id', '=', $opmId)
+      ->count();
+
+    $m_20 = DB::table('pmgeral')
+      ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+      ->select(DB::raw('
+       count(TIMESTAMPDIFF(YEAR , datanascimento,CURDATE())) as M_20
+        '))
+      ->whereRaw('TIMESTAMPDIFF(YEAR , datanascimento,CURDATE()) <= 35')
+      ->where('opm.id', '=', $opmId)
+      ->count();
+
+    $retorno = '[' . $m_20 . ',' . $m_20_24 . ',' . $m_25_29 . ',' . $m_30 . ']';
+    return $retorno;
   }
 
   public function agrupamentoTempoServicoCpr($cprId)
@@ -520,6 +744,8 @@ class EfetivoController extends Controller
     return $retorno;
   }
 
+
+
   public function removerDaOpm($id)
   {
     /*  $usr = Auth::user();
@@ -542,7 +768,7 @@ class EfetivoController extends Controller
   public function aniversariantes()
   {
     $usr = Auth::user();
-    $opmt = $usr->efetivo->opm_id;
+    $opmId = $usr->efetivo->opm_id;
     $cprid = $usr->efetivo->opm->cpr_id;
 
     $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=', $cprid)->get();
@@ -554,7 +780,7 @@ class EfetivoController extends Controller
   public function previsaoferias()
   {
     $usr = Auth::user();
-    $opmt = $usr->efetivo->opm_id;
+    $opmId = $usr->efetivo->opm_id;
     $cprid = $usr->efetivo->opm->cpr_id;
 
     $opms = Opm::orderBy('opm_sigla', 'asc')->where('cpr_id', '=', $cprid)->get();
@@ -568,7 +794,7 @@ class EfetivoController extends Controller
     // dd($request->all());
     $dataForm = $request->all();
     $usr = Auth::user();
-    $opmt = $usr->efetivo->opm_id;
+    $opmId = $usr->efetivo->opm_id;
     $cprid = $usr->efetivo->opm->cpr_id;
     $previsaoFerias =  $efetivo->pesquisaFerias($dataForm, $this->totalPage);
     $this->dadosGerais();
