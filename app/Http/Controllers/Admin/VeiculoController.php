@@ -14,6 +14,7 @@ class VeiculoController extends Controller
 
        $modelosveiculo =  DB::table('modelo_veiculo')
        ->where('marca_veiculo_id', $id_veiculo)
+       ->orderBy('descricao')
        ->get(['id', 'descricao']);
 
         return response()->json($modelosveiculo);

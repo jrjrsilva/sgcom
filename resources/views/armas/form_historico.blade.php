@@ -73,8 +73,7 @@
             <div class="col-xs-2">
                 <label>Tipo</label>
                 <select class="form form-control" id="tipo" name="tipo" required>
-                    <option value="">Selecione</option>
-                    @foreach( $tipos as $tipo )
+                     @foreach( $tipos as $tipo )
                     <option value="{{ $tipo->id }}" ><p> {{ $tipo->nome }} </p></option>
                     @endforeach
                   </select>

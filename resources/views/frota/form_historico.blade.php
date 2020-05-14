@@ -20,7 +20,18 @@
 
  <!--FORMULÁRIO -->                            
 
-    <form role="form" method="POST" action="{{ route('frota.salvar.historico')}}" >
+           
+              <div class="col-xs-2">  
+                <label>Placa do Veiculo</label>  
+                <p>{{$viatura->placa or ''}}</p>
+              </div> 
+
+              <div class="col-xs-2">
+                <label>Prefixo</label>
+                <p>{{$viatura->prefixo or ''}}</p>
+              </div>
+        </div> <br>
+         <form role="form" method="POST" action="{{ route('frota.salvar.historico')}}" >
     {!! csrf_field() !!}
     <input type="hidden" name="id" id="id" value="{{ $viatura->id or '' }}">
  <!--DADOS -->   
@@ -35,18 +46,7 @@
                <p> {{ $viatura->opm->opm_sigla }} </p>
                   
               </div> 
-            
-              <div class="col-xs-2">  
-                <label>Placa do Veiculo</label>  
-                <p>{{$viatura->placa or ''}}</p>
-              </div> 
-
-              <div class="col-xs-2">
-                <label>Prefixo</label>
-                <p>{{$viatura->prefixo or ''}}</p>
-              </div>
-        </div> <br>
-        <div class="row">
+    <div class="row">
             <div class="col-xs-2">
                 <label>Tipo</label>
                 <select class="form form-control" id="tipo" name="tipo" required>

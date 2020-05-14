@@ -73,22 +73,21 @@ class FrotaController extends Controller
   {
     $this->dadosGerais();
     $usr = Auth::user();
+    $tipos = DB::select('select id, nome from tipo_historico_viatura');
     $viaturas = Viatura::whereNotIn('situacao_viatura_id', [1])->where('opm_id', '=', $usr->efetivo->opm->id)->orderBy('prefixo')->paginate($this->totalPage);
-    return view('frota.lista', compact('viaturas'));
+    return view('frota.lista', compact('viaturas', 'tipos'));
   }
 
   public function salvar(Request $request)
   {
+    //dd($request->all());
 
     $viatura = new viatura();
     try {
       if ($request->id != null)
         $viatura = Viatura::find($request->id);
 
-      $this->validate($request, [
-        'placa' => 'required|min:3',
 
-      ]);
 
       $viatura->placa = strtoupper($request->placa);
       $viatura->opm_id  = $request->opm;
@@ -112,10 +111,8 @@ class FrotaController extends Controller
       $viatura->presidio = $request->presidio;
       $viatura->km_por_revisao = $request->kmrevisao;
 
-      $retorno =  $viatura->save();
-
-      if ($retorno)
-        return redirect()->route('frota.lista')->with('success', 'Viatura inserida');
+      if($viatura->save())
+      return redirect()->route('frota.lista')->with('success', 'Viatura inserida');
     } catch (\Exception $e) {
       $errors = $e->getMessage();
 
