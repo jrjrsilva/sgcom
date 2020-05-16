@@ -155,6 +155,11 @@ return [
                     'url'  => 'servico/produtividade',
                     'icon' => 'sticky-note',
                 ],
+                [
+                    'text' => 'Relatórios',
+                    'url'  => 'servico/relatorios',
+                    'icon' => 'sticky-note',
+                ],
             ]
         ],
 

@@ -55,6 +55,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Servicooperacional', 'pr
 
     $this->get('escala', 'OcorrenciaController@escala')->name('servico.escala.index');
     $this->get('produtividade', 'OcorrenciaController@produtividade')->name('servico.produtividade.index');
+    $this->get('relatorios', 'RelatorioController@listar')->name('servico.relatorios.listar');
 });
 
 $this->group(['middleware' => ['auth'], 'namespace' => 'Site', 'prefix' => 'home'], function () {
