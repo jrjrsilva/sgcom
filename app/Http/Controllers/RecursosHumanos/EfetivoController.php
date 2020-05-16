@@ -180,7 +180,7 @@ class EfetivoController extends Controller
     return view('recursoshumanos.form', compact('efetivo'));
   }
 
-  public function detalhe($id)
+  public function view($id)
   {
     $efetivo = Efetivo::find($id);
     if (!$efetivo) {

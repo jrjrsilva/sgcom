@@ -168,6 +168,7 @@
                   <td>{{$efetivo->sexo}}</td>
                   <td>{{ \Carbon\Carbon::parse($efetivo->dataadmissao)->format('d/m/Y')}}</td>
                   <td>
+                    <a href="{{route('rh.view',$efetivo->id)}}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                     <a href="{{route('rh.historico',$efetivo->id)}}" class="btn btn-info"><i class="glyphicon glyphicon-list-alt"></i></a>
                     <a href="{{route('rh.edit',$efetivo->id)}}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
                     <a href="{{route('rh.removerDaOpm',$efetivo->id)}}" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>

@@ -5,7 +5,7 @@
 @section('content_header')
     <h1>Gestão de Pessoal</h1>
     <ol class="breadcrumb">
-    <li><a href="{{route('rh.listar')}}">Dashboard</a></li>
+    <li><a href="{{route('rh.listar')}}">Gestão efetivo</a></li>
         <li><a href="">Efetivo</a></li>
     </ol>
 @stop
@@ -117,21 +117,10 @@
                   </select>
               </div>
 
-              <div class="col-md-1">
-                  <label for="fatorrh">Fator RH</label>
-                <select class="form-control" id="fatorrh" name="fatorrh">
-                    <option value="">Selecione</option>
-                    <option value="+"  @if($efetivo->fatorrh == '+')
-                        selected 
-                      @endif >+</option>
-                    <option value="-"  @if($efetivo->fatorrh == '-')
-                        selected 
-                      @endif >-</option>
-                  </select>
-              </div>
+             
 
-              <div class="col-md-2">
-                  <label for="tiposangue">Tipo de Sangue</label>
+              <div class="col-md-1">
+                  <label for="tiposangue">Sangue</label>
                 <select class="form-control" id="tiposangue" name="tiposangue">
                     <option value="">Selecione</option>
                     <option value="A"  @if($efetivo->tiposangue == "A")
@@ -147,6 +136,19 @@
                         selected 
                       @endif >O</option>
                     
+                  </select>
+              </div>
+
+               <div class="col-md-1">
+                  <label for="fatorrh">Fator RH</label>
+                <select class="form-control" id="fatorrh" name="fatorrh">
+                    <option value="">Selecione</option>
+                    <option value="+"  @if($efetivo->fatorrh == '+')
+                        selected 
+                      @endif >+</option>
+                    <option value="-"  @if($efetivo->fatorrh == '-')
+                        selected 
+                      @endif >-</option>
                   </select>
               </div>
         </div> 

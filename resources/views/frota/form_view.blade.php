@@ -30,29 +30,29 @@
       <div class="box box-primary">
          <div class="row">
               <div class="col-md-3"> 
-                <label>OPM</label>  
+                <label>OPM:</label>  
                <p>{{$viatura->opm->opm_sigla}}</p>
          </div> 
             
              <div class="col-md-3"> 
-                <label>Emprego</label>  
+                <label>Emprego:</label>  
                 <p>{{$viatura->emprego}}</p>
               </div> 
             
             <div class="col-md-3"> 
-                <label>Propriedade da Viatura*</label>  
+                <label>Propriedade da Viatura:</label>  
                 <p>{{$viatura->propriedade}}</p>
               </div> 
             </div>
             <br>
               <div class="row">
               <div class="col-md-2"> 
-                <label>Placa</label>
+                <label>Placa:</label>
                <p>{{$viatura->placa}}</p>
                 </div> 
 
               <div class="col-md-2">
-                <label>Prefixo</label>
+                <label>Prefixo:</label>
                 <p>{{$viatura->prefixo}}</p>
                   </div>
 
@@ -62,7 +62,7 @@
               </div> 
 
               <div class="col-md-2">
-                <label>Cor</label>  
+                <label>Cor:</label>  
                     <p>{{$viatura->cor}}</p>
               </div>
         </div> <br>
@@ -79,7 +79,7 @@
     <div class="col-md-2">
      
           <label>Modelo:</label>
-<p>          {{$viatura->modeloveiculo->id}}</p>
+<p>          {{$viatura->modeloveiculo->descricao}}</p>
     </div>
 
     <div class="col-md-2">

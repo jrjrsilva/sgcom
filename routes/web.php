@@ -141,7 +141,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
     $this->get('previsao-ferias', 'EfetivoController@previsaoFerias')->name('rh.previsaoFerias');
 
     $this->any('pesquisa-previsao-ferias', 'EfetivoController@pesquisaPrevisaoFerias')->name('rh.pesquisaPrevisaoFerias');
-
+    $this->get('view/{id}', 'EfetivoController@view')->name('rh.view');
     $this->get('historico/{id}', 'EfetivoController@historicopolicial')->name('rh.historico');
     $this->get('historiconovo/{id}', 'EfetivoController@historiconovo')->name('rh.historiconovo');
     $this->any('historico-search', 'EfetivoController@searchHistorico')->name('rh.searchHistorico');
