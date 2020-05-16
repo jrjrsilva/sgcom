@@ -36,7 +36,7 @@ class UserController extends Controller
         ->join('pmgeral', 'users.efetivo_id','=','pmgeral.id')
         ->join('grauhierarquico', 'pmgeral.grauhierarquico_id','=','grauhierarquico.id')
         ->join('opm', 'pmgeral.opm_id','=','opm.id')
-        ->select('users.id','opm_sigla','matricula','nome','grauhierarquico.sigla','status','image')
+        ->select('users.id','opm_sigla','matricula','nome','grauhierarquico.sigla','status','image','email')
         ->orderBy('pmgeral.grauhierarquico_id', 'DESC')
         
         ->paginate($this->totalPage);
@@ -142,7 +142,7 @@ class UserController extends Controller
     ->when($dataForm['popm'],function($queryOpm) use ($dataForm){
           return $queryOpm->where('pmgeral.opm_id',$dataForm['popm']);
         })->orderBy('pmgeral.grauhierarquico_id', 'DESC')
-    ->select('users.id','opm_sigla','matricula','nome','grauhierarquico.sigla','status','image')
+    ->select('users.id','opm_sigla','matricula','nome','grauhierarquico.sigla','status','image','email')
     ->paginate($this->totalPage);
     //->toSql();
     //dd($users);

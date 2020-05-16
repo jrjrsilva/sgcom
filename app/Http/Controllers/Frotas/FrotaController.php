@@ -87,7 +87,14 @@ class FrotaController extends Controller
       if ($request->id != null)
         $viatura = Viatura::find($request->id);
 
+      $messages = [
+        'required'              => ':attribute &eacute; obrigat&oacute;rio!',
+        'placa.min'             => ':attribute deve ter 7 caracteres!'
+      ];
 
+      $this->validate($request, [
+        'placa' => 'required|min:7',
+      ], $messages);
 
       $viatura->placa = strtoupper($request->placa);
       $viatura->opm_id  = $request->opm;
@@ -111,12 +118,11 @@ class FrotaController extends Controller
       $viatura->presidio = $request->presidio;
       $viatura->km_por_revisao = $request->kmrevisao;
 
-      if($viatura->save())
-      return redirect()->route('frota.lista')->with('success', 'Viatura inserida');
+      if ($viatura->save())
+        return redirect()->route('frota.lista')->with('success', 'Viatura inserida');
     } catch (\Exception $e) {
-      $errors = $e->getMessage();
-
-      return redirect()->back()->with('error', 'Falha ao inserir!');
+      $e->getMessage();
+      return redirect()->back()->withInput()->withErrors($e);
     }
   }
 
