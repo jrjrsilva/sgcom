@@ -73,7 +73,7 @@
       <div class="col-md-2">
               <label>Marca:
               </label>
-              <p>{{$viatura->marcaveiculo->nome}}</p>
+              <p>{{$viatura->marcaveiculo->descricao}}</p>
       </div>
      
     <div class="col-md-2">

@@ -144,8 +144,6 @@ class FrotaController extends Controller
 
   public function view($id)
   {
-    $this->dadosGerais();
-
     $viatura = Viatura::find($id);
     $revisoes = null;
     $historicos = null;
