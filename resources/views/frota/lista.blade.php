@@ -126,6 +126,7 @@
                         <td> {{$viatura->ano_fabricacao}}</td>
                         
                         <td>
+                          <a href="{{route('frota.view',$viatura->id)}}" class="btn btn-primary btn-flat"> <i class="fa fa-eye"></i></a>
                           <a href="{{route('frota.edit.historico',$viatura->id)}}" class="btn btn-primary btn-flat">Lançar Historico</a>
                           <a href="{{route('frota.edit.revisao',$viatura->id)}}" class="btn btn-primary btn-flat">Lançar Revisão</a>
                           <a href="{{route('frota.edit.km',$viatura->id)}}" class="btn btn-primary btn-flat">Lançar KM</a>

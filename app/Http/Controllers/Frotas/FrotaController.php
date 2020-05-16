@@ -142,6 +142,23 @@ class FrotaController extends Controller
     return view('frota.index', compact('viatura', 'revisoes', 'historicos'));
   }
 
+  public function view($id)
+  {
+    $this->dadosGerais();
+
+    $viatura = Viatura::find($id);
+    $revisoes = null;
+    $historicos = null;
+    if ($viatura) {
+      $revisoes =  DB::select('select * from viatura_revisao where viatura_id = ? order by data desc', [$viatura->id]);
+      $historicos =  DB::select('select hv.data, hv.observacao,thv.nome from historico_viatura hv
+       , tipo_historico_viatura thv where hv.tipo_historico_viatura_id = thv.id and viatura_id = ? order by data desc', [$viatura->id]);
+    }
+
+    return view('frota.form_view', compact('viatura', 'revisoes', 'historicos'));
+  }
+
+
   public function editKM($id)
   {
     $viatura = Viatura::find($id);

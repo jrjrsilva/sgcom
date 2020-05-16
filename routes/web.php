@@ -69,6 +69,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Frotas', 'prefix' => 'fr
     $this->get('edit-km/{id}', 'FrotaController@editKM')->name('frota.edit.km');
     $this->post('salvarKM', 'FrotaController@salvarKM')->name('frota.salvar.km');
     $this->get('edit-revisao/{id}', 'FrotaController@editRevisao')->name('frota.edit.revisao');
+    $this->get('view/{id}', 'FrotaController@view')->name('frota.view');
     $this->post('salvarRevisao', 'FrotaController@salvarRevisao')->name('frota.salvar.revisao');
     $this->get('edit-historico/{id}', 'FrotaController@editHistorico')->name('frota.edit.historico');
     $this->post('salvarHistorico', 'FrotaController@salvarHistorico')->name('frota.salvar.historico');
