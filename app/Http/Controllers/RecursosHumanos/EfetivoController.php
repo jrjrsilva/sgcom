@@ -186,7 +186,7 @@ class EfetivoController extends Controller
     if (!$efetivo) {
       abort(404);
     }
-    return view('recursoshumanos.detalhe', compact('efetivo'));
+    return view('recursoshumanos.form_view', compact('efetivo'));
   }
 
   public function voltar()

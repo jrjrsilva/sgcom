@@ -74,8 +74,9 @@
               <div class="col-md-2">
                 <div class="input-group">
                         <label for="data_nascimento">Data de Nascimento</label>
-                        <p>{{$efetivo->datanascimento or '' }}"
-                     </p>
+                        
+                          <p>@if(isset($efetivo->datanascimento)) {{ \Carbon\Carbon::parse($efetivo->datanascimento)->format('d/m/Y')}} @endif <br>
+               
                 </div>  
 
               </div>
@@ -83,8 +84,9 @@
               <div class="col-md-2">
                 <div class="input-group">
                     <label for="data_admissao">Data de Admissão</label>
-                     <p>{{$efetivo->dataadmissao or '' }}"
-                     </p>
+                    
+                  <p>@if(isset($efetivo->dataadmissao)) {{ \Carbon\Carbon::parse($efetivo->dataadmissao)->format('d/m/Y')}} @endif 
+               
                 </div>
               </div>         
             
@@ -93,7 +95,7 @@
                 <p>{{$efetivo->sexo}}</p>
               </div>
 
-              <div class="col-md-2">
+              <div class="col-md-1">
                   <label for="tiposangue">Sangue</label>
                <p>{{$efetivo->tiposangue}}</p>
               </div>
@@ -121,7 +123,7 @@
 <div class="col-md-2">
     <div class="input-group">
         <label for="validadecnh">Data de Validade</label>
-          <p>{{$efetivo->validade_cnh or '' }}</p>
+          <p>@if(isset($efetivo->validade_cnh)) {{ \Carbon\Carbon::parse($efetivo->validade_cnh)->format('d/m/Y')}} @endif
     </div>
   </div>
 
