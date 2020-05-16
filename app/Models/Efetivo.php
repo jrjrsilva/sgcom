@@ -12,81 +12,86 @@ class Efetivo extends Model
     //
     protected $table = 'pmgeral';
 
-    protected $guarded = ['id','created_at','updated_at'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function grauhierarquico(){
-        return $this->belongsTo(GrauHierarquico::class,'grauhierarquico_id');
+    public function grauhierarquico()
+    {
+        return $this->belongsTo(GrauHierarquico::class, 'grauhierarquico_id');
     }
 
-    public function secao(){
+    public function secao()
+    {
         return $this->belongsTo(Secao::class);
     }
 
-    public function funcao(){
+    public function funcao()
+    {
         return $this->belongsTo(Funcao::class);
     }
 
-    public function opm(){
+    public function opm()
+    {
         return $this->belongsTo(Opm::class);
     }
 
-    public function situacao(){
-        return $this->belongsTo(SituacaoEfetivo::class,'situacao_efetivo_id');
+    public function situacao()
+    {
+        return $this->belongsTo(SituacaoEfetivo::class, 'situacao_efetivo_id');
     }
-    
+
     public function porOpm($efetivo, $totalPage)
     {
-    $retorno =      
-     $this->join('opm','pmgeral.opm_id','=','opm.id')
-     ->join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
-     ->where('opm_id','=',$efetivo)  
-     ->select('pmgeral.id','grauhierarquico.sigla','matricula','opm.opm_sigla','dataadmissao','sexo','nome')
-     ->orderBy('grauhierarquico_id', 'DESC')
-     ->paginate($totalPage);
-   // ->toSql();
-    //dd($retorno);
-    return $retorno;
+        $retorno =
+            $this->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+            ->join('grauhierarquico', 'pmgeral.grauhierarquico_id', '=', 'grauhierarquico.id')
+            ->where('opm_id', '=', $efetivo)
+            ->select('pmgeral.id', 'grauhierarquico.sigla', 'matricula', 'opm.opm_sigla', 'dataadmissao', 'sexo', 'nome')
+            ->orderBy('grauhierarquico.precedencia', 'ASC')
+            ->paginate($totalPage);
+        // ->toSql();
+        //dd($retorno);
+        return $retorno;
     }
 
-    public function searchUnique(Array $dataForm, $totalPage)
+    public function searchUnique(array $dataForm, $totalPage)
     {
-  //  dd( $dataForm);
-     $retorno =
-     $this->join('opm','pmgeral.opm_id','=','opm.id')
-     ->join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
-     ->where(function($query) use ($dataForm){
-        if(isset($dataForm['pnome'])){
-            $query->where('nome','LIKE','%' .$dataForm['pnome'].'%');
-        }
-        if(isset($dataForm['pmatricula'])){
-            $query->where('matricula','=',$dataForm['pmatricula']);
-        }  
-        if(isset($dataForm['popm'])){
-            $query->where('opm_id','=',$dataForm['popm']);
-        } 
-        if(isset($dataForm['pgh'])){
-            $query->where('grauhierarquico_id','=',$dataForm['pgh']);
-        }  
-        if(isset($dataForm['pregional'])){
-            $query->where('opm.cpr_id','=',$dataForm['pregional']);
-        }
-        if(isset($dataForm['pfuncao'])){
-            $query->where('funcao_id','=',$dataForm['pfuncao']);
-        }
-        if(isset($dataForm['psecao'])){
-            $query->where('secao_id','=',$dataForm['psecao']);
-        } 
-        if(isset($dataForm['pcidade'])){
-            $query->where('cidade_estado','=',$dataForm['pcidade']);
-        } 
-    })
-  // ->where('opm_id','=',Auth::user()->efetivo->opm->id)
-    ->whereOr('opm_id','=','3099991')
-    ->select('pmgeral.id','grauhierarquico.sigla','matricula','opm.opm_sigla','dataadmissao','sexo','nome')
-    ->orderBy('grauhierarquico_id', 'DESC')
-    ->paginate($totalPage);
+        //  dd( $dataForm);
+        $retorno =
+            $this->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+            ->join('grauhierarquico', 'pmgeral.grauhierarquico_id', '=', 'grauhierarquico.id')
+            ->where(function ($query) use ($dataForm) {
+                if (isset($dataForm['pnome'])) {
+                    $query->where('nome', 'LIKE', '%' . $dataForm['pnome'] . '%');
+                }
+                if (isset($dataForm['pmatricula'])) {
+                    $query->where('matricula', '=', $dataForm['pmatricula']);
+                }
+                if (isset($dataForm['popm'])) {
+                    $query->where('opm_id', '=', $dataForm['popm']);
+                }
+                if (isset($dataForm['pgh'])) {
+                    $query->where('grauhierarquico_id', '=', $dataForm['pgh']);
+                }
+                if (isset($dataForm['pregional'])) {
+                    $query->where('opm.cpr_id', '=', $dataForm['pregional']);
+                }
+                if (isset($dataForm['pfuncao'])) {
+                    $query->where('funcao_id', '=', $dataForm['pfuncao']);
+                }
+                if (isset($dataForm['psecao'])) {
+                    $query->where('secao_id', '=', $dataForm['psecao']);
+                }
+                if (isset($dataForm['pcidade'])) {
+                    $query->where('cidade_estado', '=', $dataForm['pcidade']);
+                }
+            })
+            // ->where('opm_id','=',Auth::user()->efetivo->opm->id)
+            ->whereOr('opm_id', '=', '3099991')
+            ->select('pmgeral.id', 'grauhierarquico.sigla', 'matricula', 'opm.opm_sigla', 'dataadmissao', 'sexo', 'nome')
+            ->orderBy('grauhierarquico.precedencia', 'ASC')
+            ->paginate($totalPage);
 
-  /*   $usr = Auth::user();
+        /*   $usr = Auth::user();
     $cprId = $usr->efetivo->opm->cpr_id;
     $retorno =
     $this->join('opm','pmgeral.opm_id','=','opm.id')
@@ -96,55 +101,57 @@ class Efetivo extends Model
    ->orderBy('grauhierarquico_id', 'DESC')
    ->paginate($totalPage);
      */
-   return $retorno;
+        return $retorno;
     }
 
-    
-    public function tempoDecorrido($data){
-        list($ano, $mes, $dia) = explode('-',$data);
+
+    public function tempoDecorrido($data)
+    {
+        list($ano, $mes, $dia) = explode('-', $data);
         $hoje = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-        $dataAlvo = mktime( 0, 0, 0, $mes, $dia, $ano);
+        $dataAlvo = mktime(0, 0, 0, $mes, $dia, $ano);
         return  floor((((($hoje - $dataAlvo) / 60) / 60) / 24) / 365.25);
-      }
-
-    public function pesquisaAniversarios(Array $dataForm, $totalPage)
-    {
-        
-     $retorno =
-     $this->join('opm','pmgeral.opm_id','=','opm.id')
-     ->join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
-     ->where('opm.cpr_id','=' ,12)   
-     ->whereMonth('datanascimento','=',$dataForm['mes'])
-     ->where(function($query) use ($dataForm){
-        if(isset($dataForm['opm'])){
-            $query->where('opm.id','=',$dataForm['opm']);
-        }})
-    ->select('nome', 'opm.opm_sigla','datanascimento','grauhierarquico.sigla')    
-    ->orderBy('grauhierarquico_id', 'DESC')
-    ->paginate($totalPage);
-    //->toSql();
-    //dd($retorno);
-     return $retorno;
     }
 
-    public function pesquisaFerias(Array $dataForm, $totalPage)
+    public function pesquisaAniversarios(array $dataForm, $totalPage)
     {
-        
-     $retorno =
-     $this->join('opm','pmgeral.opm_id','=','opm.id')
-     ->join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
-     ->where('opm.cpr_id','=' ,12)   
-     ->whereMonth('dataadmissao','=',$dataForm['mes'])
-     ->where(function($query) use ($dataForm){
-        if(isset($dataForm['opm'])){
-            $query->where('opm.id','=',$dataForm['opm']);
-        }})
-    ->select('nome', 'opm.opm_sigla','dataadmissao','grauhierarquico.sigla')    
-    ->orderBy('grauhierarquico_id', 'DESC')
-    ->paginate($totalPage);
-    //->toSql();
-    //dd($retorno);
-     return $retorno;
+
+        $retorno =
+            $this->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+            ->join('grauhierarquico', 'pmgeral.grauhierarquico_id', '=', 'grauhierarquico.id')
+            ->where('opm.cpr_id', '=', 12)
+            ->whereMonth('datanascimento', '=', $dataForm['mes'])
+            ->where(function ($query) use ($dataForm) {
+                if (isset($dataForm['opm'])) {
+                    $query->where('opm.id', '=', $dataForm['opm']);
+                }
+            })
+            ->select('nome', 'opm.opm_sigla', 'datanascimento', 'grauhierarquico.sigla')
+            ->orderBy('grauhierarquico.precedencia', 'ASC')
+            ->paginate($totalPage);
+        //->toSql();
+        //dd($retorno);
+        return $retorno;
     }
 
+    public function pesquisaFerias(array $dataForm, $totalPage)
+    {
+
+        $retorno =
+            $this->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
+            ->join('grauhierarquico', 'pmgeral.grauhierarquico_id', '=', 'grauhierarquico.id')
+            ->where('opm.cpr_id', '=', 12)
+            ->whereMonth('dataadmissao', '=', $dataForm['mes'])
+            ->where(function ($query) use ($dataForm) {
+                if (isset($dataForm['opm'])) {
+                    $query->where('opm.id', '=', $dataForm['opm']);
+                }
+            })
+            ->select('nome', 'opm.opm_sigla', 'dataadmissao', 'grauhierarquico.sigla')
+            ->orderBy('grauhierarquico.precedencia', 'ASC')
+            ->paginate($totalPage);
+        //->toSql();
+        //dd($retorno);
+        return $retorno;
+    }
 }

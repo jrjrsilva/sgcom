@@ -880,7 +880,7 @@ class EfetivoController extends Controller
       ->join('opm', 'pmgeral.opm_id', '=', 'opm.id')
       ->where('matricula', '=', 1)
       ->select('pmgeral.id', 'opm_sigla', 'matricula', 'nome', 'grauhierarquico.sigla')
-      ->orderBy('pmgeral.grauhierarquico_id', 'DESC')->get();
+      ->orderBy('grauhierarquico.precedencia', 'ASC')->get();
 
 
     return view('admin.efetivo.index', compact('policiais'));
