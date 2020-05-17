@@ -9,7 +9,7 @@ use sgcom\User;
 class RelatorioServico extends Model
 {
 
-    protected $table = 'servico_diario';
+    protected $table = 'relatorio_servico';
 
     use SoftDeletes;
 
