@@ -59,7 +59,7 @@ class EfetivoController extends Controller
     }
 
 
-    $ghs = GrauHierarquico::orderBy('precedencia', 'asc')->get();
+    $ghs = GrauHierarquico::where('precedencia','<=',15)->orderBy('precedencia', 'asc')->get();
     $secoes = Secao::orderBy('nome', 'asc')->get();
     $funcoes = Funcao::orderBy('nome', 'asc')->get();
     $situacoes = SituacaoEfetivo::orderBy('nome', 'asc')->get();
@@ -122,6 +122,31 @@ class EfetivoController extends Controller
     $efetivos = [];
     $usr = Auth::user();
     $opmId = $usr->efetivo->opm_id;
+
+    $efet_situacao = DB::table('pmgeral')
+      ->where('pmgeral.opm_id', $opmId)
+      ->join('situacao_efetivo', 'pmgeral.situacao_efetivo_id', '=', 'situacao_efetivo.id')
+      ->select(DB::raw('situacao_efetivo.nome, count(*) as total'))
+      ->groupBy('situacao_efetivo.nome')
+      ->get();
+
+    $efet_funcao = DB::table('pmgeral')
+      ->where('pmgeral.opm_id', $opmId)
+      ->join('funcao', 'pmgeral.funcao_id', '=', 'funcao.id')
+      ->select(DB::raw('funcao.nome, count(*) as total'))
+      ->groupBy('funcao.nome')
+      ->get();
+
+    //dd($efet_situacao);
+    return view('recursoshumanos.resumoEfetivo', compact('efetivos', 'efet_situacao', 'efet_funcao'));
+  }
+
+  public function resumoEfetivoSearch(Request $request)
+  {
+    $this->dadosGerais();
+    $efetivos = [];
+    $usr = Auth::user();
+    $opmId = $request->popm;
 
     $efet_situacao = DB::table('pmgeral')
       ->where('pmgeral.opm_id', $opmId)
@@ -941,4 +966,81 @@ class EfetivoController extends Controller
       return response()->json($secoes);
     }
   }
+
+  public function incluirPolicial()
+  {
+     
+    $opms = Opm::orderBy('opm_sigla', 'asc')->get();
+
+    $ghs = GrauHierarquico::orderBy('precedencia', 'asc')->where('precedencia', '<=', 16)->get();
+
+    $pms = $this->policiaisBuscar();
+
+
+    return view('admin.efetivo.incluir', compact('ghs', 'opms','pms'));
+  
+  }
+
+  public function incluirSalvarPolicial(Request $request)
+  {
+   //   dd($request->all());
+    try {
+      $codigo = DB::table('pmgeral')->max('id');
+      $efetivo = new Efetivo();
+      $efetivo->id = $codigo + 1;
+      $efetivo->opm_id = $request->opm;
+      $efetivo->grauhierarquico_id = $request->gh;
+      $efetivo->nome =  trim(mb_strtoupper($request->nome,'UTF-8'));
+      $efetivo->matricula = $request->matricula;
+      $efetivo->save();
+
+      return redirect()->back()->with('success', 'Inserido com sucesso!');
+    } catch (\Exception $e) {
+      $errors = $e->getMessage();
+      return redirect()->back()->withErrors([$errors])->withInput();
+    }
+  }
+
+
+
+  public function policiaisBuscar()
+  {
+    $policiais = DB::table('pmgeral')
+      ->join('grauhierarquico', 'pmgeral.grauhierarquico_id', '=', 'grauhierarquico.id')
+      ->select('pmgeral.id', 'matricula', 'nome')
+     // ->where('matricularh','=',null)
+      ->orderBy('grauhierarquico.precedencia', 'ASC')->get(); 
+   //  dd($policiais);
+    return $policiais;
+  }
+
+  public function atualizarPolicial(Request $request)
+  {
+    
+    $opms = Opm::orderBy('opm_sigla', 'asc')->get();
+
+    $ghs = GrauHierarquico::orderBy('precedencia', 'asc')->where('precedencia', '<=', 18)->get();
+
+    $pms = $this->policiaisBuscar();
+
+    try{
+      foreach($pms as $pm){
+        $rh  = substr($pm->matricula, 0, 8);
+        DB::update('update pmgeral set matricularh = ? where id = ?', [$rh, $pm->id]);
+      }
+      return response('OK', 200)
+      ->header('Content-Type', 'text/plain');  
+    }catch (\Exception $e){
+          return response($content)
+            ->withHeaders([
+                'Content-Type' => $type,
+                'X-Header-One' => 'Header Value',
+                'X-Header-Two' => 'Header Value',
+            ]);
+    }
+    
+    return view('admin.efetivo.incluir', compact('ghs', 'opms','pms'));
+  
+  }
+
 }

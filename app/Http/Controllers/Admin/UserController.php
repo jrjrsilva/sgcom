@@ -36,7 +36,7 @@ class UserController extends Controller
         ->join('pmgeral', 'users.efetivo_id','=','pmgeral.id')
         ->join('grauhierarquico', 'pmgeral.grauhierarquico_id','=','grauhierarquico.id')
         ->join('opm', 'pmgeral.opm_id','=','opm.id')
-        ->select('users.id','opm_sigla','matricula','nome','grauhierarquico.sigla','status','image','email')
+        ->select('users.id','opm_sigla','matricula','nome','grauhierarquico.sigla','status','image','users.email')
         ->orderBy('pmgeral.grauhierarquico_id', 'DESC')
         
         ->paginate($this->totalPage);
@@ -93,8 +93,7 @@ class UserController extends Controller
            
                 $name = $user->efetivo->matricula;
                
-                // Define um aleatório para o arquivo baseado no timestamps atual
-                //para usar na ocorrencia
+                // Define um nome aleatório para o arquivo baseado no timestamps atual
                 //$name = uniqid(date('HisYmd'));
 
 
@@ -120,8 +119,24 @@ class UserController extends Controller
 
     public function salvar(Request $request)
     {
-      return $this->index();
-    }
+        try{
+            $user = User::findOrFail($request->id);
+        $user->email= $request->email;
+        $user->status = $request->status;
+        $opm = Opm::find($request->opm);
+        $gh = GrauHierarquico::find($request->gh);
+        $efetivo = Efetivo::find($user->efetivo_id);
+        $efetivo->opm()->associate($opm)->save();
+        $efetivo->grauhierarquico()->associate($gh)->save();
+        $efetivo->save();
+        $user->save();
+
+        return back()->with('success','Usuário atualizado');
+
+        }catch (\Exception $e){
+            return back()->with('error', 'Falha ao atualizar o usuário!'.$e);
+        }
+      }
 
     public function search(Request $dataForm)
     {
@@ -142,7 +157,7 @@ class UserController extends Controller
     ->when($dataForm['popm'],function($queryOpm) use ($dataForm){
           return $queryOpm->where('pmgeral.opm_id',$dataForm['popm']);
         })->orderBy('pmgeral.grauhierarquico_id', 'DESC')
-    ->select('users.id','opm_sigla','matricula','nome','grauhierarquico.sigla','status','image','email')
+    ->select('users.id','opm_sigla','matricula','nome','grauhierarquico.sigla','status','image','users.email')
     ->paginate($this->totalPage);
     //->toSql();
     //dd($users);
@@ -181,8 +196,10 @@ class UserController extends Controller
           }
 
           $url = Storage::url($user->image);
-
-          return view('admin.usuarios.form',compact('user','url'));
+          $usuario = $user;
+          $papeis = Papel::all();
+       
+          return view('admin.usuarios.form',compact('user','url','usuario','papeis'));
     }
 
     public function getPicture() {

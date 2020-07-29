@@ -313,6 +313,12 @@ return [
                 ],
 
                 [
+                    'text' => 'Inclusão no Efetivo',
+                    'url'  => 'admin/efetivo/incluir',
+                    'can'         => 'efetivo-edit',
+                ],
+
+                [
                     'text' => 'Gestão de Efetivo',
                     'url'  => 'admin/efetivo',
                     'can'         => 'efetivo-edit',

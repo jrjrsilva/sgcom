@@ -102,25 +102,65 @@
               </div>
             </div>
 <br>
-            <div class="row">
-            <div class="col-xs-12">
-                <div class="input-group">
-                <label for="image">Foto:</label>
-                @if(auth()->user()->image != null)
-                     <img src="{{ $url }}" alt="{{ auth()->user()->name}}" style="max-width: 100px;">
-                @endif
-                </div>   
-            </div>
-        </div> 
-        <br>
-
-    </div>
+</div>
               <div class="box-footer">
                 <div class="btn-toolbar pull-right">
                    <button type="submit" class="btn btn-success btn-lg">Salvar</button>
                  </div>
               </div>
     </form>
+
+    <p>Lista de Papéis para: {{$user->efetivo->grauhierarquico->sigla}}  {{$user->efetivo->nome}}  :: {{$user->efetivo->opm->opm_sigla}}</p>
+    <div class="box">
+		<div class="box-header">
+			<form action="{{route('admin.usuarios.papelSalvar',$user->id)}}" method="post">
+			{{ csrf_field() }}
+			<div class="form-group col-xs-2">
+				<select name="papel_id" class="form-control">
+					@foreach($papeis as $papel)
+					<option value="{{$papel->id}}">{{$papel->nome}}</option>
+					@endforeach
+				</select>
+				
+			</div>
+			<button class="btn btn-primary">Adicionar</button>
+			</form>
+
+
+		</div>
+
+		<div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+					<tr>
+
+						<th>Papel</th>
+						<th>Descrição</th>
+						<th>Ação</th>
+					</tr>
+				</thead>
+				<tbody>
+				@foreach($user->papeis as $papel)
+					<tr>
+						<td>{{ $papel->nome }}</td>
+						<td>{{ $papel->descricao }}</td>
+
+						<td>
+
+							<form action="{{route('admin.usuarios.papelDestroy',[$user->id,$papel->id])}}" method="post">
+									{{ method_field('DELETE') }}
+									{{ csrf_field() }}
+									<button title="Deletar" class="btn  btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+							</form>
+						</td>
+					</tr>
+				@endforeach
+				</tbody>
+			</table>
+
+        </div>
+
+	</div>
 
 
     <div class="clearfix"></div>

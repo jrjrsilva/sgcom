@@ -94,7 +94,7 @@ class OcorrenciaController extends Controller
       $phomicidio = 0;
 
       return view('servicooperacional.ocorrencia.listarocorrencias',
-      compact('ocorrencias','tiposocorrencias','cvli','cvp','pcvli','pcvp','phomicidio','homicidio'));
+      compact('ocorrencias','cvli','cvp','pcvli','pcvp','phomicidio','homicidio'));
     }
 
 

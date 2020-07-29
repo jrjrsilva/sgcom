@@ -30,13 +30,30 @@
           <!-- /.info-box-content -->
        </div>
     </div>
+
+    <div class="col-md-3 col-sm-6 col-12">
+      <div class="info-box bg-red">
+          <span class="info-box-icon"><i class="fa fa-meh-o"></i></span>
+              <div class="info-box-content">
+              <span class="info-box-text">ARMAS EM MANUTENÇÂO</span>
+              <span class="info-box-number">{{ $armasManutencao}}</span>
+          <!-- The progress section is optional -->
+          <div class="progress">
+            <div class="progress-bar" style="width: 30%"></div>
+          </div>
+          <span class="progress-description">
+          </span>
+          </div>
+        <!-- /.info-box-content -->
+     </div>
+  </div>
     
     <div class="col-md-3 col-sm-6 col-12">
         <div class="info-box bg-red">
             <span class="info-box-icon"><i class="fa fa-meh-o"></i></span>
                 <div class="info-box-content">
-                <span class="info-box-text">ARMAS EM MANUTENÇÂO</span>
-                <span class="info-box-number">{{ $armasManutencao}}</span>
+                <span class="info-box-text">ARMAS Com DEFEITO</span>
+                <span class="info-box-number">{{ $armasDefeito}}</span>
             <!-- The progress section is optional -->
             <div class="progress">
               <div class="progress-bar" style="width: 30%"></div>
@@ -81,10 +98,7 @@
             </div>
           <!-- /.info-box-content -->
        </div>
-    </div>
-    
-    
-    
+    </div>    
 </div>
     <h2>Listagem</h2>
     @include('site.includes.alerts')
@@ -94,7 +108,7 @@
                     {!! csrf_field() !!}
                     <label for="pserial">Nº de Série:</label>    
                     <input  type="text" name="pserial"  id="pserial" class="form-control"
-                     placeholder="Informe o serial" maxlength="10"/>
+                     placeholder="Informe o serial" maxlength="10"  value="{{ old('pserial') }}"/>
 
                     <label for="psituacao">Situação da Arma:</label>
                     <select class="form form-control" id="psituacao" name="psituacao">
@@ -127,8 +141,7 @@
                         <option value="{{ $opm->id }}" ><p> {{ $opm->opm_sigla }} </p></option>
                         @endforeach
                       </select>
-                    
-                        <button  type="submit" class="btn btn-primary">Pesquisar</button>
+                    <button  type="submit" class="btn btn-primary">Pesquisar</button>
                     </form>
                   </div>
                   
@@ -138,11 +151,11 @@
                     <table id="example1" class="table table-bordered table-striped table-responsive">
                       <thead>
                       <tr>
-                        
+                        <th>OPM</th>
                         <th>Número de Série</th>
                         <th>Calibre</th>
                         <th>Especie</th>
-                        <th>OPM</th>
+                        
                         <th>Situação</th>
                         <th>Marca</th>
                         <th></th>
@@ -151,10 +164,11 @@
                       <tbody>
                       @forelse($armas as $arma)
                       <tr>
+                        <td>{{$arma->opm->opm_sigla}}</td>
                         <td>{{$arma->numero_de_serie}}</td>
                         <td> {{$arma->calibre->nome}}</td>
                         <td>{{$arma->especiearma->nome}}</td>
-                        <td>{{$arma->opm->opm_sigla}}</td>
+                        
                         <td>{{$arma->situacaoarma->nome}}</td>
                         <td>{{$arma->marcaarma->nome}}</td>
                         <td>
@@ -167,10 +181,11 @@
                      </tbody>
                       <tfoot>
                       <tr>
+                        <th>OPM</th>
                         <th>Número de Série</th>
                         <th>Calibre</th>
                         <th>Especie</th>
-                        <th>OPM</th>
+                        
                         <th>Situação</th>
                         <th>Marca</th>
                       

@@ -48,7 +48,7 @@ class SGCOMController extends Controller
     
     
 
-      return view('site.auth.index',compact('efetivos','valor'));
+      return view('site.auth.index',compact('efetivos'));
         
     }
 

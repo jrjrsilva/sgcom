@@ -11,6 +11,35 @@
 @stop
 
 @section('content')
+<div class="box">
+  <div class="box-header">
+   <form action="{{route('rh.resumoEfetivoSearch')}}" method="POST" class="form form-inline">
+              {!! csrf_field() !!}
+              <input type="hidden" id="cprId" name="cprId" value="{{Auth::user()->efetivo->opm->cpr->id}}">
+             <div class="row">
+                <label for="pregional">Comando Regional:</label>
+                <select class="form form-control" id="pregional" name="pregional">
+                  <option value="">Selecione o CPR</option>
+                  @foreach( $cprs as $cpr )
+                  <option value="{{ $cpr->id }}" ><p> {{ $cpr->sigla }} </p></option>
+                  @endforeach
+                </select>
+                <label for="popm">OPM:</label>
+                <select class="form form-control" id="opm" name="popm">
+                  <option value="">Selecione a OPM</option>
+                  @foreach( $opms as $opm )
+                  <option value="{{ $opm->id }}" ><p> {{ $opm->opm_sigla }} </p></option>
+                  @endforeach
+                </select>
+               
+              </div> <button id="btn-pesquisar"  type="submit" class="btn btn-primary" >Pesquisar</button>
+              </form>
+              
+               
+        
+</div>
+</div>
+<hr>
 <div class="row">
   <div class="col-md-4 col-sm-6 col-12">
          <div class="info-box bg-aqua">

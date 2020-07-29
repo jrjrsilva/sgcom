@@ -50,7 +50,7 @@
 							<form action="{{route('admin.usuarios.papelDestroy',[$usuario->id,$papel->id])}}" method="post">
 									{{ method_field('DELETE') }}
 									{{ csrf_field() }}
-									<button title="Deletar" class="btn red"><i class="fa fa-trash"></i></button>
+									<button title="Deletar" class="btn  btn-danger btn-flat"><i class="fa fa-trash"></i></button>
 							</form>
 						</td>
 					</tr>

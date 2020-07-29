@@ -35,6 +35,10 @@ class ArmamentoController extends Controller
     $armasManutencao = Arma::where('opm_id', $usr->efetivo->opm_id)
       ->where('situacao', 1)
       ->count();
+    
+      $armasDefeito = Arma::where('opm_id', $usr->efetivo->opm_id)
+      ->where('situacao', 9)
+      ->count();
 
     $armasCargaPessoal = Arma::where('opm_id', $usr->efetivo->opm_id)
       ->where('situacao', 13)
@@ -57,7 +61,7 @@ class ArmamentoController extends Controller
     $marcaarmas = MarcaArma::all();
     $modeloarmas = ModeloArma::all();
 
-    view()->share(compact('armasTotalOPM', 'armasManutencao', 'armasCargaPessoal', 'armasPericiaIcap', 'opms', 'calibres', 'especies', 'situacaoarmas', 'modeloarmas', 'marcaarmas'));
+    view()->share(compact('armasDefeito','armasTotalOPM', 'armasManutencao', 'armasCargaPessoal', 'armasPericiaIcap', 'opms', 'calibres', 'especies', 'situacaoarmas', 'modeloarmas', 'marcaarmas'));
   }
 
   public function lista()
@@ -141,7 +145,7 @@ class ArmamentoController extends Controller
 
     $this->dadosGerais();
 
-    return view('armas.lista', compact('armas', 'dataForm'));
+    return view('armas.lista', compact('armas', 'dataForm'))->withInput($request->all());
   }
 
   public function editHistorico($id)

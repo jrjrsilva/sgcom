@@ -5,8 +5,8 @@
 @section('content_header')
     <h1>Gestão de Pessoal</h1>
     <ol class="breadcrumb">
-        <li><a href="">Dashboard</a></li>
-        <li><a href="">RH</a></li>
+        <li><a href="{{route('rh.listar')}}">Dashboard</a></li>
+        <li><a href="{{route('rh.listar')}}">RH</a></li>
     </ol>
 @stop
 

@@ -64,7 +64,7 @@ class Efetivo extends Model
                     $query->where('nome', 'LIKE', '%' . $dataForm['pnome'] . '%');
                 }
                 if (isset($dataForm['pmatricula'])) {
-                    $query->where('matricula', '=', $dataForm['pmatricula']);
+                    $query->where('matricula', 'like', $dataForm['pmatricula'].'%');
                 }
                 if (isset($dataForm['popm'])) {
                     $query->where('opm_id', '=', $dataForm['popm']);
@@ -86,22 +86,12 @@ class Efetivo extends Model
                 }
             })
             // ->where('opm_id','=',Auth::user()->efetivo->opm->id)
-            ->whereOr('opm_id', '=', '3099991')
+            ->whereOr('opm_id', '=', '309999')
             ->select('pmgeral.id', 'grauhierarquico.sigla', 'matricula', 'opm.opm_sigla', 'dataadmissao', 'sexo', 'nome')
             ->orderBy('grauhierarquico.precedencia', 'ASC')
             ->paginate($totalPage);
 
-        /*   $usr = Auth::user();
-    $cprId = $usr->efetivo->opm->cpr_id;
-    $retorno =
-    $this->join('opm','pmgeral.opm_id','=','opm.id')
-    ->join('grauhierarquico','pmgeral.grauhierarquico_id','=','grauhierarquico.id')
-    ->where('opm.cpr_id','=',$cprId)
-     ->select('pmgeral.id','grauhierarquico.sigla','matricula','opm.opm_sigla','dataadmissao','sexo','nome')
-   ->orderBy('grauhierarquico_id', 'DESC')
-   ->paginate($totalPage);
-     */
-        return $retorno;
+       return $retorno;
     }
 
 

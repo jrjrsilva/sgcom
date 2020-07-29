@@ -46,6 +46,7 @@
                   <th>Matricula</th>
                   <th>Nome</th>
                   <th>GH</th>
+                  <th>E-mail</th>
                   <th>OPM</th>
                   <th>Status</th>
                   <th></th>
@@ -59,6 +60,7 @@
                     </td>
                   <td>{{$user->nome}}</td>
                   <td>{{$user->sigla}}</td>
+                  <td>{{$user->email}}</td>
                   <td>{{$user->opm_sigla}}</td>
                    <td>{{$user->status}}</td>
                    <td>
@@ -74,6 +76,7 @@
                   <th>Matricula</th>
                   <th>Nome</th>
                   <th>GH</th>
+                  <th>E-mail</th>
                   <th>OPM</th>
                   <th>Status</th>
                 </tr>

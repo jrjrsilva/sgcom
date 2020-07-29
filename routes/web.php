@@ -135,6 +135,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
     $this->get('realefetivo/{id}', 'EfetivoController@getEfetivoReal')->name('rh.efetivoReal');
     $this->get('removerdaopm/{id}', 'EfetivoController@removerDaOpm')->name('rh.removerDaOpm');
     $this->get('resumoEfetivo', 'EfetivoController@resumoEfetivo')->name('rh.resumoEfetivo');
+    $this->any('resumoEfetivoSearch', 'EfetivoController@resumoEfetivoSearch')->name('rh.resumoEfetivoSearch');
 
     $this->get('aniversariantes', 'EfetivoController@aniversariantes')->name('rh.aniversariantes');
     $this->any('pesquisar-aniversario', 'EfetivoController@pesquisaAniversarios')->name('rh.pesquisaAniversarios');
@@ -150,9 +151,13 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Recursoshumanos', 'prefi
 });
 
 
+$this->post('admin/efetivo/atualizarPolicial', 'Recursoshumanos\EfetivoController@atualizarPolicial')->name('rh.atualizarPolicial');
 $this->post('admin/efetivo/salvar', 'Recursoshumanos\EfetivoController@salvarMovimentacao')->name('rh.salvarMovimentacao');
 $this->get('admin/efetivo', 'Recursoshumanos\EfetivoController@policiais')->name('rh.policiais');
 $this->any('admin/efetivo/search', 'Recursoshumanos\EfetivoController@getPolicial')->name('rh.getPolicial');
+$this->get('admin/efetivo/incluir', 'Recursoshumanos\EfetivoController@incluirPolicial')->name('rh.incluirPolicial');
+$this->post('admin/efetivo/incluir/salvar', 'Recursoshumanos\EfetivoController@incluirSalvarPolicial')->name('rh.incluirSalvarPolicial');
+
 $this->get('admin/efetivo/{id?}', 'Recursoshumanos\EfetivoController@editPolicial')->name('rh.editPolicial');
 
 $this->get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middleware('auth');
